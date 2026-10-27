@@ -28,4 +28,12 @@
 Current desktop screenshots are in docs/media. A 39-second captioned screenshot tour with original synthesized background sound was rendered and saved separately for download. It is explicitly labelled a screenshot tour. Video duration and output streams were checked; a representative rendered frame was inspected. No DEV post was published. Official rules/template and deadline were checked against the current Week 4 page; Gemma and .tech are the meaningful partner categories documented.
 
 ## 3D room prototype
-Finite geometry and five anchor checks pass. First live compatibility-rendered room loaded; its letter marker opened the exact existing source. Hardware WebGL shading/shadow quality and mobile performance remain unverified. The prototype applies to the fictional demo only.
+Finite geometry and five anchor checks pass. First live compatibility-rendered room loaded; its letter marker opened the exact existing source. Hardware WebGL shading/shadow quality and mobile performance remain unverified. The viewer now also loads personal archives.
+
+## Personal 3D creator verification
+- 46 automated tests and production build pass.
+- Live desktop: fictional keepsake and guitar loaded into 3D; position, rotation and size edits persisted after Save room and reload.
+- Object dropdown supports selection when markers overlap. Lamp and time-of-day changes are saved with the room.
+- Compatibility rendering uses photo thumbnails on memory markers; textured photo surfaces and hardware shadows require WebGL.
+- 3D uses a fixed shell. Wallpaper, proportions and doorway choices remain saved and are shown in the illustrated editor.
+- Hardware WebGL, real touch dragging and native PDF pagination remain unverified.
