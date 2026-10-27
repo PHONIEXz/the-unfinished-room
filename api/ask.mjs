@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { buildPrompt, validateAnswer } from '../src/evidence.mjs';
+import { buildPrompt, validateAnswer, parseModelJson } from '../src/evidence.mjs';
 const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json', import.meta.url), 'utf8'));
 const model = 'gemma-4-26b-a4b-it';
 const buckets = new Map();
@@ -36,12 +36,15 @@ export default async function handler(request, response) {
     const payload = await upstream.json();
     const text = payload.candidates?.[0]?.content?.parts?.map(part=>part.text || '').join('') || '';
     let answer;
-    try { answer = validateAnswer(JSON.parse(text),archive.sources); }
+    try { answer = validateAnswer(parseModelJson(text),archive.sources); }
     catch (error) {
       console.warn('room_ai_validation_failed',JSON.stringify({
         reason:error instanceof SyntaxError ? 'invalid_json' : error?.message,
         finishReason:payload.candidates?.[0]?.finishReason || 'missing',
-        textLength:text.length
+        textLength:text.length,
+        firstChar:text.trim().charCodeAt(0) || 0,
+        firstObjectAt:text.indexOf('{'),
+        lastObjectAt:text.lastIndexOf('}')
       }));
       return response.status(502).json({error:'The model did not return a verifiable answer. Try another question.'});
     }
