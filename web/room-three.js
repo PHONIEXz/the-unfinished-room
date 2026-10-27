@@ -10,10 +10,11 @@ export function buildMemoryRoom(){
  const mats={wall:material('#657577'),edge:material('#c4b99e'),wood:material('#806345'),darkwood:material('#443b32'),cream:material('#d9cfb5'),fabric:material('#7f3e44'),blue:material('#496a75'),amber:material('#eabf7e'),green:material('#526752'),black:material('#202c32'),paper:material('#e7d8b6')};
  function box(w,h,d,x,y,z,mat,round=0,parent=root){const geo=round?new RoundedBoxGeometry(w,h,d,1,round,2):new T.BoxGeometry(w,h,d);const mesh=new T.Mesh(geo,mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
  function cylinder(rt,rb,h,x,y,z,mat,parent=root){const mesh=new T.Mesh(new T.CylinderGeometry(rt,rb,h,16),mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
- function shadow(x,z,sx,sz,opacity=.14){const m=new T.Mesh(new T.CircleGeometry(1,28),new T.MeshBasicMaterial({color:0x101923,transparent:true,opacity,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x,.025,z);m.scale.set(sx,sz,1);root.add(m);}
+ function shadow(x,z,sx,sz,opacity=.14){const m=new T.Mesh(new T.CircleGeometry(1,28),new T.MeshBasicMaterial({color:0x101923,transparent:true,opacity,depthWrite:false}));m.renderOrder=-80;m.rotation.x=-Math.PI/2;m.position.set(x,.025,z);m.scale.set(sx,sz,1);root.add(m);}
  // Raised diorama base and separate worn floorboards.
  box(8.35,.24,6.35,0,-.16,0,mats.edge,.04);
  for(let x=0;x<20;x++){const m=material(x%3===0?'#937859':x%3===1?'#876b4d':'#9b8060');box(.394,.06,6,-3.8+x*.4,0,0,m);for(let k=0;k<3;k++)box(.008,.002,1.1,-3.92+x*.4+k*.07,.032,-1.8+k*1.7,mats.wood);}
+ root.traverse(o=>{if(o.isMesh)o.renderOrder=-100;});const wallStart=root.children.length;
  // Back wall with an actual window opening, jambs and a deep sill.
  box(3.2,3.7,.14,-2.4,1.86,-3,mats.wall);box(1.6,3.7,.14,3.2,1.86,-3,mats.wall);
  box(3.2,.85,.14,.8,.43,-3,mats.wall);box(3.2,.6,.14,.8,3.42,-3,mats.wall);
@@ -28,8 +29,11 @@ export function buildMemoryRoom(){
  for(const z of [-.56,1.26])box(.23,2.9,.09,-3.98,1.45,z,mats.darkwood);box(.23,.11,1.9,-3.98,2.94,.35,mats.darkwood);
  box(.05,.02,1.6,-3.86,.05,.35,mats.amber);
  box(8,.13,.18,0,.12,-2.87,mats.edge);box(.18,.13,2.4,-3.87,.12,-1.8,mats.edge);box(.18,.13,1.7,-3.87,.12,2.15,mats.edge);
+ for(const wall of root.children.slice(wallStart))wall.renderOrder=-110;
+ const rugStart=root.children.length;
  // Low, woven rug with a stitched border.
  box(4.9,.025,3.2,-.05,.055,.35,material('#9d9479'),.02);for(const x of [-2.35,2.25])box(.025,.008,2.95,x,.073,.35,mats.cream);for(const z of [-1.1,1.8])box(4.6,.008,.025,-.05,.073,z,mats.cream);
+ for(const rug of root.children.slice(rugStart))rug.renderOrder=-90;
  // Burgundy sofa: back, two arms, independent seats and cushions.
  shadow(-2.3,-1.5,1.4,.65);
  box(2.9,.48,1.03,-2.25,.44,-1.96,mats.fabric,.12);box(2.9,.85,.22,-2.25,.9,-2.43,mats.fabric,.1);

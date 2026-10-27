@@ -13,6 +13,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 
 ## What works
 
+- Optional original 3D diorama in the fictional demo, with orbit/zoom, five source-linked memory markers, day/lamp controls and an illustrated fallback. Personal creator conversion to 3D is not yet implemented.
 - Original layered SVG cutaway interior, five source-backed demo objects, journal, discovery progress, quick-access list, next/previous panels and reset.
 - Daylight and lamp controls, optional synthesized radio static, reduced-motion support, zoom/pan/expanded view and a responsive controls dock.
 - Personal creator: 25 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.

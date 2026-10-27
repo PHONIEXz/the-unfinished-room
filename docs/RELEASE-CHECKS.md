@@ -1,7 +1,7 @@
 # Release checks: 27 October 2026
 
 ## Recorded automated checks
-- 41 tests pass; build and JavaScript syntax checks pass.
+- 42 tests pass; build and JavaScript syntax checks pass.
 - Includes source/citation validation, extractive answers, retries and timeouts, source links, unknowns, storage errors, legacy backups, image restrictions, decoration-only/mixed rooms, layout bounds and version 7 finishes.
 - Geometry loader check: optimized radio GLB parses, has finite positive dimensions, 8,206 triangles, 99,080 bytes.
 
@@ -26,3 +26,6 @@
 
 ## Submission assets
 Current desktop screenshots are in docs/media. A 39-second captioned screenshot tour with original synthesized background sound was rendered and saved separately for download. It is explicitly labelled a screenshot tour. Video duration and output streams were checked; a representative rendered frame was inspected. No DEV post was published. Official rules/template and deadline were checked against the current Week 4 page; Gemma and .tech are the meaningful partner categories documented.
+
+## 3D room prototype
+Finite geometry and five anchor checks pass. First live compatibility-rendered room loaded; its letter marker opened the exact existing source. Hardware WebGL shading/shadow quality and mobile performance remain unverified. The prototype applies to the fictional demo only.
