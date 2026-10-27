@@ -14,4 +14,6 @@ Before this fix, real responses sometimes contained prose or candidate JSON mixe
 
 On 27 October 2026, the first live “Who took the photograph?” attempt returned a model response with `unknown: true` and a quotation, so the strict validator rejected it. The validator now accepts the model's unknown classification after checking the citation shape and exact excerpt. It discards incidental citations and model phrasing, returning one canonical unknown sentence with no evidence. This prevents an unknown answer from carrying an invented identity or implying that an excerpt proves absence. It does not independently determine whether a model has correctly classified every question as unknown.
 
-Next: repeat the unknown question on production after deployment, recording the visible result and duration. A generic error does not count as a passed model-unknown check.
+Production deployment `8aaaab914ca00a9b34dd4de0850b772a459976ee` returned the visible “NOT ESTABLISHED BY THE ARCHIVE” state and a citation-free response for all three open questions: who took the photograph, who wrote the letter, and who first opened the room. Each was a live Gemma request and resolved within the existing 28-second server timeout. We did not instrument precise per-question durations, so there is no measured latency claim. Fourteen local tests passed after adding an API regression for the model's unknown-with-quote shape.
+
+Next: Chunk 3, bounded retries and timeouts for transient provider failures. A generic error does not count as a model-unknown response.
