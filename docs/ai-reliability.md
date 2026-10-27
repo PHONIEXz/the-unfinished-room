@@ -23,3 +23,11 @@ Next: Chunk 3, bounded retries and timeouts for transient provider failures. A g
 Implemented a maximum of three provider attempts within one 28-second deadline, with each attempt capped at 12 seconds (or the remaining budget). HTTP 429, 500, 502, 503, 504 and network/timeout failures can retry. Backoff starts at 500ms then 1000ms, with up to 249ms of jitter. A valid Retry-After seconds value or HTTP date takes precedence; if it cannot fit in the deadline, the request fails rather than retrying early. Permanent HTTP errors and malformed JSON do not retry. Evidence validation still runs once after generation and never relaxes its rules to obtain a result.
 
 Nineteen tests pass, including simulated transient recovery, permanent rejection, invalid JSON, timeout exhaustion, Retry-After, and a shrinking deadline. These simulations verify failure handling; they do not constitute a live provider outage test. Logs contain attempt/status metadata only. No warm-up requests, provider switching, or extra consent are introduced.
+
+## Chunk 4: evidence quality
+
+Known answers now use extractive mode: Gemma selects an exact source excerpt; the server expands it to complete source sentences and displays those sentences instead of the model's free-form answer. This prevents an invented name, location, or paraphrase from riding alongside a genuine quote. Sentence expansion preserves qualifications and negation around a partial excerpt. Unknown results retain their canonical wording. The interface labels known results “SOURCE PASSAGE · CHECK RELEVANCE”.
+
+This is a deliberate tradeoff: source wording replaces conversational synthesis. We guarantee source-text provenance for displayed known-answer text, not semantic relevance, truth of the archive, or correct unknown classification. A model can still select the wrong passage. The sentence splitter is suited to this small fictional plain-text archive; arbitrary personal documents need a stronger segmentation/retrieval design.
+
+Twenty-two tests pass, including invented prose paired with a genuine citation, truncated negative/uncertain statements, and excerpts crossing sentence boundaries. Next: Chunk 5, a live evaluation matrix of factual, unknown, misleading, and instruction-like questions.

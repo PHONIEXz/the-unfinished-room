@@ -31,3 +31,21 @@ test('keeps final answer text separate from thought parts',()=>{
   assert.equal(finalResponseText(parts),'{"answer":"The room was open.","unknown":false,"evidence":[]}');
   assert.equal(finalResponseText([{thought:true,text:'No final part'}]),'');
 });
+
+test('a real quote cannot carry an invented model claim into the answer',()=>{
+ const result=validateAnswer({answer:'Ada founded the room in London.',unknown:false,evidence:[{sourceId:'letter',quote:'When it is lit, the children know the reading room is open.'}]},sources);
+ assert.equal(result.mode,'extractive');
+ assert.equal(result.answer,'When it is lit, the children know the reading room is open.');
+ assert.doesNotMatch(result.answer,/Ada|London/);
+});
+test('partial quotations retain source negation and uncertainty',()=>{
+ for(const quote of ['person behind the camera','first opened it']) {
+  const source=sources.find(s=>s.text.includes(quote));
+  const result=validateAnswer({answer:'Known.',unknown:false,evidence:[{sourceId:source.id,quote}]},sources);
+  assert.match(result.answer,/not named|do not remember/);
+ }
+});
+test('quotes spanning sentences retain their full context',()=>{
+ const result=validateAnswer({answer:'Summary.',unknown:false,evidence:[{sourceId:'photo-note',quote:'twelve children. We took'}]},sources);
+ assert.equal(result.answer,'Six chairs, twelve children. We took turns.');
+});
