@@ -33,7 +33,7 @@ enableCamera(document.querySelector('#scene'));
 if(!personal) mountInterior(document.querySelector('#scene'));
 const buttons = [...document.querySelectorAll('.object')];
 const dialog = document.querySelector('#evidence');
-const progressKey = personal ? 'unfinished-room-personal-progress-'+JSON.stringify(archive) : 'unfinished-room-demo-v1';
+const progressKey = personal ? 'unfinished-room-personal-progress-'+JSON.stringify(archive ? {title:archive.title,objects:archive.objects.map(o=>({id:o.id,title:o.title})),sources:archive.sources}:null) : 'unfinished-room-demo-v1';
 let saved = [];
 try { saved = JSON.parse(sessionStorage.getItem(progressKey) || '[]'); } catch { /* Corrupt session data is ignored. */ }
 const knownIds = new Set(buttons.map(button => button.dataset.id));
@@ -61,7 +61,7 @@ function render() {
       const heading = document.createElement('strong');
       heading.textContent = button.querySelector('span:last-child').textContent.trim();
       const copy = document.createElement('span');
-      copy.textContent = descriptions[button.dataset.id];
+      copy.textContent = personal ? archive.sources.find(s=>s.id===button.dataset.id)?.text : descriptions[button.dataset.id];
       item.append(heading, copy);
       list.append(item);
     });
@@ -96,6 +96,8 @@ function openObject(id, trigger = null) {
   let illustration=dialog.querySelector('.detail-illustration');
   if(!illustration){illustration=document.createElement('div');illustration.className='detail-illustration';document.querySelector('#object-title').before(illustration);}
   illustration.innerHTML=personal?'':objectIllustration(id);
+  if(personal&&object.image){const img=document.createElement('img');img.src=object.image;img.alt=object.title;illustration.append(img);}
+  let metadata=dialog.querySelector('.memory-metadata');if(!metadata){metadata=document.createElement('p');metadata.className='memory-metadata';document.querySelector('#object-lede').after(metadata);}metadata.textContent=personal?[object.date?'Memory date: '+object.date:'',object.sourceNote?'Source note: '+object.sourceNote:''].filter(Boolean).join(' · '):'';
   let uncertainty=dialog.querySelector('.evidence-limit');
   if(!uncertainty){uncertainty=document.createElement('p');uncertainty.className='evidence-limit';document.querySelector('#sources').after(uncertainty);}
   const limits={photograph:'The photographer is not named.',letter:'The writer is not identified.',radio:'These recollections do not establish who owned the radio.',clock:'The archive does not establish when or why it stopped.',frame:'No source identifies who began the room.'};

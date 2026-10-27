@@ -164,3 +164,6 @@ Creator chunk 1 live desktop verification: saved a fictional memory with cream/w
 
 ### Creator object-editor chunk
 Memory cards now collapse by object name, with expand/collapse-all controls. Artwork rotation (-180 to 180 degrees) and size (60–140%) have live outputs and a reset action. Transforms apply only to artwork, keeping labels legible and drag hitboxes stable. Validated schema v4 persists both settings; v1–v3 imports retain default appearance until saved as v4. Backup validation includes out-of-range/non-numeric transforms. Catalogue search, memory date/source metadata, image upload and furniture slots remain future work.
+
+### Personal-photo and memory-detail milestone
+Validated schema v5 adds optional memory date (free text for uncertainty), source note and embedded photo. Uploads accept PNG/JPEG/WebP under 5 MB, reject SVG, resize to 800px and re-encode as JPEG locally. A photo has a 260,000-character limit and the room has a 2.4M-character photo budget. Imported photos must be bounded JPEG data URLs with supported dimensions, never remote URLs or SVG/HTML. JSON restore limit is now 3 MB. Previous schemas remain readable. Personal journal entries use saved memory text; detail panels show photo/date/source note. Backup files include personal content and the UI says to keep them private. No photo or memory is sent to AI or Meshy.

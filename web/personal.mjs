@@ -1,10 +1,11 @@
+import {validateImage} from './images.mjs';
 export const storageKey='unfinished-room-personal-v1';
 export const kinds={photograph:'▧',letter:'✉',radio:'▣',clock:'◷',frame:'◇',book:'▤',plant:'♧',chair:'▱',table:'▰',keepsake:'✧',custom:'○'};
 export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8','#e5dbc6','#8c624c'],burgundy:['#583e48','#302631','#b48665'],lagoon:['#35625e','#1b393c','#9b7753']};
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
- if(!a||![1,2,3,4].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
+ if(!a||![1,2,3,4,5].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
  if(!Array.isArray(a.sources)||!a.sources.length||a.sources.length>12||!Array.isArray(a.objects)||a.objects.length!==a.sources.length) throw Error('A room needs one to twelve memories.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
@@ -19,12 +20,18 @@ export function readPersonal(value){
   if(a.schemaVersion===1)return base;
   if(!Object.hasOwn(kinds,o.kind)||!Number.isFinite(o.x)||o.x<0||o.x>100||!Number.isFinite(o.y)||o.y<0||o.y>100)throw Error('An object has an invalid appearance or position.');
   const appearance={...base,kind:o.kind,x:o.x,y:o.y};
-  if(a.schemaVersion===4){
+  if(a.schemaVersion>=4){
    if(!Number.isFinite(o.rotation)||o.rotation < -180||o.rotation>180||!Number.isFinite(o.size)||o.size<60||o.size>140)throw Error('Object size or rotation is invalid.');
-   return {...appearance,rotation:o.rotation,size:o.size};
+   const transformed={...appearance,rotation:o.rotation,size:o.size};
+   if(a.schemaVersion===5){
+    if(typeof o.date!=='string'||o.date.length>100||typeof o.sourceNote!=='string'||o.sourceNote.length>500)throw Error('Memory date or source note is too long.');
+    return {...transformed,date:o.date.trim(),sourceNote:o.sourceNote.trim(),image:validateImage(o.image)};
+   }
+   return transformed;
   }
   return appearance;
  });
+ if(objects.reduce((sum,o)=>sum+(o.image?.length||0),0)>2400000)throw Error('Photos exceed the room storage budget. Remove a photo and try again.');
  if(!Array.isArray(a.openQuestions)||a.openQuestions.length>20||a.openQuestions.some(q=>typeof q!=='string'||!q.trim()||q.length>300)) throw Error('Use up to 20 open questions, each under 300 characters.');
  let decor;
  if(a.schemaVersion>=2){

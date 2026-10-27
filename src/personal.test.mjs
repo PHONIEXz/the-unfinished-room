@@ -39,3 +39,11 @@ test('v4 artwork transforms survive backup and reject unsafe values',()=>{
  assert.deepEqual(readPersonal(JSON.stringify(f)),f);
  for(const [key,value]of [['rotation',181],['rotation',NaN],['size',59],['size',141],['size','100']]){const bad=structuredClone(f);bad.objects[0][key]=value;assert.throws(()=>readPersonal(bad));}
 });
+
+
+test('v5 photos and memory metadata survive backup while active content is rejected',()=>{
+ const f=fixture();f.schemaVersion=5;f.decor={palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true,size:'medium',windowPosition:'left',doorPosition:'left',timeOfDay:'dusk',alcove:true,fireplace:true};f.objects[0]={...f.objects[0],kind:'photograph',x:40,y:50,rotation:15,size:100,date:'Around 2001',sourceNote:'A family recollection, not independently verified.',image:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDzWFIvIlkkRn2sqgBsdc+3tSlrcdbWQfWX/wCtSQtF5Escjsm5lIIXPTP+NHl2/wDz9N/36/8Ar1p1MugTLF5EUsaMm5mUgtu6Y9veiiZohBFFG7PtZmJK7euP8KKa2Ez/2Q=='};
+ assert.deepEqual(readPersonal(JSON.stringify(f)),f);
+ for(const image of ['https://example.com/photo.jpg','data:image/svg+xml;base64,PHN2Zz4=','data:image/jpeg;base64,PHN2Zz4=', 'data:image/jpeg;base64,'+'a'.repeat(260001)]){const invalid=structuredClone(f);invalid.objects[0].image=image;assert.throws(()=>readPersonal(invalid));}
+ const invalid=structuredClone(f);invalid.objects[0].sourceNote='a'.repeat(501);assert.throws(()=>readPersonal(invalid));
+});
