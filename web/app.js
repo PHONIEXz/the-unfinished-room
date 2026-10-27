@@ -20,6 +20,7 @@ let current = '';
 let restoreFocus = null;
 function render() {
   try { sessionStorage.setItem(progressKey, JSON.stringify([...discovered])); } catch { /* The room still works if storage is unavailable. */ }
+  document.querySelector('.room-bottom span').textContent = 'SELECT AN OBJECT TO BEGIN';
   document.querySelector('#count').textContent = `${discovered.size} / ${buttons.length}`;
   document.querySelector('#scene').style.setProperty('--warmth', discovered.size / buttons.length);
   buttons.forEach(button => button.classList.toggle('found', discovered.has(button.dataset.id)));
@@ -34,7 +35,7 @@ function render() {
     buttons.filter(button => discovered.has(button.dataset.id)).forEach(button => {
       const item = document.createElement('li');
       const heading = document.createElement('strong');
-      heading.textContent = button.textContent.trim();
+      heading.textContent = button.querySelector('span:last-child').textContent.trim();
       const copy = document.createElement('span');
       copy.textContent = descriptions[button.dataset.id];
       item.append(heading, copy);
