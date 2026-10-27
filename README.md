@@ -37,6 +37,12 @@ See [the complete roadmap](docs/ROADMAP.md) for chunks, acceptance criteria, arc
 - Touch, keyboard, readable list view, reduced motion, and opt-in sound are essential.
 - No impersonation of deceased people.
 
+## Live AI configuration
+
+The room includes an opt-in Gemma question form. To activate it, set `GEMMA_API_KEY` in this Vercel project's server environment and redeploy. It uses `gemma-4-26b-a4b-it` via Google's generateContent endpoint. No user archive is sent in this version: only the user's question and the three explicitly fictional fixture texts. Without a key, the API returns a clear unavailable message. Do not put keys in browser code, GitHub, or screenshots.
+
+The response checker verifies that a source ID exists and an excerpt appears verbatim; it cannot establish that the model's interpretation is logically supported. The UI calls it a model interpretation and invites human review. Live model reliability and latency have not yet been verified. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
+
 ## License
 
 MIT for code and original fictional text fixtures. Models, fonts, artwork, audio, and other third-party materials retain their own licenses and require attribution before release.

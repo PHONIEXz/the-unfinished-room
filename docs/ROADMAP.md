@@ -36,6 +36,8 @@ Status: dedicated /room/ page shipped with five object panels, evidence journal,
 
 ## Chunk 3: evidence-based AI | October 28-29
 
+Status: server-side Gemma question route, source/excerpt validation, consent, bounded requests, transparent unavailable state, and tests are in place. Live inference awaits a separately configured key and real evaluation; fact extraction, timeline suggestions, and semantic grounding review remain.
+
 - Verify available open-weight model access and output quality early, using fictional inputs.
 - Target Gemma if reliability checks succeed; provider adapter permits another verified open-weight model. Do not silently forward private material to a second provider.
 - Extract candidate facts, uncertain connections, timeline entries, and questions into constrained structured output.
