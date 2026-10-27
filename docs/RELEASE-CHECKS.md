@@ -37,3 +37,6 @@ Finite geometry and five anchor checks pass. First live compatibility-rendered r
 - Compatibility rendering uses photo thumbnails on memory markers; textured photo surfaces and hardware shadows require WebGL.
 - 3D uses a fixed shell. Wallpaper, proportions and doorway choices remain saved and are shown in the illustrated editor.
 - Hardware WebGL, real touch dragging and native PDF pagination remain unverified.
+
+## AI arrangement implementation
+52 tests and production build pass. Tests cover consent and privacy field boundaries, same-origin rejection, supported geometry, preservation of existing IDs/kinds, twelve-object limits, and rejection of invented memory fields in model output. UI offers payload review, proposal preview, Apply, Try again, Discard and one-level Undo. Live provider/UI verification pending at implementation time.

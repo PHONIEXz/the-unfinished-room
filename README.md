@@ -44,7 +44,7 @@ Gemma selects exact excerpts; answers are expanded to complete source sentences.
 
 A fixed 12-question live evaluation passed on 27 October 2026. [Raw checks and limits](docs/ai-reliability.md) are available. That is a small recorded evaluation, not a general reliability percentage. Quota and availability still depend on Google. Basic request limiting is per serverless instance.
 
-**Personal rooms, photos and source text are never sent to AI.** The AI form is removed from the personal viewer. There is no impersonation of deceased people.
+**Personal photos and memory/source text are never sent to AI.** The personal viewer has no archive-question form. The creator now offers optional AI arrangement: after explicit consent, only the deliberate brief, room purpose and anonymous geometry (types, positions, surfaces, sizes, rotations and colours) are sent to Gemma. An exact payload preview is available before sending. There is no impersonation of deceased people.
 
 ## Local storage and privacy
 
@@ -69,3 +69,6 @@ Vanilla HTML/CSS/JavaScript, original inline SVG artwork, Node.js tests, Three.j
 ## License
 
 MIT for original code, original SVG artwork and fictional text fixtures. The Meshy radio is separately CC BY 4.0 with attribution. Dependencies retain their own licenses. Personal archive content remains the user's content. Do not claim private ownership of the free-plan Meshy asset.
+
+## Describe your room
+The creator offers living room, parlour, reading room, study and music room purposes. Gemma returns a constrained furniture and lighting proposal using the supported catalogue. Review its 3D preview, apply to the draft, undo if needed, and save explicitly. Existing object identities, photos, source text and metadata stay local and unchanged. Added furniture is decoration only. Invalid or unavailable model results never overwrite the room. A changed draft invalidates an older proposal. Up to twelve objects; fixed shell; manual review of overlaps is required. Beds, televisions and structural changes are not supported by this first version. Undo is temporary within the current page, while JSON backups provide portable copies.

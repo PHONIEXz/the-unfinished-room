@@ -28,7 +28,7 @@ That distinction matters. A plausible answer about a family photograph can becom
 
 Gemma is open-weight and accessed through Google AI Studio here. This deployment does not run inference locally and is not an offline AI product. Its open-weight model makes a future self-hosted provider possible, but that migration is not implemented. The source code for the request handling, validation and retries is public and inspectable.
 
-Personal rooms are intentionally separate: their photos and memory text stay in browser storage and are not sent to Gemma. The current AI demonstration uses explicitly fictional material only. This limits the AI feature's scope, but avoids quietly turning a private family archive into a provider request.
+Personal rooms are intentionally separate: their photos and memory text stay in browser storage and are not sent to Gemma. The creator also offers opt-in Gemma arrangement. Users send a deliberate design brief and anonymous object geometry, review a 3D layout, then apply or undo it. The model cannot write memory text or remove existing objects. Furniture proposals use the supported catalogue inside a fixed shell; overlap review remains manual. The exact outbound payload is visible before consent.
 
 ![Original evidence and an unanswered question](media/source-evidence.jpg)
 
@@ -46,7 +46,7 @@ I also tried Meshy for an optional radio model. Its first untextured mesh was 1.
 
 ## What I tested, and what I cannot claim
 
-The repository includes 41 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
+The repository includes 52 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
 
 Desktop production checks cover room creation, saving, reloading, exploring sources, photos, JSON backup/restore, catalogue duplication and layer ordering. Real-phone testing remains pending. Browser storage is not encrypted or a cloud backup. Users should keep exported JSON copies safe.
 
