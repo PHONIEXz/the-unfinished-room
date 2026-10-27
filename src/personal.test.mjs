@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readPersonal,savePersonal,storageKey} from '../web/personal.mjs';
+const fixture=()=>({schemaVersion:1,title:'Grandma’s room',fictional:false,sources:[{id:'letter',title:'Her letter',type:'text',text:'A memory from 1988. The exact date is uncertain.'}],objects:[{id:'letter',title:'Her letter',sourceIds:['letter']}],openQuestions:['Who kept the original?']});
+test('personal room survives save and JSON restore with exact source text',()=>{let stored;const store={setItem:(key,value)=>{assert.equal(key,storageKey);stored=value;}};assert.deepEqual(savePersonal(store,fixture()),fixture());assert.deepEqual(readPersonal(stored),fixture());});
+test('malformed backups and broken source links are rejected',()=>{for(const value of [null,{},'not json',{...fixture(),objects:[{id:'letter',title:'Letter',sourceIds:['missing']}]},{...fixture(),sources:[...fixture().sources,...fixture().sources]}])assert.throws(()=>readPersonal(value));});
+test('oversized entries and unknown slots are rejected',()=>{const f=fixture();f.sources[0].text='a'.repeat(8001);assert.throws(()=>readPersonal(f));f.sources[0].text='A memory';f.sources[0].id='__proto__';assert.throws(()=>readPersonal(f));});
+test('failed save reports an error and invalid restore cannot overwrite storage',()=>{let calls=0;assert.throws(()=>savePersonal({setItem:()=>calls++},{}));assert.equal(calls,0);assert.throws(()=>savePersonal({setItem:()=>{throw Error('quota');}},fixture()));});
+test('text resembling markup stays text and unknown extra fields are discarded',()=>{const f=fixture();f.sources[0].text='<img src=x onerror=alert(1)>';f.apiKey='discard';const clean=readPersonal(f);assert.equal(clean.sources[0].text,f.sources[0].text);assert.equal(clean.apiKey,undefined);});

@@ -46,3 +46,9 @@ Known answers use complete source sentences around Gemma's selected exact excerp
 ## License
 
 MIT for code and original fictional text fixtures. Models, fonts, artwork, audio, and other third-party materials retain their own licenses and require attribution before release.
+
+## Personal room editor
+
+Open `/create/` to write a room title, one to five titled memories, and unanswered questions. Save stores one room in this browser's localStorage, replacing its previous saved room. Save & explore opens those sources in the illustrated room, with separate discovery progress. No personal source text is sent to the server or AI. The AI form remains exclusive to the fictional demo. Browser storage is not an encrypted vault or cloud backup; clearing site data can erase it.
+
+Download backup exports the current valid editor contents as portable JSON. Restore validates version, size, text bounds, IDs and source links before populating the editor; saving is a separate step. Invalid imports leave the saved room unchanged. This first creator supports written photo descriptions, not image uploads or AI fact extraction. Unsaved drafts remain in the open editor only, with a navigation warning. Use a backup for portability.

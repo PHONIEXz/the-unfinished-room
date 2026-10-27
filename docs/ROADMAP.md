@@ -52,6 +52,8 @@ Status: the five AI reliability chunks are implemented: final response parsing, 
 
 ## Chunk 4: create and preserve memories | October 29-30
 
+Status: first text-only creator implemented at /create/, with browser save, personal room exploration, JSON export/validated restore, and unsaved-change warnings. Automated storage/validation tests pass. Photo uploads and AI-assisted extraction remain later work; browser end-to-end verification follows deployment.
+
 - Paste letters and memories; attach photographs with user-written descriptions.
 - Review and edit sources, uncertain dates, suggested facts, and object assignments.
 - Store drafts in browser storage suitable for images. Explain that clearing browser data can delete drafts.

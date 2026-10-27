@@ -5,6 +5,8 @@ const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json',
 const result = validateArchive(archive);
 if (!result.valid) throw new Error(result.errors.join('; '));
 await mkdir('dist/room', { recursive: true });
-for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg']) await copyFile(`web/${name}`, `dist/${name}`);
+await mkdir('dist/create', { recursive: true });
+await copyFile('web/create.html', 'dist/create/index.html');
+for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
 await copyFile('web/room.html', 'dist/room/index.html');
 await copyFile('fixtures/reading-room.json', 'dist/reading-room.json');
