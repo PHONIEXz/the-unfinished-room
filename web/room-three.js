@@ -84,6 +84,8 @@ export function buildMemoryRoom(archive=null){
   else if(archive.decor?.windows===2){const divider=box(.16,2.36,.2,windowCenter,1.97,-2.9,mats.darkwood);divider.renderOrder=-109;}
   if(archive.decor?.shelf===false){for(const part of root.children.slice(furnitureStart,furnitureEnd))if(part.position.x< -3.05&&part.position.z>-.5&&part.position.z<.5)part.visible=false;}
   addPersonalObjects(root,archive,hotspots);
+  // Lighting remains available when fixed background furnishings are hidden.
+  const ownLamp=root.children.find(o=>o.userData.archive?.kind==='lamp');for(const light of lampLights){if(!light.parent)root.add(light);if(ownLamp)light.position.copy(ownLamp.position).add(new T.Vector3(0,.7,0));}
  }
  return {root,hotspots,lampLights};
 }

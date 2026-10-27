@@ -7,5 +7,5 @@ test('3D diorama has finite bounded geometry and five archive anchors',()=>{
 });
 
 test('personal 3D scene replaces demo evidence objects with saved object IDs',()=>{
- const archive={decor:{palette:'cream',floor:'tile',furnishings:false,windows:0},objects:[{id:'own-chair',kind:'chair',title:'A chair',surface:'floor',x:40,y:70,size:100,rotation:15,color:'#875d43'},{id:'own-frame',kind:'frame',title:'A frame',surface:'wall',x:20,y:30,size:100,rotation:0}]};const result=buildMemoryRoom(archive);assert.deepEqual(Object.keys(result.hotspots).sort(),['own-chair','own-frame']);assert.equal(result.root.children.filter(c=>c.userData.objectId).length,2);result.root.traverse(o=>o.geometry?.dispose());
+ const archive={decor:{palette:'cream',floor:'tile',furnishings:false,windows:0},objects:[{id:'own-chair',kind:'chair',title:'A chair',surface:'floor',x:40,y:70,size:100,rotation:15,color:'#875d43'},{id:'own-frame',kind:'frame',title:'A frame',surface:'wall',x:20,y:30,size:100,rotation:0}]};const result=buildMemoryRoom(archive);assert.deepEqual(Object.keys(result.hotspots).sort(),['own-chair','own-frame']);assert.equal(result.root.children.filter(c=>c.userData.objectId).length,2);assert(result.lampLights.every(light=>light.parent===result.root));result.root.traverse(o=>o.geometry?.dispose());
 });
