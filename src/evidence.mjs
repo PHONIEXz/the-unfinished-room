@@ -9,8 +9,13 @@ export function validateAnswer(raw, sources) {
     if (!source || !source.text.includes(item.quote)) throw new Error('Citation is absent from the archive.');
     return { sourceId: source.id, title: source.title, quote: item.quote };
   });
-  if (!raw.unknown && !evidence.length) throw new Error('An answer needs supporting evidence.');
-  if (raw.unknown && evidence.length) throw new Error('Unknown answers cannot cite evidence as proof.');
+  if (raw.unknown) {
+    // An excerpt may say a name is missing, but it cannot prove an absent fact.
+    // Keep the model's unknown decision while suppressing any incidental quote
+    // and wording that might contain an invented detail.
+    return { answer:'The archive does not establish an answer to that question.', unknown:true, evidence:[] };
+  }
+  if (!evidence.length) throw new Error('An answer needs supporting evidence.');
   return { answer: raw.answer.trim(), unknown: raw.unknown, evidence };
 }
 

@@ -39,6 +39,23 @@ test('valid model answer is returned with checked excerpt',async()=>{
     assert.equal(out.body.evidence[0].sourceId,'photo-note');
   }finally{globalThis.fetch=originalFetch;if(before)process.env.GEMMA_API_KEY=before;else delete process.env.GEMMA_API_KEY;}
 });
+test('model unknown with an incidental exact quote becomes a clean unknown',async()=>{
+  const before=process.env.GEMMA_API_KEY;
+  const originalFetch=globalThis.fetch;
+  process.env.GEMMA_API_KEY='test-key';
+  globalThis.fetch=async()=>({ok:true,json:async()=>({candidates:[{finishReason:'STOP',content:{parts:[
+    {thought:true,text:'internal reasoning'},
+    {text:JSON.stringify({answer:'Ada took the photograph.',unknown:true,evidence:[{sourceId:'photo-note',quote:'The person behind the camera is not named.'}]})}
+  ]}}]})});
+  try{
+    const out=response();
+    await handler({method:'POST',body:{question:'Who took the photograph?'},headers:{host:'example.test','x-forwarded-for':'198.51.100.4'}},out);
+    assert.equal(out.statusCode,200);
+    assert.deepEqual(out.body.evidence,[]);
+    assert.equal(out.body.answer,'The archive does not establish an answer to that question.');
+    assert.equal(out.body.unknown,true);
+  }finally{globalThis.fetch=originalFetch;if(before)process.env.GEMMA_API_KEY=before;else delete process.env.GEMMA_API_KEY;}
+});
 test('invented evidence is rejected',async()=>{
   const before=process.env.GEMMA_API_KEY;
   const originalFetch=globalThis.fetch;

@@ -9,9 +9,12 @@ test('validates exact source excerpt and source ID', () => {
   assert.throws(()=>validateAnswer({answer:'Invented.',unknown:false,evidence:[{sourceId:'photo-note',quote:'A person named Ada built it.'}]},sources));
   assert.throws(()=>validateAnswer({answer:'Invented.',unknown:false,evidence:[]},sources));
 });
-test('unknown must have no proof citations and cannot become a known answer',()=>{
-  assert.equal(validateAnswer({answer:'The photographer is not named.',unknown:true,evidence:[]},sources).unknown,true);
-  assert.throws(()=>validateAnswer({answer:'Unknown',unknown:true,evidence:[{sourceId:'photo-note',quote:'Our first Saturday reading circle, 1998.'}]},sources));
+test('unknown is rendered without an invented detail or proof citation',()=>{
+  const expected={answer:'The archive does not establish an answer to that question.',unknown:true,evidence:[]};
+  assert.deepEqual(validateAnswer({answer:'The photographer is not named.',unknown:true,evidence:[]},sources),expected);
+  assert.deepEqual(validateAnswer({answer:'It was Ada.',unknown:true,evidence:[{sourceId:'photo-note',quote:'The person behind the camera is not named.'}]},sources),expected);
+  assert.throws(()=>validateAnswer({answer:'Unknown',unknown:true,evidence:[{sourceId:'photo-note',quote:'Fabricated quote longer than twelve characters.'}]},sources));
+  assert.throws(()=>validateAnswer({answer:'It was Ada.',unknown:false,evidence:[]},sources));
 });
 test('prompt distinguishes instructions from archive text',()=>{
   assert.match(buildPrompt('Who was the photographer?',sources),/UNTRUSTED ARCHIVE/);

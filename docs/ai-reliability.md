@@ -10,6 +10,8 @@ Live production check on `https://unfinishedroom.phoenixreborn.tech/room/`: aske
 
 Before this fix, real responses sometimes contained prose or candidate JSON mixed with other material; one unknown-answer attempt exceeded the response budget and another timed out. These observations motivated the format change. We have not demonstrated that a particular earlier response part was tagged `thought`, so the exact cause of those specific outputs remains unconfirmed.
 
-## Next: Chunk 2
+## Chunk 2: unanswered questions
 
-Test unanswered questions such as “Who took the photograph?” using the real model, including a bounded completion time and no invented identity. Do not treat a generic error or a deterministic answer as a passed model-unknown check.
+On 27 October 2026, the first live “Who took the photograph?” attempt returned a model response with `unknown: true` and a quotation, so the strict validator rejected it. The validator now accepts the model's unknown classification after checking the citation shape and exact excerpt. It discards incidental citations and model phrasing, returning one canonical unknown sentence with no evidence. This prevents an unknown answer from carrying an invented identity or implying that an excerpt proves absence. It does not independently determine whether a model has correctly classified every question as unknown.
+
+Next: repeat the unknown question on production after deployment, recording the visible result and duration. A generic error does not count as a passed model-unknown check.
