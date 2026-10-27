@@ -17,3 +17,9 @@ On 27 October 2026, the first live “Who took the photograph?” attempt return
 Production deployment `8aaaab914ca00a9b34dd4de0850b772a459976ee` returned the visible “NOT ESTABLISHED BY THE ARCHIVE” state and a citation-free response for all three open questions: who took the photograph, who wrote the letter, and who first opened the room. Each was a live Gemma request and resolved within the existing 28-second server timeout. We did not instrument precise per-question durations, so there is no measured latency claim. Fourteen local tests passed after adding an API regression for the model's unknown-with-quote shape.
 
 Next: Chunk 3, bounded retries and timeouts for transient provider failures. A generic error does not count as a model-unknown response.
+
+## Chunk 3: bounded retries
+
+Implemented a maximum of three provider attempts within one 28-second deadline, with each attempt capped at 12 seconds (or the remaining budget). HTTP 429, 500, 502, 503, 504 and network/timeout failures can retry. Backoff starts at 500ms then 1000ms, with up to 249ms of jitter. A valid Retry-After seconds value or HTTP date takes precedence; if it cannot fit in the deadline, the request fails rather than retrying early. Permanent HTTP errors and malformed JSON do not retry. Evidence validation still runs once after generation and never relaxes its rules to obtain a result.
+
+Nineteen tests pass, including simulated transient recovery, permanent rejection, invalid JSON, timeout exhaustion, Retry-After, and a shrinking deadline. These simulations verify failure handling; they do not constitute a live provider outage test. Logs contain attempt/status metadata only. No warm-up requests, provider switching, or extra consent are introduced.

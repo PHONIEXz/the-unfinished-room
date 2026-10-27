@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { requestModel } from '../src/provider.mjs';
 import { buildPrompt, validateAnswer, parseModelJson, finalResponseText } from '../src/evidence.mjs';
 const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json', import.meta.url), 'utf8'));
 const model = 'gemma-4-26b-a4b-it';
@@ -23,17 +24,11 @@ export default async function handler(request, response) {
   if (++bucket.count > 6) return response.status(429).json({error:'Please wait a minute before asking more questions.'});
   buckets.set(identity,bucket);
   try {
-    const upstream = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    const payload = await requestModel(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method:'POST',
       headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:700,responseMimeType:'application/json',thinkingConfig:{thinkingLevel:'minimal'}}}),
-      signal:AbortSignal.timeout(28000)
-    });
-    if (!upstream.ok) {
-      console.error('room_ai_upstream_error',upstream.status);
-      return response.status(503).json({error:'The model is unavailable. Your discoveries are safe; please try later.'});
-    }
-    const payload = await upstream.json();
+      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:700,responseMimeType:'application/json',thinkingConfig:{thinkingLevel:'minimal'}}})
+    },{onRetry:details => console.warn('room_ai_retry',JSON.stringify(details))});
     const parts = payload.candidates?.[0]?.content?.parts;
     const text = finalResponseText(parts);
     let answer;
