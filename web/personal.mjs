@@ -1,7 +1,7 @@
 import {surfaces} from './room-layout.mjs';
 import {validateImage} from './images.mjs';
 export const storageKey='unfinished-room-personal-v1';
-export const kinds={photograph:'▧',letter:'✉',radio:'▣',clock:'◷',frame:'◇',book:'▤',plant:'♧',chair:'▱',table:'▰',keepsake:'✧',custom:'○',lamp:'☼',sofa:'▱',rug:'▧',shelf:'▤',cup:'∪',vase:'♧',camera:'▣',suitcase:'▣',record:'◎',guitar:'♬',notebook:'▤',trophy:'♜',key:'⚿',ball:'◉'};
+export const kinds={photograph:'▧',letter:'✉',radio:'▣',clock:'◷',frame:'◇',book:'▤',plant:'♧',chair:'▱',table:'▰',keepsake:'✧',custom:'○',lamp:'☼',sofa:'▱',rug:'▧',shelf:'▤',cup:'∪',vase:'♧',camera:'▣',suitcase:'▣',record:'◎',guitar:'♬',notebook:'▤',trophy:'♜',key:'⚿',ball:'◉',bed:'▰','dining-table':'▰','dining-chair':'▱',tv:'▣',cabinet:'▤','floor-lamp':'☼','pendant-lamp':'☼'};
 export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8','#e5dbc6','#8c624c'],burgundy:['#583e48','#302631','#b48665'],lagoon:['#35625e','#1b393c','#9b7753']};
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){

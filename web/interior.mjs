@@ -7,6 +7,13 @@ const art = {
  frame:`<path d="M68 6V12L26 28M68 12L116 28" stroke="#80735d" fill="none"/><rect x="24" y="26" width="94" height="85" fill="none" stroke="#ad8c5c" stroke-width="10"/><rect x="31" y="33" width="80" height="71" fill="none" stroke="#493e31" stroke-width="3"/><path d="M19 23L33 37M109 37L122 23M19 115L33 101M109 101L122 115" stroke="#d2b075" stroke-width="5"/>`
 };
 const props={
+ bed:'<path d="M16 42V15H124V42M12 42H128V101H12ZM17 101V114M123 101V114M17 64H124"/><rect x="25" y="28" width="38" height="23" rx="7"/><rect x="77" y="28" width="38" height="23" rx="7"/>',
+ 'dining-table':'<path d="M10 34H130V51H10ZM23 52V113M117 52V113M37 52V91M103 52V91"/>',
+ 'dining-chair':'<path d="M42 12H98V69H42ZM33 72H107V85H33ZM41 85V113M99 85V113M48 24V58M61 24V58M79 24V58M92 24V58"/>',
+ tv:'<rect x="9" y="11" width="122" height="78" rx="4"/><path d="M18 20H122V79H18ZM70 90V105M42 111H98"/>',
+ cabinet:'<rect x="16" y="24" width="108" height="78" rx="3"/><path d="M70 26V102M21 104V115M119 104V115M60 55V72M80 55V72"/>',
+ 'floor-lamp':'<path d="M48 12H92L108 48H32ZM70 49V106M43 111H97"/>',
+ 'pendant-lamp':'<path d="M47 9H93M70 9V52M42 55H98L115 91H25ZM31 92Q70 110 109 92"/>',
  chair:'<path d="M40 76V25H98V76M40 48H98M34 78H105V90H34ZM40 90V113M98 90V113"/>',
  table:'<path d="M12 50H128V66H12ZM25 66V112M115 66V112"/>',
  sofa:'<rect x="12" y="48" width="116" height="48" rx="12"/><rect x="25" y="20" width="90" height="58" rx="14"/><path d="M24 95V111M117 95V111M70 25V76"/>',

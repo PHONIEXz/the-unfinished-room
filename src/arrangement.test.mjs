@@ -11,7 +11,7 @@ test('arrangement requires explicit consent and accepts only anonymous layout fi
 });
 test('valid arrangement preserves IDs and accepts bounded supported furniture',()=>{assert.deepEqual(validateArrangement(plan(),arrangementInput(input)),plan());});
 test('invalid model plans cannot delete, duplicate or change existing objects',()=>{
- for(const mutate of [p=>p.objects=[],p=>p.objects[0].id='unknown',p=>p.objects[0].kind='sofa',p=>p.objects.push({...object}),p=>p.objects[0].x=101,p=>p.objects[0].image='https://evil.test',p=>p.additions[0].kind='bed',p=>p.decor.palette='url(foo)']){const p=plan();mutate(p);assert.throws(()=>validateArrangement(p,arrangementInput(input)));}
+ for(const mutate of [p=>p.objects=[],p=>p.objects[0].id='unknown',p=>p.objects[0].kind='sofa',p=>p.objects.push({...object}),p=>p.objects[0].x=101,p=>p.objects[0].image='https://evil.test',p=>p.additions[0].kind='hologram',p=>p.decor.palette='url(foo)']){const p=plan();mutate(p);assert.throws(()=>validateArrangement(p,arrangementInput(input)));}
 });
 test('arrangements respect twelve-object budget and empty-room input',()=>{const p=plan();p.additions=Array.from({length:12},()=>({...p.additions[0]}));assert.throws(()=>validateArrangement(p,arrangementInput(input)),/twelve/);p.objects=[];p.additions=p.additions.slice(0,2);assert.equal(validateArrangement(p,arrangementInput({...input,objects:[]})).additions.length,2);});
 
@@ -21,4 +21,9 @@ test('applying geometry preserves private memory metadata and never invents a so
  const p=plan();p.objects[0].x=75;const result=composeArrangement(p,baseline);
  for(const key of ['id','title','text','date','sourceNote','image','decoration'])assert.equal(result.objects[0][key],original[key]);
  assert.equal(result.objects[0].x,75);assert.equal(original.x,25);assert.equal(result.decor.furnishings,false);assert.equal(result.decor.wallpaper,'stripe');assert.equal(result.decor.doorPosition,'right');assert.equal(result.objects[1].decoration,true);assert.equal(result.objects[1].text,'');assert.equal(result.objects[1].image,null);
+});
+
+test('bedroom and dining plans support the new catalogue including ceiling pendants',()=>{
+ const p=plan();p.additions=['bed','dining-table','dining-chair','tv','cabinet','floor-lamp','pendant-lamp'].map(kind=>({kind,surface:kind==='pendant-lamp'?'ceiling':'floor',color:'#806345',x:50,y:50,rotation:0,size:100}));
+ for(const roomType of ['bedroom','dining room'])assert.equal(validateArrangement(p,arrangementInput({...input,roomType})).additions.length,7);
 });

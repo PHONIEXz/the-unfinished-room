@@ -40,3 +40,6 @@ Finite geometry and five anchor checks pass. First live compatibility-rendered r
 
 ## AI arrangement implementation
 54 tests and production build pass. Tests cover consent and privacy field boundaries, same-origin rejection, supported geometry, preservation of existing IDs/kinds, twelve-object limits, and rejection of invented memory fields in model output. UI offers payload review, proposal preview, Apply, Try again, Discard and one-level Undo. Live desktop verification: consent blocked an unapproved request; outbound payload showed anonymous geometry without names or memory text; a real Gemma study proposal added two decorations and retained both existing objects; Apply and Save worked; Undo restored the original IDs, text and geometry exactly; saving and reloading retained that restoration. Two earlier larger requests timed out safely. Availability for more complex briefs remains variable.
+
+## Room essentials expansion
+Seven new object types (32 total): bed, dining table/chair, static TV, cabinet, floor lamp, ceiling pendant. Shared ceiling placement supports bounded movement and backup validation. Bedroom/dining purposes are available to AI planning. 56 tests and build pass; geometry tests cover distinct bounded meshes and ceiling pendant height. Live UI checks pending.

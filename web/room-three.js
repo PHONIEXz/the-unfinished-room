@@ -85,7 +85,7 @@ export function buildMemoryRoom(archive=null){
   if(archive.decor?.shelf===false){for(const part of root.children.slice(furnitureStart,furnitureEnd))if(part.position.x< -3.05&&part.position.z>-.5&&part.position.z<.5)part.visible=false;}
   addPersonalObjects(root,archive,hotspots);
   // Lighting remains available when fixed background furnishings are hidden.
-  const ownLamp=root.children.find(o=>o.userData.archive?.kind==='lamp');for(const light of lampLights){if(!light.parent)root.add(light);if(ownLamp)light.position.copy(ownLamp.position).add(new T.Vector3(0,.7,0));}
+  const ownLamp=root.children.find(o=>['lamp','floor-lamp','pendant-lamp'].includes(o.userData.archive?.kind));for(const light of lampLights){if(!light.parent)root.add(light);if(ownLamp){const offset={lamp:.7,'floor-lamp':1.65,'pendant-lamp':-.8}[ownLamp.userData.archive.kind];light.position.copy(ownLamp.position).add(new T.Vector3(0,offset*ownLamp.scale.y,0));}}
  }
  return {root,hotspots,lampLights};
 }
@@ -100,7 +100,23 @@ function addPersonalObjects(root,archive,hotspots){
   height=.65;for(const x of [-.3,.3])box(.05,.65,.06,x,.325);for(const y of [.025,.625])box(.65,.05,.06,0,y);
   const face=box(.55,.55,.025,0,.325,-.02,kind==='frame'&&!o.image?dark:cream);
   if(o.image){const texture=new T.TextureLoader().load(o.image,()=>root.userData.onTexture?.());texture.colorSpace=T.SRGBColorSpace;const image=new T.Mesh(new T.PlaneGeometry(.55,.55),new T.MeshBasicMaterial({map:texture,side:T.DoubleSide}));image.position.set(0,.325,.045);group.add(image);}
- }else if(['chair','sofa'].includes(kind)){const width=kind==='sofa'?1.65:.7;height=1.05;box(width,.18,.7,0,.48,0,mat,.05);box(width,.6,.14,0,.84,-.3,mat,.05);for(const x of [-width*.45,width*.45])for(const z of [-.25,.25])box(.06,.43,.06,x,.22,z,dark);for(const x of [-width*.5,width*.5])box(.1,.27,.7,x,.65,0,mat,.03);
+ }else if(kind==='bed'){
+  height=1.05;box(1.7,.25,2.25,0,.27,0,dark,.04);box(1.65,.22,2.16,0,.5,0,cream,.07);box(1.72,.9,.12,0,.58,-1.08,mat,.04);
+  box(1.64,.07,1.36,0,.65,.38,mat,.045);for(const x of [-.43,.43])box(.65,.14,.42,x,.69,-.73,cream,.06);
+  for(const x of [-.72,.72])for(const z of [-.96,.96])box(.07,.16,.07,x,.08,z,dark);
+ }else if(kind==='dining-table'){
+  height=.9;box(1.8,.12,1.05,0,.83,0,mat,.04);for(const x of [-.76,.76])for(const z of [-.39,.39])box(.08,.77,.08,x,.39,z,dark);
+ }else if(kind==='cabinet'){
+  height=1.1;box(1.4,.9,.45,0,.6,0,mat,.025);for(const x of [-.35,.35])box(.66,.81,.025,x,.6,.24,mat,.012);box(.015,.8,.015,0,.6,.26,dark);
+  for(const x of [-.1,.1]){const handle=cyl(.022,.022,.04,x,.65,.28,cream);handle.rotation.x=Math.PI/2;}for(const x of [-.59,.59])for(const z of [-.15,.15])box(.07,.18,.07,x,.09,z,dark);
+ }else if(kind==='tv'){
+  height=wall?.7:1.2;const cy=wall?.36:.84;box(1.35,.78,.07,0,cy,0,dark,.018);box(1.25,.68,.012,0,cy,.045,new T.MeshBasicMaterial({color:'#152a36'}));box(.35,.012,.014,-.32,cy+.24,.055,cream);
+  if(!wall){box(.07,.44,.08,0,.33,0,dark);box(.65,.055,.3,0,.1,0,dark,.015);}
+ }else if(kind==='floor-lamp'){
+  height=1.95;cyl(.24,.26,.06);cyl(.026,.026,1.55,0,.82,0,dark);cyl(.21,.35,.4,0,1.71,0,cream);
+ }else if(kind==='pendant-lamp'){
+  height=-.4;cyl(.12,.12,.04,0,0,0,dark);cyl(.012,.012,.55,0,-.28,0,dark);cyl(.12,.38,.3,0,-.7,0,cream);cyl(.3,.3,.015,0,-.86,0,new T.MeshBasicMaterial({color:'#eacb94'}));
+ }else if(['chair','sofa','dining-chair'].includes(kind)){const width=kind==='sofa'?1.65:.7;height=1.05;box(width,.18,.7,0,.48,0,mat,.05);box(width,.6,.14,0,.84,-.3,mat,.05);for(const x of [-width*.45,width*.45])for(const z of [-.25,.25])box(.06,.43,.06,x,.22,z,dark);if(kind!=='dining-chair')for(const x of [-width*.5,width*.5])box(.1,.27,.7,x,.65,0,mat,.03);
  }else if(kind==='table'){height=.8;box(1.2,.1,.8,0,.75);for(const x of [-.48,.48])for(const z of [-.3,.3])box(.055,.7,.055,x,.35,z,dark);
  }else if(kind==='shelf'){height=1.8;for(const x of [-.38,.38])box(.07,1.8,.4,x,.9);for(const y of [.08,.64,1.2,1.76])box(.8,.06,.4,0,y);
  }else if(kind==='rug'){height=.04;box(1.8,.025,1.2,0,.015,0,mat,.01);group.renderOrder=-85;group.children.forEach(c=>c.renderOrder=-85);
