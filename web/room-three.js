@@ -124,7 +124,7 @@ export function mountRoom3D(host,onOpen,{archive=null,editing=false,onChange=()=
  const hemi=new T.HemisphereLight(0xffefd6,0x303b46,2);world.add(hemi);const sun=new T.DirectionalLight(0xffdfac,2.8);sun.position.set(1,7,3);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-6;sun.shadow.camera.right=6;sun.shadow.camera.top=6;sun.shadow.camera.bottom=-6;sun.shadow.bias=-.001;sun.shadow.normalBias=.03;world.add(sun);
  const camera=new T.OrthographicCamera(-6,6,5,-5,.1,100);camera.position.set(10,8,12);camera.lookAt(0,1,0);
  const view=document.createElement('div');view.className='room3d-view';const overlay=document.createElement('div');overlay.className='room3d-markers';
- const dock=document.createElement('aside');dock.className='room3d-dock';const title=document.createElement('strong');title.textContent='THE MEMORY ROOM · 3D';dock.append(title);
+ const dock=document.createElement('aside');dock.className='room3d-dock';dock.addEventListener('input',e=>e.stopPropagation());const title=document.createElement('strong');title.textContent='THE MEMORY ROOM · 3D';dock.append(title);
  const status=document.createElement('p');status.setAttribute('role','status');dock.append(status);host.append(view,dock);
  try{try{renderer=new T.WebGLRenderer({antialias:true});renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));}catch{software=true;renderer=new SVGRenderer();renderer.setPrecision(2);hemi.intensity=.8;sun.intensity=.9;for(const light of model.lampLights)light.intensity=.18;}}
  catch{status.textContent='The 3D view could not start. Use the illustrated room.';const cleanup=()=>host.replaceChildren();cleanup.update=()=>{};return cleanup;}
