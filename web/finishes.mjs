@@ -1,0 +1,25 @@
+// Finite capabilities shared by the renderer, backups, AI boundary and result report.
+export const wallFinishes=['plaster','brick','wallpaper'];
+export const floorFinishes=['wood','tile','marble'];
+export const objectFinishes=['auto','wood','fabric','metal'];
+export const wallColours={midnight:'#52636d',cream:'#b6ac98',burgundy:'#72525e',lagoon:'#50736d'};
+export function finishProperties(finish){return finish==='metal'?{roughness:.28,metalness:.72}:finish==='fabric'?{roughness:.98,metalness:0}:finish==='wood'?{roughness:.68,metalness:0}:{roughness:.82,metalness:0};}
+const label=s=>s.replaceAll('-',' ');
+export function arrangementReport(description,room){
+ const d=room.decor,objects=room.objects,created=[],substituted=[],unavailable=[];
+ const counts=new Map();for(const o of objects)counts.set(o.kind,(counts.get(o.kind)||0)+1);
+ for(const [kind,count]of counts)created.push(`${count} × ${label(kind)}`);
+ created.push(`${d.wallFinish||'plaster'} walls in ${d.wallColor||wallColours[d.palette]||wallColours.midnight}`,`${d.floor==='marble'?'Marble-style':d.floor==='tile'?'Tiled':'Wood'} floor`,`${d.timeOfDay} window light; room lamp ${d.lamp?'on':'off'}`);
+ for(const finish of objectFinishes.filter(f=>f!=='auto')){const count=objects.filter(o=>o.finish===finish).length;if(count)created.push(`${finish} finish on ${count} object${count===1?'':'s'}`);}
+ const brief=description.toLowerCase();
+ const checks=[[/\b(?:wood|oak) (?:floor|flooring)\b/,'Wood flooring',d.floor==='wood',`${d.floor} floor`],[/\bplaster\b/,'Plaster walls',(d.wallFinish||'plaster')==='plaster',`${d.wallFinish||'plaster'} walls`],[/\bmarble\b/,'Marble flooring',d.floor==='marble',`${d.floor} floor`],[/\b(?:brick|brickwork)\b/,'Brick walls',d.wallFinish==='brick',`${d.wallFinish||'plaster'} walls`],[/\bwallpaper\b/,'Wallpaper',d.wallFinish==='wallpaper',`${d.wallFinish||'plaster'} walls`],[/\b(?:velvet|fabric|textile)\b/,'Fabric upholstery',objects.some(o=>o.finish==='fabric'),'the applied object finishes'],[/\b(?:metal|gold|chrome|steel)\b/,'Metal finish',objects.some(o=>o.finish==='metal'),'the applied object finishes']];
+ for(const [pattern,wanted,matched,actual]of checks)if(pattern.test(brief)&&!matched)substituted.push(`${wanted} requested; proposal uses ${actual}. You can change this with the finish controls.`);
+ if(/\bvelvet\b/.test(brief)&&objects.some(o=>o.finish==='fabric'))substituted.push('Velvet is approximated by the fabric finish; individual fibres are not simulated.');
+ if(/\b(?:chrome|gold)\b/.test(brief)&&objects.some(o=>o.finish==='metal'))substituted.push('Gold/chrome is approximated by tinted metal shading, without mirror reflections.');
+ const requestedObjects=[[/\bbeds?\b/,'bed',['bed']],[/\bsofas?\b/,'sofa',['sofa']],[/\bdining (?:table|set)\b/,'dining table',['dining-table']],[/\bchairs?\b/,'chair',['chair','dining-chair']],[/\b(?:tv|television)\b/,'TV',['tv']],[/\bcabinets?\b/,'cabinet',['cabinet']],[/\bplants?\b/,'plant',['plant']],[/\bpendant\b/,'pendant lamp',['pendant-lamp']]];
+ for(const [pattern,wanted,kinds]of requestedObjects)if(pattern.test(brief)&&!objects.some(o=>kinds.includes(o.kind)))unavailable.push(`${wanted} requested but not included in this proposal. It is available in the catalogue.`);
+ const numbers={one:1,two:2,three:3,four:4,five:5,six:6};for(const match of brief.matchAll(/\b(one|two|three|four|five|six|[1-9]|1[0-2])\s+(sofas?|chairs?|beds?|plants?|cabinets?)\b/g)){const wanted=numbers[match[1]]||Number(match[1]),kind=match[2].replace(/s$/,''),actual=objects.filter(o=>o.kind===kind||kind==='chair'&&o.kind==='dining-chair').length;if(actual<wanted)unavailable.push(`${wanted} ${match[2]} requested; ${actual} included. Adjust the catalogue objects before saving.`);}
+ const limits=[[/\b(?:photorealistic|ultra.realistic|8k|ray.trac\w*|global illumination)\b/,'Photorealistic/8K output, ray tracing and global illumination are not available.'],[/\b(?:tatami|hologra\w*|neon|floating furniture)\b/,'Tatami, holograms, neon effects and floating furniture are not available.'],[/\b(?:bay window|floor.to.ceiling|panoramic|city view|curved architecture|steel beams|open.plan)\b/,'Custom architecture, window shapes and exterior views are not available in the fixed shell.'],[/\b(?:volumetric|dust particles)\b/,'Volumetric light and animated dust are not available in the 3D viewer.']];
+ for(const [pattern,message]of limits)if(pattern.test(brief))unavailable.push(message);
+ return {created,substituted,unavailable,note:'Created using this website’s catalogue, finish and lighting controls. Request checks cover common listed features, not every possible instruction. Review the preview and walking space.'};
+}

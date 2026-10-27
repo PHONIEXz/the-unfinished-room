@@ -17,3 +17,7 @@ test('new room essentials have distinct finite geometry and pendant fixtures han
  for(const kind of kinds){const group=model.root.children.find(c=>c.userData.objectId===kind);assert(group.children.length>=3);const b=new Box3().setFromObject(group);assert(b.min.toArray().concat(b.max.toArray()).every(Number.isFinite));if(kind==='pendant-lamp'){assert(b.min.y>2);assert(b.max.y<3.4);}if(kind==='bed')assert(b.getSize(new Vector3()).z>2);}
  assert(model.lampLights.every(l=>l.parent===model.root));model.root.traverse(o=>o.geometry?.dispose());
 });
+
+test('brick/wallpaper and marble finishes produce bounded procedural geometry around openings',()=>{
+ for(const wallFinish of ['brick','wallpaper']){const model=buildMemoryRoom({decor:{palette:'cream',floor:'marble',wallFinish,wallColor:'#aabbcc',furnishings:false},objects:[]});model.root.updateMatrixWorld(true);const size=new Box3().setFromObject(model.root).getSize(new Vector3());assert(size.toArray().every(v=>Number.isFinite(v)&&v<15));assert.equal(model.root.userData.wallFinish,wallFinish);assert.equal(model.root.userData.floorFinish,'marble');model.root.traverse(o=>o.geometry?.dispose());}
+});

@@ -43,3 +43,6 @@ Finite geometry and five anchor checks pass. First live compatibility-rendered r
 
 ## Room essentials expansion
 Seven new object types (32 total): bed, dining table/chair, static TV, cabinet, floor lamp, ceiling pendant. Shared ceiling placement supports bounded movement and backup validation. Bedroom/dining purposes are available to AI planning. 56 tests and build pass; geometry tests cover distinct bounded meshes and ceiling pendant height. Live desktop: a real Gemma bedroom proposal added a burgundy bed while preserving both existing objects; Apply opened the 3D editor. All seven types were added, saved and reloaded. Keyboard positioning persisted, including a wall TV and ceiling pendant. Compatibility renderer visually inspected; hardware WebGL and touch remain unverified.
+
+## Finish controls and app-derived result report
+61 tests and build pass. New checks cover v9 save/restore, unsafe material rejection, supported AI finish fields, deterministic report counts/substitutions/limits and bounded brick/marble geometry. Manual controls and AI share finite finish enums. Live desktop verification pending. Hardware shading and real-phone checks remain unverified.

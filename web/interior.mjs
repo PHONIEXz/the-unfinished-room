@@ -43,6 +43,8 @@ export function mountInterior(scene,{controls=true}={}){
  const drawing=document.createElement('div');drawing.className='interior-drawing';drawing.setAttribute('aria-hidden','true');
  drawing.innerHTML=`<svg viewBox="0 0 1200 760" preserveAspectRatio="none" focusable="false">
  <defs>
+ <pattern id="wall-brick" width="80" height="40" patternUnits="userSpaceOnUse"><path d="M0 0H80V40H0Z M0 20H80M40 0V20M20 20V40M60 20V40" fill="none" stroke="#1b252e" opacity=".4" stroke-width="2"/></pattern>
+ <pattern id="marble-floor" width="200" height="120" patternUnits="userSpaceOnUse"><rect width="200" height="120" fill="#d6d5cb"/><path d="M0 8L58 39 90 36 140 73 200 82M48 0L65 41 52 90 89 120M130 60L150 32 190 18" fill="none" stroke="#a5b1ab" stroke-width="2" opacity=".7"/></pattern>
  <linearGradient id="plaster" x2="0" y2="1"><stop stop-color="#344047"/><stop offset="1" stop-color="#26343b"/></linearGradient>
  <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#65513e"/><stop offset="1" stop-color="#302c2a"/></linearGradient>
  <linearGradient id="glass" x2="0" y2="1"><stop stop-color="#536575"/><stop offset="1" stop-color="#a99978"/></linearGradient>
@@ -91,11 +93,11 @@ export function mountInterior(scene,{controls=true}={}){
 export function applyInteriorSettings(scene,decor){
  scene.dataset.time=decor.timeOfDay||'dusk';scene.dataset.lamp=decor.lamp?'on':'off';
  scene.dataset.furnishings=decor.furnishings===false?'off':'on';
- const wallpaper=scene.querySelector('.wallpaper-overlay');wallpaper.style.fill=decor.wallpaper==='stripe'?'url(#wall-stripe)':decor.wallpaper==='paper'?'url(#wall-paper)':'none';
+ const wallpaper=scene.querySelector('.wallpaper-overlay');wallpaper.style.fill=decor.wallFinish==='brick'?'url(#wall-brick)':decor.wallFinish==='plaster'?'none':decor.wallpaper==='stripe'?'url(#wall-stripe)':decor.wallpaper==='paper'||decor.wallFinish==='wallpaper'?'url(#wall-paper)':'none';
  const original=scene.querySelector('.window-group');let extra=scene.querySelector('.extra-window');if(decor.windows===2&&!extra){extra=original.cloneNode(true);extra.classList.remove('window-group');extra.classList.add('extra-window');scene.querySelector('.interior-drawing svg').append(extra);}if(extra)extra.style.display=decor.window&&decor.windows===2?'':'none';
  scene.dataset.shell=decor.size||'medium';scene.dataset.windowPosition=decor.windowPosition||'left';scene.dataset.doorPosition=decor.doorPosition||'left';
  const palette={midnight:'#344047',cream:'#ada38f',burgundy:'#62434b',lagoon:'#365c59'};
- scene.querySelector('.interior-wall').style.fill=palette[decor.palette];
- scene.querySelector('.interior-floor').style.fill=decor.floor==='tile'?'url(#room-tiles)':'url(#wood)';
+ scene.querySelector('.interior-wall').style.fill=decor.wallColor||palette[decor.palette];
+ scene.querySelector('.interior-floor').style.fill=decor.floor==='marble'?'url(#marble-floor)':decor.floor==='tile'?'url(#room-tiles)':'url(#wood)';
  for(const [selector,visible]of [['.window-plant',decor.window&&decor.windows!==0],['.window-group',decor.window&&decor.windows!==0],['.day-shaft',decor.window&&decor.windows!==0],['.interior-door',decor.doorPosition!=='none'],['.interior-shelf',decor.shelf],['.interior-alcove',decor.alcove!==false],['.interior-fireplace',decor.fireplace!==false]])scene.querySelector(selector).style.display=visible?'':'none';
 }

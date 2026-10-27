@@ -46,7 +46,7 @@ I also tried Meshy for an optional radio model. Its first untextured mesh was 1.
 
 ## What I tested, and what I cannot claim
 
-The repository includes 56 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
+The repository includes 61 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
 
 Desktop production checks cover room creation, saving, reloading, exploring sources, photos, JSON backup/restore, catalogue duplication and layer ordering. Real-phone testing remains pending. Browser storage is not encrypted or a cloud backup. Users should keep exported JSON copies safe.
 
@@ -88,3 +88,5 @@ Built by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 
 Official page: https://dev.to/challenges/hacktoberfest-week4-2026-10-26
 Verified October 27: project must be new during the challenge window; post uses the official template and #devchallenge/#hf26challenge tags; writing quality has the highest judging weight; deadline October 31, 2026 at 11:59 PM PDT (November 1, 07:59 WAT). Only genuinely used partner categories are listed. Confirm eligibility and official rules, final media URLs and all claims before posting. Post-deadline code changes must be noted in README. No publication has occurred.
+
+The creator also exposes plaster, brick and wallpaper walls, wall colours, marble-style flooring and per-object wood/fabric/metal finishes. These are procedural approximations. AI proposals report actual objects and settings through app-derived Created/Substituted/Not available lists, with bounded request checks rather than trusting the generated explanation. The fixed shell and manual overlap review remain limits.

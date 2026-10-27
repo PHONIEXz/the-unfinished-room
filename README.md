@@ -77,3 +77,8 @@ Live arrangement verification: a small study brief produced a real Gemma proposa
 
 ### Expanded room essentials
 The catalogue now has 32 object types. New procedural 3D and original SVG objects: bed, dining table, dining chair, static TV, cabinet, floor lamp and ceiling pendant. Pendants default to ceiling placement; overhead movement uses the same saved x/y coordinates and bounded drag plane. These types work as decorations or optional memories, in JSON backups and AI proposals. TV screens are decorative, with no media playback. Lighting is still a shared room mood, not an electrical or architectural simulation.
+
+## Materials and honest AI result summaries
+Schema v9 adds wall finish (plaster, brick, wallpaper), wall colour, marble-style flooring and per-object original/wood/fabric/metal finishes. Older room backups remain readable. 3D hardware rendering generates original wood-grain/weave maps locally, with roughness/metal shading; the SVG compatibility view approximates material appearance. There are no downloaded texture assets, mirror reflections or photorealistic exports. Room finishes and selected-object materials can be changed in the 3D dock without another AI request.
+
+AI proposals now show app-derived Created, Substituted and Not available / not included lists. Counts and finish claims come from validated scene settings, not generated narrative. Bounded request checks flag common material mismatches, missing objects/quantities and unsupported rendering/architecture. These checks are explicitly non-exhaustive; preview and walking-space review remain required. The model narrative is not presented as proof of completion.
