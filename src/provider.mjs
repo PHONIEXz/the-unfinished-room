@@ -2,15 +2,16 @@ const retryable = new Set([429,500,502,503,504]);
 export async function requestModel(url, options, {
   fetchImpl = (...args) => fetch(...args), now = Date.now,
   sleep = ms => new Promise(resolve => setTimeout(resolve,ms)), random = Math.random,
-  timeoutSignal = ms => AbortSignal.timeout(ms), onRetry = () => {}
+  timeoutSignal = ms => AbortSignal.timeout(ms), onRetry = () => {},
+  budgetMs = 28000, attemptTimeoutMs = 12000
 } = {}) {
-  const deadline = now() + 28000;
+  const deadline = now() + budgetMs;
   for (let attempt=1; attempt<=3; attempt++) {
     const remaining = deadline-now();
     if (remaining<=0) throw new DOMException('Model deadline exceeded','TimeoutError');
     let response, failure;
     try {
-      response = await fetchImpl(url,{...options,signal:timeoutSignal(Math.min(12000,remaining))});
+      response = await fetchImpl(url,{...options,signal:timeoutSignal(Math.min(attemptTimeoutMs,remaining))});
       if (response.ok) return await response.json();
       if (!retryable.has(response.status)) throw Object.assign(new Error('Provider rejected request'),{status:response.status,permanent:true});
       failure = Object.assign(new Error('Provider temporarily unavailable'),{status:response.status});

@@ -31,3 +31,9 @@ test('elapsed attempt time reduces the next timeout and stops at deadline',async
  s.options.fetchImpl=async()=>{calls++;time+=12000;throw new DOMException('timeout','TimeoutError');};
  await assert.rejects(requestModel('url',{},s.options));assert.equal(calls,3);assert.deepEqual(s.timeouts,[12000,12000,2500]);
 });
+
+test('larger layout requests can use a separate deadline without changing question defaults',async()=>{
+ let allotted;
+ await requestModel('https://example.test',{}, {budgetMs:55000,attemptTimeoutMs:45000,now:()=>0,timeoutSignal:ms=>{allotted=ms;return undefined;},fetchImpl:async()=>({ok:true,json:async()=>({ok:true})})});
+ assert.equal(allotted,45000);
+});
