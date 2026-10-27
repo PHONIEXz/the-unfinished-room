@@ -4,7 +4,7 @@ import {wallColours} from './finishes.mjs';
 export function buildRoomShell(decor={}){
  const root=new T.Group(),s=shellSettings(decor),windows=windowOpenings(decor),door=doorOpening(decor),side=door?.side==='right'?1:-1;
  const mat=color=>new T.MeshLambertMaterial({color}),wall=mat(decor.wallColor||wallColours[decor.palette]||wallColours.midnight),wood=mat('#65513c'),trim=mat('#c4b99e'),dark=mat('#101923');
- function box(w,h,d,x,y,z,material,feature,order=-110){const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.receiveShadow=true;mesh.castShadow=true;mesh.renderOrder=order;mesh.userData.shellFeature=feature;root.add(mesh);return mesh;}
+ function box(w,h,d,x,y,z,material,feature,order=-110){const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.receiveShadow=true;mesh.castShadow=true;mesh.renderOrder=feature==='window-pane'||feature==='door-hall'?-107:feature.startsWith('window-')||feature==='curtain'||feature==='door-frame'?-106:order;mesh.userData.shellFeature=feature;root.add(mesh);return mesh;}
  const backPanels=wallPanels(s.width,s.height,windows),sidePanels=wallPanels(s.depth,s.height,door?[door]:[]);
  for(const p of backPanels)box(p.width,p.height,.14,p.u,p.y,-s.depth/2,wall,'back-wall');
  for(const p of sidePanels)box(.14,p.height,p.width,side*s.width/2,p.y,p.u,wall,'side-wall');
