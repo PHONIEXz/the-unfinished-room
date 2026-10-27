@@ -37,7 +37,14 @@ export default async function handler(request, response) {
     const text = payload.candidates?.[0]?.content?.parts?.map(part=>part.text || '').join('') || '';
     let answer;
     try { answer = validateAnswer(JSON.parse(text),archive.sources); }
-    catch { return response.status(502).json({error:'The model did not return a verifiable answer. Try another question.'}); }
+    catch (error) {
+      console.warn('room_ai_validation_failed',JSON.stringify({
+        reason:error instanceof SyntaxError ? 'invalid_json' : error?.message,
+        finishReason:payload.candidates?.[0]?.finishReason || 'missing',
+        textLength:text.length
+      }));
+      return response.status(502).json({error:'The model did not return a verifiable answer. Try another question.'});
+    }
     return response.status(200).json({...answer,model,fictional:true});
   } catch(error) {
     console.error('room_ai_request_failed',error?.name);
