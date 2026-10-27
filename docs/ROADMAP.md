@@ -104,7 +104,7 @@ Status: deferred until essential contest work is secure.
 
 - Custom wall colours and brightness, plus more original floor textures.
 - Named saved looks that store decoration separately from the source archive.
-- Zoom/reset, bounded panning, expanded view, keyboard camera controls, and separate object/view modes are implemented. Desktop camera and zoomed-placement checks follow deployment. Alternative camera angles remain deferred.
+- Zoom/reset, bounded panning, expanded view, keyboard camera controls, and separate object/view modes are implemented. Desktop checks passed for 140% zoom, panning without coordinate changes, zoomed object dragging, reset, Escape from expanded view, and Previous/Next memory navigation. Real-device touch remains pending. Alternative camera angles remain deferred.
 - More furniture drawings and photo-backed memory frames after the first release checks.
 - Full 3D rooms, avatars, currencies, shopping, daily rewards, multiplayer, and a simulated city are outside this contest build.
 
