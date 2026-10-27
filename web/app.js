@@ -38,6 +38,8 @@ let saved = [];
 try { saved = JSON.parse(sessionStorage.getItem(progressKey) || '[]'); } catch { /* Corrupt session data is ignored. */ }
 const knownIds = new Set(buttons.map(button => button.dataset.id));
 const discovered = new Set(Array.isArray(saved) ? saved.filter(id => knownIds.has(id)) : []);
+let previewCleanup=null;
+let previewVersion=0;
 let current = '';
 let restoreFocus = null;
 function render() {
@@ -77,6 +79,14 @@ function openObject(id, trigger = null) {
   const object = archive.objects.find(value => value.id === id);
   if (!object) return;
   current = id;
+  const version=++previewVersion;previewCleanup?.();previewCleanup=null;
+  dialog.querySelector('.radio-3d')?.remove();
+  if(!personal&&id==='radio'){
+   const area=document.createElement('section');area.className='radio-3d';
+   const start=document.createElement('button');start.type='button';start.textContent='Explore radio in 3D';
+   area.append(start);document.querySelector('#object-lede').after(area);
+   start.onclick=async()=>{start.disabled=true;try{const {showRadio}=await import('/radio-preview.js');if(version!==previewVersion)return;area.replaceChildren();const cleanup=await showRadio(area);if(version!==previewVersion)cleanup();else previewCleanup=cleanup;}catch{start.disabled=false;start.textContent='3D could not load. Try again';}};
+  }
   restoreFocus = trigger || buttons.find(button => button.dataset.id === id);
   discovered.add(id);
   render();
@@ -119,7 +129,7 @@ document.querySelector('#next-object').addEventListener('click', () => {
 });
 document.querySelector('#reset').addEventListener('click', () => { discovered.clear(); render(); buttons[0]?.focus(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-dialog.addEventListener('close', () => restoreFocus?.focus());
+dialog.addEventListener('close', () => {if(dialog.open)return;++previewVersion;previewCleanup?.();previewCleanup=null;restoreFocus?.focus();});
 render();
 if (!archive) {
   document.querySelector('.room-bottom span').textContent = personalError ? 'NO VALID SAVED ROOM · OPEN THE EDITOR TO CREATE OR RESTORE ONE' : 'ARCHIVE UNAVAILABLE · PLEASE RELOAD';
