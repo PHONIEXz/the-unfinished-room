@@ -12,8 +12,8 @@ export function decorateScene(scene,archive,preview=false){
  for(const kind of ['window','shelf','lamp'])scene.querySelector('.'+kind)?.toggleAttribute('hidden',!decor[kind]);
  scene.querySelectorAll('.object').forEach(b=>b.remove());
  for(const o of decoratedObjects(archive)){
-  const b=document.createElement('button');b.className='object personal-object';b.dataset.id=o.id;b.type='button';b.style.setProperty('--object-x',o.x+'%');b.style.setProperty('--object-y',o.y+'%');if(preview){b.setAttribute('aria-label','Move '+(o.title||'untitled object')+'. Drag or use arrow keys.');}
-  const icon=document.createElement('span');icon.className='object-icon decor-icon icon-'+o.kind;if(['photograph','letter','radio','clock','frame'].includes(o.kind))icon.innerHTML=objectIllustration(o.kind);else icon.textContent=kinds[o.kind];if(o.image){icon.replaceChildren();const image=document.createElement('img');image.src=o.image;image.alt='';icon.append(image);}icon.setAttribute('aria-hidden','true');
+  const b=document.createElement(!preview&&o.decoration?'div':'button');b.className='object personal-object';b.dataset.id=o.id;b.type='button';if(!preview&&o.decoration){b.classList.add('decoration-only');b.setAttribute('aria-hidden','true');}b.style.zIndex=String(2+archive.objects.indexOf(archive.objects.find(v=>v.id===o.id))); b.style.setProperty('--object-x',o.x+'%');b.style.setProperty('--object-y',o.y+'%');if(preview){b.setAttribute('aria-label','Move '+(o.title||'untitled object')+'. Drag or use arrow keys.');}
+  const icon=document.createElement('span');icon.className='object-icon decor-icon icon-'+o.kind;icon.innerHTML=objectIllustration(o.kind);if(o.image){icon.replaceChildren();const image=document.createElement('img');image.src=o.image;image.alt='';icon.append(image);}icon.setAttribute('aria-hidden','true');
   icon.style.setProperty('--art-size',String((o.size??100)/100));icon.style.setProperty('--art-rotation',(o.rotation??0)+'deg');
   const label=document.createElement('span');label.textContent=o.title||'Untitled object';b.append(icon,label);scene.append(b);
  }

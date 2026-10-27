@@ -47,3 +47,11 @@ test('v5 photos and memory metadata survive backup while active content is rejec
  for(const image of ['https://example.com/photo.jpg','data:image/svg+xml;base64,PHN2Zz4=','data:image/jpeg;base64,PHN2Zz4=', 'data:image/jpeg;base64,'+'a'.repeat(260001)]){const invalid=structuredClone(f);invalid.objects[0].image=image;assert.throws(()=>readPersonal(invalid));}
  const invalid=structuredClone(f);invalid.objects[0].sourceNote='a'.repeat(501);assert.throws(()=>readPersonal(invalid));
 });
+
+test('v6 decoration-only rooms and mixed memories preserve order and source integrity',()=>{
+ const decor={palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true,size:'medium',windowPosition:'left',doorPosition:'left',timeOfDay:'dusk',alcove:true,fireplace:true};
+ const object={id:'guitar',title:'My guitar',sourceIds:[],decoration:true,kind:'guitar',x:40,y:50,rotation:0,size:100,date:'',sourceNote:'',image:null};
+ const room={schemaVersion:6,title:'Music corner',fictional:true,decor,sources:[],objects:[object],openQuestions:[]};assert.deepEqual(readPersonal(JSON.stringify(room)),room);
+ const mixed=structuredClone(room);mixed.sources=[{id:'book',title:'School book',text:'A memory.',type:'text'}];mixed.objects.push({...object,id:'book',kind:'book',title:'School book',decoration:false,sourceIds:['book']});assert.deepEqual(readPersonal(mixed),mixed);
+ for(const mutate of [r=>r.objects[0].sourceIds.push('book'),r=>r.objects[1].sourceIds=[],r=>r.objects[1].decoration=true,r=>r.objects.reverse().push(r.objects[0])]){const bad=structuredClone(mixed);mutate(bad);assert.throws(()=>readPersonal(bad));}
+});

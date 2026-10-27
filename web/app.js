@@ -26,12 +26,12 @@ if(personal){
  document.querySelector('.outro p').textContent='This room is saved on this browser. Return to the editor to update it or download a backup. Your source text has not been sent to AI.';
  document.querySelector('.outro a').href='/create/';document.querySelector('.outro a').textContent='Edit and back up your room →';
  const quick=document.querySelector('.object-list');quick.querySelectorAll('button').forEach(b=>b.remove());
- if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';}}
+ if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects.filter(o=>!o.decoration)){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';}}
  else document.querySelectorAll('.object').forEach(b=>b.remove());
 }
 enableCamera(document.querySelector('#scene'));
 if(!personal) mountInterior(document.querySelector('#scene'));
-const buttons = [...document.querySelectorAll('.object')];
+const buttons = [...document.querySelectorAll('button.object')];
 const dialog = document.querySelector('#evidence');
 const progressKey = personal ? 'unfinished-room-personal-progress-'+JSON.stringify(archive ? {title:archive.title,objects:archive.objects.map(o=>({id:o.id,title:o.title})),sources:archive.sources}:null) : 'unfinished-room-demo-v1';
 let saved = [];
@@ -50,6 +50,7 @@ function render() {
   buttons.forEach(button => button.classList.toggle('found', discovered.has(button.dataset.id)));
   const list = document.querySelector('#discovery-list');
   list.replaceChildren();
+  if(personal&&buttons.length===0){document.querySelector('.room-bottom span').textContent='A DECORATED ROOM · ADD A MEMORY IN THE EDITOR TO BEGIN DISCOVERIES';}
   if (!discovered.size) {
     const item = document.createElement('li');
     item.className = 'empty';

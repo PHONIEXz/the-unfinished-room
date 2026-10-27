@@ -6,6 +6,29 @@ const art = {
  clock:`<path d="M25 105V51A45 45 0 0 1 90 11Q117 24 115 55V105Z" fill="#624d37" stroke="#b69464" stroke-width="3"/><circle cx="70" cy="52" r="34" fill="#d9cfb5" stroke="#332e27" stroke-width="4"/><path d="M70 22V27M100 52H95M70 82V77M40 52H45M70 52V29M70 52L89 63" stroke="#343d3c" stroke-width="3"/><circle cx="70" cy="52" r="3" fill="#343d3c"/><rect x="16" y="105" width="108" height="8" fill="#9c7c54"/><path d="M61 95H80" stroke="#d7be8e"/>`,
  frame:`<path d="M68 6V12L26 28M68 12L116 28" stroke="#80735d" fill="none"/><rect x="24" y="26" width="94" height="85" fill="none" stroke="#ad8c5c" stroke-width="10"/><rect x="31" y="33" width="80" height="71" fill="none" stroke="#493e31" stroke-width="3"/><path d="M19 23L33 37M109 37L122 23M19 115L33 101M109 101L122 115" stroke="#d2b075" stroke-width="5"/>`
 };
+const props={
+ chair:'<path d="M40 76V25H98V76M40 48H98M34 78H105V90H34ZM40 90V113M98 90V113"/>',
+ table:'<path d="M12 50H128V66H12ZM25 66V112M115 66V112"/>',
+ sofa:'<rect x="12" y="48" width="116" height="48" rx="12"/><rect x="25" y="20" width="90" height="58" rx="14"/><path d="M24 95V111M117 95V111M70 25V76"/>',
+ shelf:'<path d="M28 8H112V112H28ZM28 43H112M28 78H112M43 15V38M57 15V38M84 49V72M98 49V72"/>',
+ rug:'<path d="M12 33H126V94H12ZM24 43H114V84H24Z"/><path d="M3 40H12M3 53H12M3 66H12M3 79H12M126 40H137M126 53H137M126 66H137M126 79H137"/>',
+ lamp:'<path d="M51 12H91L118 57H23ZM70 58V102M43 108H98"/>',
+ plant:'<path d="M44 77H96L86 112H54ZM70 76V26M70 57Q25 59 30 25Q69 23 70 57M70 43Q109 44 112 12Q77 8 70 43"/>',
+ cup:'<path d="M30 35H100V81Q98 105 65 105Q32 103 30 81ZM101 45Q133 40 125 70Q122 83 102 80M24 112H108"/>',
+ vase:'<path d="M55 13H85V42Q121 66 107 99Q70 122 33 99Q19 66 55 42ZM55 25H85"/>',
+ camera:'<path d="M18 38H49L58 24H86L96 38H125V101H18Z"/><circle cx="72" cy="69" r="25"/><circle cx="72" cy="69" r="16"/><path d="M103 49H116"/>',
+ suitcase:'<rect x="14" y="32" width="112" height="73" rx="10"/><path d="M49 31V15H92V31M39 34V102M103 34V102M20 59H120"/>',
+ record:'<circle cx="70" cy="60" r="50"/><circle cx="70" cy="60" r="35"/><circle cx="70" cy="60" r="17"/><circle cx="70" cy="60" r="3"/>',
+ guitar:'<path d="M81 47L102 7 114 13 93 57Q124 84 100 104Q78 125 61 105Q33 109 29 86Q28 61 61 60Z"/><circle cx="72" cy="79" r="12"/><path d="M68 90L109 12"/>',
+ notebook:'<path d="M28 10H113V111H28ZM40 10V111M54 37H99M54 48H99M54 59H90M20 23H35M20 45H35M20 67H35M20 89H35"/>',
+ book:'<path d="M28 10H113V111H28ZM40 10V111M54 37H99M54 48H99M54 59H90"/>',
+ trophy:'<path d="M42 12H98V50Q98 76 70 79Q42 76 42 50ZM42 24H19Q13 65 47 64M98 24H121Q127 65 93 64M70 80V103M44 110H96"/>',
+ key:'<circle cx="48" cy="40" r="25"/><circle cx="48" cy="40" r="12"/><path d="M66 60L111 105M89 83L100 73M101 95L113 84"/>',
+ ball:'<circle cx="70" cy="60" r="49"/><path d="M70 40L91 54 83 80H57L49 54ZM70 40V12M91 54L117 42M83 80L101 100M57 80L38 100M49 54L23 42"/>',
+ keepsake:'<path d="M36 35Q70 0 104 35V102H36Z"/><circle cx="70" cy="58" r="22"/>',
+ custom:'<path d="M30 30H110V105H30ZM30 30L70 9 110 30M70 9V87M30 105L70 87 110 105"/>'
+};
+for(const [kind,shape]of Object.entries(props))art[kind]=`<g fill="#6c5842" stroke="#c9a474" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">${shape}</g>`;
 export function objectIllustration(id){return `<svg viewBox="0 0 140 120" aria-hidden="true" focusable="false">${art[id]||art.frame}</svg>`;}
 export function mountInterior(scene,{controls=true}={}){
  scene.classList.add('interior');scene.dataset.time='dusk';scene.dataset.lamp='on';
