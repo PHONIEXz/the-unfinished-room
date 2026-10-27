@@ -48,7 +48,7 @@ export function mountInterior(scene,{controls=true}={}){
  for(const b of scene.querySelectorAll('.object')){const label=b.querySelector('span:last-child').textContent;b.innerHTML=objectIllustration(b.dataset.id);const span=document.createElement('span');span.textContent=label;b.append(span);b.setAttribute('aria-label','Explore '+label.replace(/^\d+ · /,''));}
  if(!controls)return;
  const moodControls=document.createElement('div');moodControls.className='mood-controls';moodControls.innerHTML='<label>Window light <select aria-label="Time of day"><option value="dawn">Dawn</option><option value="day">Day</option><option value="dusk" selected>Dusk</option><option value="night">Night</option></select></label><button type="button" aria-pressed="true">Lamp on</button><button type="button" aria-pressed="false">Radio sound off</button><span>Sound is optional. The clock remains stopped at four.</span>';
- scene.parentElement.after(moodControls);
+ scene.closest('.room-camera').querySelector('.room-controls-dock').append(moodControls);
  moodControls.querySelector('select').addEventListener('change',e=>scene.dataset.time=e.target.value);
  const [lamp,sound]=moodControls.querySelectorAll('button');lamp.onclick=()=>{const on=scene.dataset.lamp!=='on';scene.dataset.lamp=on?'on':'off';lamp.textContent='Lamp '+(on?'on':'off');lamp.setAttribute('aria-pressed',String(on));};
  let audio=null;

@@ -9,7 +9,10 @@ export function enableCamera(scene,{editing=false}={}){
  const stage=document.createElement('section');stage.className='room-camera';stage.setAttribute('aria-label','Room view controls');
  const toolbar=document.createElement('div');toolbar.className='camera-toolbar';
  const viewport=document.createElement('div');viewport.className='camera-viewport';viewport.tabIndex=0;viewport.setAttribute('aria-label','Room view. Plus and minus zoom, arrow keys pan, Home resets.');
- scene.before(stage);stage.append(toolbar,viewport);viewport.append(scene);
+ const dock=document.createElement('aside');dock.className='room-controls-dock';dock.setAttribute('aria-label',editing?'Room designer and view controls':'Room view and lighting controls');
+ const heading=document.createElement('strong');heading.className='dock-heading';heading.textContent='Room controls';dock.append(heading,toolbar);
+ scene.before(stage);stage.append(viewport,dock);viewport.append(scene);
+ if(editing){const settings=stage.closest('.room-meta')?.querySelector('.decor-controls');if(settings)dock.append(settings);}
  let state={scale:1,x:0,y:0},pan=!editing,gesture=null,suppressClick=false,expanded=false;
  const size=()=>({width:viewport.clientWidth,height:viewport.clientHeight});
  function paint(smooth=false){const {width,height}=size();state=boundCamera(state,width,height);scene.style.transform=`translate(${state.x}px,${state.y}px) scale(${state.scale})`;scene.classList.toggle('camera-smooth',smooth);scene.dataset.cameraMode=pan?'pan':'objects';viewport.classList.toggle('pan-mode',pan);zoomLabel.textContent=Math.round(state.scale*100)+'%';}
