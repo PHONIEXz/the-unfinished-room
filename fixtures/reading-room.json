@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "title": "The room that stayed open",
+  "fictional": true,
+  "sources": [
+    {
+      "id": "photo-note",
+      "title": "Behind the photograph",
+      "type": "text",
+      "text": "Our first Saturday reading circle, 1998. Six chairs, twelve children. We took turns. The person behind the camera is not named."
+    },
+    {
+      "id": "letter",
+      "title": "An unsigned letter",
+      "type": "text",
+      "text": "Please leave the lamp by the window. When it is lit, the children know the reading room is open. I have repaired the radio, but the clock still stops at four. This letter has no date or signature."
+    },
+    {
+      "id": "recollection",
+      "title": "A visitor remembers",
+      "type": "text",
+      "text": "I remember listening to the radio before we read aloud. We called it the Saturday room. I do not remember who first opened it. Years later I taught my own children to read using the books we kept."
+    }
+  ],
+  "objects": [
+    {
+      "id": "photograph",
+      "title": "The photograph",
+      "sourceIds": [
+        "photo-note"
+      ]
+    },
+    {
+      "id": "letter",
+      "title": "The unopened letter",
+      "sourceIds": [
+        "letter"
+      ]
+    },
+    {
+      "id": "radio",
+      "title": "The radio",
+      "sourceIds": [
+        "letter",
+        "recollection"
+      ]
+    },
+    {
+      "id": "clock",
+      "title": "The stopped clock",
+      "sourceIds": [
+        "letter"
+      ]
+    },
+    {
+      "id": "frame",
+      "title": "The empty frame",
+      "sourceIds": [
+        "photo-note",
+        "recollection"
+      ]
+    }
+  ],
+  "openQuestions": [
+    "Who took the photograph?",
+    "Who wrote the letter?",
+    "Who first opened the reading room?"
+  ]
+}
