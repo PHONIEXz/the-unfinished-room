@@ -4,7 +4,7 @@ export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8'
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
- if(!a||![1,2].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
+ if(!a||![1,2,3].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
  if(!Array.isArray(a.sources)||!a.sources.length||a.sources.length>12||!Array.isArray(a.objects)||a.objects.length!==a.sources.length) throw Error('A room needs one to twelve memories.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
@@ -22,10 +22,14 @@ export function readPersonal(value){
  });
  if(!Array.isArray(a.openQuestions)||a.openQuestions.length>20||a.openQuestions.some(q=>typeof q!=='string'||!q.trim()||q.length>300)) throw Error('Use up to 20 open questions, each under 300 characters.');
  let decor;
- if(a.schemaVersion===2){
+ if(a.schemaVersion>=2){
   const d=a.decor;
   if(!d||!Object.hasOwn(palettes,d.palette)||!['wood','tile'].includes(d.floor)||['window','shelf','lamp'].some(k=>typeof d[k]!=='boolean'))throw Error('Room decoration is invalid.');
   decor={palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
+  if(a.schemaVersion===3){
+   if(!['compact','medium','wide'].includes(d.size)||!['left','center','right'].includes(d.windowPosition)||!['left','right','none'].includes(d.doorPosition)||!['dawn','day','dusk','night'].includes(d.timeOfDay)||typeof d.alcove!=='boolean'||typeof d.fireplace!=='boolean')throw Error('Room shell or lighting is invalid.');
+   Object.assign(decor,{size:d.size,windowPosition:d.windowPosition,doorPosition:d.doorPosition,timeOfDay:d.timeOfDay,alcove:d.alcove,fireplace:d.fireplace});
+  }
  }
  return {...(decor?{decor}:{}),schemaVersion:a.schemaVersion,title:a.title.trim(),fictional:a.fictional,sources,objects,openQuestions:a.openQuestions.map(q=>q.trim())};
 }

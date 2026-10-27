@@ -23,3 +23,13 @@ test('room supports twelve unique objects but rejects a thirteenth',()=>{
  assert.equal(readPersonal(f).objects.length,12);
  f.sources.push({id:'extra',title:'Extra',type:'text',text:'Memory'});assert.throws(()=>readPersonal(f));
 });
+
+test('v3 shell and mood survive browser save and JSON restore without changing memories',()=>{
+ const f=fixture();f.schemaVersion=3;f.objects[0]={...f.objects[0],kind:'letter',x:42,y:59};
+ f.decor={palette:'cream',floor:'tile',window:true,shelf:false,lamp:false,size:'wide',windowPosition:'right',doorPosition:'none',timeOfDay:'night',alcove:false,fireplace:true};
+ let backup;savePersonal({setItem:(_,value)=>backup=value},f);
+ assert.deepEqual(readPersonal(backup),f);
+ for(const [key,value]of Object.entries({size:'huge',windowPosition:'url(x)',doorPosition:'roof',timeOfDay:'unknown',alcove:'false',fireplace:1})){
+  const invalid=structuredClone(f);invalid.decor[key]=value;assert.throws(()=>readPersonal(invalid));
+ }
+});

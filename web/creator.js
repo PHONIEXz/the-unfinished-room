@@ -20,13 +20,13 @@ function addObject(o={id:'object-'+crypto.randomUUID(),title:'',kind:'keepsake',
  preview();return title;
 }
 function fields(){return [...cards.children].map(card=>{const value=name=>card.querySelector(`[data-field="${name}"]`).value;return {id:card.dataset.id,title:value('title').trim(),text:value('text').trim(),kind:value('kind'),x:Number(value('x')),y:Number(value('y'))};});}
-function decor(){return {palette:$('palette').value,floor:$('floor').value,window:$('decor-window').checked,shelf:$('decor-shelf').checked,lamp:$('decor-lamp').checked};}
+function decor(){return {palette:$('palette').value,floor:$('floor').value,window:$('decor-window').checked,shelf:$('decor-shelf').checked,lamp:$('decor-lamp').checked,size:$('room-size').value,windowPosition:$('window-position').value,doorPosition:$('door-position').value,timeOfDay:$('time-of-day').value,alcove:$('decor-alcove').checked,fireplace:$('decor-fireplace').checked};}
 function preview(){decorateScene($('room-preview'),{decor:decor(),objects:fields()},true);$('object-count').textContent=cards.children.length+' / 12 objects';$('add-object').disabled=cards.children.length>=12;}
-function fill(a){$('room-name').value=a.title;$('fictional').checked=a.fictional;$('questions').value=a.openQuestions.join('\n');cards.replaceChildren();const d=a.decor||{palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true};$('palette').value=d.palette;$('floor').value=d.floor;for(const k of ['window','shelf','lamp'])$('decor-'+k).checked=d[k];for(const o of decoratedObjects(a))addObject(o,a.sources.find(s=>s.id===o.id)?.text||'');preview();}
+function fill(a){$('room-name').value=a.title;$('fictional').checked=a.fictional;$('questions').value=a.openQuestions.join('\n');cards.replaceChildren();const d=a.decor||{palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true};$('palette').value=d.palette;$('floor').value=d.floor;$('room-size').value=d.size||'medium';$('window-position').value=d.windowPosition||'left';$('door-position').value=d.doorPosition||'left';$('time-of-day').value=d.timeOfDay||'dusk';$('decor-alcove').checked=d.alcove!==false;$('decor-fireplace').checked=d.fireplace!==false;for(const k of ['window','shelf','lamp'])$('decor-'+k).checked=d[k];for(const o of decoratedObjects(a))addObject(o,a.sources.find(s=>s.id===o.id)?.text||'');preview();}
 function collect(){
  const sources=[],objects=[];
  for(const o of fields()){if(!o.title&&!o.text)continue;if(!o.title||!o.text)throw Error('Each included object needs a name and a memory or source description.');sources.push({id:o.id,type:'text',title:o.title,text:o.text});const {text,...object}=o;objects.push({...object,sourceIds:[o.id]});}
- return readPersonal({schemaVersion:2,decor:decor(),title:$('room-name').value,fictional:$('fictional').checked,sources,objects,openQuestions:$('questions').value.split('\n').map(q=>q.trim()).filter(Boolean)});
+ return readPersonal({schemaVersion:3,decor:decor(),title:$('room-name').value,fictional:$('fictional').checked,sources,objects,openQuestions:$('questions').value.split('\n').map(q=>q.trim()).filter(Boolean)});
 }
 enablePlacement($('room-preview'),(id,position,cancelled)=>{
  const card=[...cards.children].find(c=>c.dataset.id===id);if(!card)return;

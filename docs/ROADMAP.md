@@ -156,3 +156,6 @@ A new visitor understands the premise without help. The room has a complete begi
 - Reduced-motion disables dust/sway/parallax. Desktop pointer parallax is intentionally small; device tilt is not implemented.
 - Existing personal creator remains compatible. Second step: data-driven shell choices, slots/rotation/scale, validated image handling and expanded mood persistence. This demo revision does not claim those creator features are complete.
 - Validation: existing 36 unit tests and static build pass. Real phone and audio listening checks remain separate from automated checks.
+
+### Creator chunk 1: shared room designer
+The creator and personal viewer now use the same SVG interior shell as the demo. Room proportions (compact/medium/wide), four wall palettes, wood/tile flooring, window placement (left/centre/right), doorway placement (left/right/none), optional window/shelf/alcove/fireplace, lamp state and time of day are stored in validated schema v3. Versions 1 and 2 remain readable and migrate only when saved/exported. Memories and normalized object coordinates remain unchanged by shell choices. Users may need to move an object away from a new cutout; automatic collision handling is not implemented. New backup round-trip and invalid shell/mood tests cover persistence. Rotation/scale, image upload and catalogue work remain the next chunks.
