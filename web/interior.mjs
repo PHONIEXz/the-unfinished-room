@@ -30,7 +30,7 @@ export function mountInterior(scene,{controls=true}={}){
  </g><path class="day-shaft" d="M220 274L389 290 882 711 548 740Z" fill="#e5d6ac" opacity=".08"/>
  <g class="interior-alcove"><rect x="900" y="192" width="110" height="165" rx="48" fill="#15232c" stroke="#56605b" stroke-width="8"/><path d="M888 357H1024" stroke="#a08b66" stroke-width="10"/>
  </g><g class="interior-fireplace"><path d="M788 395H1010V531H788Z" fill="#5b5143"/><path d="M818 426H982V526H818Z" fill="#101c25"/><path d="M775 391H1023" stroke="#9f8b68" stroke-width="14"/><path d="M844 505H955" stroke="#483e33" stroke-width="10"/>
- </g><g><rect x="1040" y="225" width="103" height="345" fill="#3f3b33" stroke="#75664f" stroke-width="6"/><path d="M1091 232V558M1049 254H1133V531H1049Z" fill="none" stroke="#615742"/><circle cx="1081" cy="405" r="3" fill="#c5a471"/><circle cx="1101" cy="405" r="3" fill="#c5a471"/></g>
+ </g><g class="interior-wardrobe"><rect x="1040" y="225" width="103" height="345" fill="#3f3b33" stroke="#75664f" stroke-width="6"/><path d="M1091 232V558M1049 254H1133V531H1049Z" fill="none" stroke="#615742"/><circle cx="1081" cy="405" r="3" fill="#c5a471"/><circle cx="1101" cy="405" r="3" fill="#c5a471"/></g>
  <g class="interior-shelf"><g fill="#483f32" stroke="#857254" stroke-width="5"><rect x="431" y="191" width="115" height="211"/><path d="M433 260H545M433 328H545"/></g><g stroke-width="12"><path d="M449 206V252M478 208V252M510 210V252M449 278V320M489 275V320" stroke="#827960"/><path d="M464 211V252M529 209V252M469 280V320M512 278V320" stroke="#585e59"/></g>
  </g><path d="M386 598L813 572 964 704 435 737Z" fill="#514b42" stroke="#82745b" stroke-width="3" opacity=".7"/><path d="M418 611L799 590 917 692 454 719Z" fill="none" stroke="#a08a64" stroke-dasharray="4 9" opacity=".4"/>
  <ellipse cx="653" cy="630" rx="248" ry="42" fill="#080e15" opacity=".35"/>
@@ -38,7 +38,7 @@ export function mountInterior(scene,{controls=true}={}){
  <g stroke="#69583f" stroke-width="10" fill="#514a39"><path d="M542 638L542 555Q591 537 642 551L652 628M544 579L644 575M547 608L648 602" fill="none"/><path d="M537 638L651 627 677 655 557 671Z"/><path d="M555 670L548 723M669 657L684 709"/></g>
  <g><path d="M729 459V363" stroke="#a58a5d" stroke-width="6"/><ellipse cx="729" cy="464" rx="29" ry="7" fill="#9d8157"/><path class="lamp-shade" d="M704 324H749L772 375H681Z" fill="#d7af70"/><ellipse class="lamp-pool" cx="725" cy="481" rx="175" ry="115" fill="url(#pool)"/></g>
  <path d="M440 460H490V450H442V438H481" fill="none" stroke="#858270" stroke-width="10"/><path d="M783 464V445H802V464Q793 472 783 464M803 448Q819 445 811 459H804" fill="#b1a58a" stroke="#5b5548" stroke-width="2"/>
- <path d="M345 415L350 388H375L381 415Z" fill="#76624b"/><path d="M365 388V354M365 370L350 359M365 379L378 363" stroke="#6e735d" stroke-width="3" fill="none"/>
+ <g class="window-plant"><path d="M345 415L350 388H375L381 415Z" fill="#76624b"/><path d="M365 388V354M365 370L350 359M365 379L378 363" stroke="#6e735d" stroke-width="3" fill="none"/></g>
  <path d="M578 180V204Q592 214 599 196" fill="none" stroke="#af9873" stroke-width="4"/>
  <rect x="634" y="156" width="135" height="140" fill="#7a8071" opacity=".16"/>
  <path class="lamp-mark" d="M651 488l13 -3m-6 -3l5 8" stroke="#e9cb92" stroke-width="2"/>
@@ -64,5 +64,5 @@ export function applyInteriorSettings(scene,decor){
  const palette={midnight:'#344047',cream:'#ada38f',burgundy:'#62434b',lagoon:'#365c59'};
  scene.querySelector('.interior-wall').style.fill=palette[decor.palette];
  scene.querySelector('.interior-floor').style.fill=decor.floor==='tile'?'url(#room-tiles)':'url(#wood)';
- for(const [selector,visible]of [['.window-group',decor.window],['.day-shaft',decor.window],['.interior-door',decor.doorPosition!=='none'],['.interior-shelf',decor.shelf],['.interior-alcove',decor.alcove!==false],['.interior-fireplace',decor.fireplace!==false]])scene.querySelector(selector).style.display=visible?'':'none';
+ for(const [selector,visible]of [['.window-plant',decor.window],['.window-group',decor.window],['.day-shaft',decor.window],['.interior-door',decor.doorPosition!=='none'],['.interior-shelf',decor.shelf],['.interior-alcove',decor.alcove!==false],['.interior-fireplace',decor.fireplace!==false]])scene.querySelector(selector).style.display=visible?'':'none';
 }
