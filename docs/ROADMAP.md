@@ -148,3 +148,11 @@ Consider permissioned family collaboration, local inference on suitable hardware
 ## Success measures
 
 A new visitor understands the premise without help. The room has a complete beginning, discovery, and payoff. AI evaluation records unsupported claims honestly. Personal archives stay private by default. Existing archives remain readable/exportable during outages. Completion is demonstrated behavior, not a winning percentage.
+
+## Cutaway interior, scene-first revision (27 October)
+- Original inline SVG demo shell: back/side walls, ceiling, worn plank floor, rug, tall curtained window, doorway, niche, mantel, desk and supporting furnishings. No people or external image assets.
+- Five real button hotspots reuse existing source evidence, journal, discovery reset, quick-access and previous/next navigation; detail panels include larger illustrations and explicit evidence limits.
+- Dawn/day/dusk/night, lamp toggle and optional synthesized radio static (off initially, stopped when page hidden). The archival clock is stopped at four, so no ticking is invented.
+- Reduced-motion disables dust/sway/parallax. Desktop pointer parallax is intentionally small; device tilt is not implemented.
+- Existing personal creator remains compatible. Second step: data-driven shell choices, slots/rotation/scale, validated image handling and expanded mood persistence. This demo revision does not claim those creator features are complete.
+- Validation: existing 36 unit tests and static build pass. Real phone and audio listening checks remain separate from automated checks.

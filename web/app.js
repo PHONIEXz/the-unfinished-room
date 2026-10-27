@@ -1,3 +1,4 @@
+import {mountInterior,objectIllustration} from './interior.mjs';
 import {enableCamera} from './camera.mjs';
 import {decorateScene} from './decor.mjs';
 import {storageKey,readPersonal} from './personal.mjs';
@@ -29,6 +30,7 @@ if(personal){
  else document.querySelectorAll('.object').forEach(b=>b.remove());
 }
 enableCamera(document.querySelector('#scene'));
+if(!personal) mountInterior(document.querySelector('#scene'));
 const buttons = [...document.querySelectorAll('.object')];
 const dialog = document.querySelector('#evidence');
 const progressKey = personal ? 'unfinished-room-personal-progress-'+JSON.stringify(archive) : 'unfinished-room-demo-v1';
@@ -81,6 +83,13 @@ function openObject(id, trigger = null) {
   document.querySelector('#object-number').textContent = `OBJECT ${String(buttons.findIndex(button => button.dataset.id === id) + 1).padStart(2, '0')} / ${buttons.length}`;
   document.querySelector('#object-title').textContent = object.title;
   document.querySelector('#object-lede').textContent = descriptions[id];
+  let illustration=dialog.querySelector('.detail-illustration');
+  if(!illustration){illustration=document.createElement('div');illustration.className='detail-illustration';document.querySelector('#object-title').before(illustration);}
+  illustration.innerHTML=personal?'':objectIllustration(id);
+  let uncertainty=dialog.querySelector('.evidence-limit');
+  if(!uncertainty){uncertainty=document.createElement('p');uncertainty.className='evidence-limit';document.querySelector('#sources').after(uncertainty);}
+  const limits={photograph:'The photographer is not named.',letter:'The writer is not identified.',radio:'These recollections do not establish who owned the radio.',clock:'The archive does not establish when or why it stopped.',frame:'No source identifies who began the room.'};
+  uncertainty.textContent='What the evidence cannot tell us: '+(personal ? (archive.openQuestions.join(' · ') || 'The saved account has not been independently verified.') : limits[id]);
   const sourceContainer = document.querySelector('#sources');
   sourceContainer.replaceChildren();
   object.sourceIds.forEach(sourceId => {
