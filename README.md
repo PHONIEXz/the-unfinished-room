@@ -41,7 +41,7 @@ See [the complete roadmap](docs/ROADMAP.md) for chunks, acceptance criteria, arc
 
 The room includes an opt-in Gemma question form. To activate it, set `GEMMA_API_KEY` in this Vercel project's server environment and redeploy. It uses `gemma-4-26b-a4b-it` via Google's generateContent endpoint. No user archive is sent in this version: only the user's question and the three explicitly fictional fixture texts. Without a key, the API returns a clear unavailable message. Do not put keys in browser code, GitHub, or screenshots.
 
-The response checker verifies that a source ID exists and an excerpt appears verbatim; it cannot establish that the model's interpretation is logically supported. The UI calls it a model interpretation and invites human review. Live model reliability and latency have not yet been verified. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
+The response checker verifies that a source ID exists and an excerpt appears verbatim; it cannot establish that the model's interpretation is logically supported. The UI calls it a model interpretation and invites human review. A three-run factual live check is recorded in [AI reliability checks](docs/ai-reliability.md). Unknown-answer reliability and measured latency across a wider set remain unverified. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
 
 ## License
 
