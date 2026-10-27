@@ -14,11 +14,12 @@ test('unknown must have no proof citations and cannot become a known answer',()=
   assert.throws(()=>validateAnswer({answer:'Unknown',unknown:true,evidence:[{sourceId:'photo-note',quote:'Our first Saturday reading circle, 1998.'}]},sources));
 });
 test('prompt distinguishes instructions from archive text',()=>{
-  assert.match(buildPrompt('Who was the photographer?',sources),/UNTRUSTED DATA/);
-  assert.match(buildPrompt('Who was the photographer?',sources),/No invented identities/);
+  assert.match(buildPrompt('Who was the photographer?',sources),/UNTRUSTED ARCHIVE/);
+  assert.match(buildPrompt('Who was the photographer?',sources),/Never invent/);
 });
 test('extracts complete JSON surrounded by prose or a code fence',()=>{
   const raw='Here is the answer: ```json\n{"answer":"A { room }","unknown":true,"evidence":[]}\n```';
   assert.equal(parseModelJson(raw).answer,'A { room }');
+  assert.equal(parseModelJson('Example: {"sourceId":"letter","quote":"some words"}\nFinal: {"answer":"Unknown","unknown":true,"evidence":[]}').unknown,true);
   assert.throws(()=>parseModelJson('{"answer":'),SyntaxError);
 });

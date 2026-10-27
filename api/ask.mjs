@@ -26,7 +26,7 @@ export default async function handler(request, response) {
     const upstream = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method:'POST',
       headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:700,responseMimeType:'application/json'}}),
+      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:1400,responseMimeType:'application/json'}}),
       signal:AbortSignal.timeout(28000)
     });
     if (!upstream.ok) {
