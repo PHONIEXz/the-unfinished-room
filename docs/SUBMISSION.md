@@ -1,12 +1,14 @@
 # The Unfinished Room: remembering without inventing
 
-*Draft for Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine. Apply the official DEV submission template and required tags before publication. This file has not been submitted.*
+*This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26).*
+
+Draft only. Required DEV tags: devchallenge, hf26challenge. This file has not been published.
 
 A photograph can survive long after the name of the person behind the camera has disappeared.
 
 I wanted to build a place for that kind of incomplete memory. Not a chatbot pretending to be someone who died. A quiet room where an object opens onto the words that survived, and an unanswered question is allowed to stay unanswered.
 
-## What I built
+## What I Built
 
 The Unfinished Room is an interactive memory archive. Its fictional demonstration follows a neighbourhood reading room through a photograph, an unsigned letter, a repaired radio, a stopped clock and an empty frame. Open each object, read its sources and build a discovery journal. Some details connect. Others cannot be established.
 
@@ -14,7 +16,11 @@ The Unfinished Room is an interactive memory archive. Its fictional demonstratio
 
 The personal creator has 25 object types, photos, memory dates and source notes. Decoration can remain just decoration. Users arrange objects, choose their room's mood and download a portable JSON backup. A printable keepsake carries the source text and unanswered questions outside the website.
 
-## Where open-weight AI matters
+![The room and its controls](media/room-overview.jpg)
+
+## How I Built It
+
+### Where open-weight AI matters
 
 Gemma's job is to help investigate the fictional archive. It selects a source excerpt in response to a question. The server checks the source ID and exact quotation, then displays complete sentences from the source instead of unchecked generated prose. If the archive does not establish an answer, the response should say so.
 
@@ -24,7 +30,9 @@ Gemma is open-weight and accessed through Google AI Studio here. This deployment
 
 Personal rooms are intentionally separate: their photos and memory text stay in browser storage and are not sent to Gemma. The current AI demonstration uses explicitly fictional material only. This limits the AI feature's scope, but avoids quietly turning a private family archive into a provider request.
 
-## How I built it
+![Original evidence and an unanswered question](media/source-evidence.jpg)
+
+### The room and creator
 
 The room itself is original layered SVG, HTML, CSS and vanilla JavaScript. Walls, window light, a curtain, furniture and small objects suggest that someone has just left. There are no characters, figures or jump scares. Keyboard users can open the same memories through a plain object list. Motion is restrained and reduced-motion preferences are respected.
 
@@ -32,11 +40,29 @@ The creator and viewer share one data model. Versioned validation protects sourc
 
 I also tried Meshy for an optional radio model. Its first untextured mesh was 1.85 MB and 102,622 triangles. After welding and simplification it became 99 KB and 8,206 triangles. The preview loads only on request and uses Three.js with a software-rendering compatibility route. The mesh retains its separate CC BY 4.0 attribution. The illustrated room remains usable without it.
 
+![The searchable object catalogue](media/object-catalogue.jpg)
+
+![A photo with its source notes](media/photo-memory.jpg)
+
 ## What I tested, and what I cannot claim
 
 The repository includes 41 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
 
 Desktop production checks cover room creation, saving, reloading, exploring sources, photos, JSON backup/restore, catalogue duplication and layer ordering. Real-phone testing remains pending. Browser storage is not encrypted or a cloud backup. Users should keep exported JSON copies safe.
+
+![The printable memory keepsake](media/keepsake.jpg)
+
+## Demo
+
+[Open the fictional demo](https://unfinishedroom.phoenixreborn.tech/room/). The captioned screenshot tour is 39 seconds with original synthesized background sound. It is a screenshot montage, not live video capture. Upload the MP4 to your chosen host before embedding it here.
+
+## Code
+
+https://github.com/PHONIEXz/the-unfinished-room
+
+## Why Does Open Innovation Matter?
+
+The model weights are open and the source-selection and evidence-validation code is public. A reader can inspect what is accepted as evidence, change the checks or build a self-hosted variant. Hosted inference in this release still depends on Google; source portability and inspectability are the benefits demonstrated today, not offline AI or freedom from provider quotas.
 
 ## Prize Categories
 
@@ -45,7 +71,7 @@ Desktop production checks cover room creation, saving, reloading, exploring sour
 
 The app is hosted on Vercel, not Render. Meshy and Three.js are credited tools; this draft does not claim they are prize categories. GitHub hosting is not a claim that GitHub Copilot was used.
 
-## Why this theme
+## The Spirit of It
 
 For me, the ghost is the gap between an object and the whole story it once belonged to. The room honours the past by keeping those gaps visible rather than filling them with confident fiction.
 

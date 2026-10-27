@@ -103,7 +103,7 @@ function openObject(id, trigger = null) {
   let uncertainty=dialog.querySelector('.evidence-limit');
   if(!uncertainty){uncertainty=document.createElement('p');uncertainty.className='evidence-limit';document.querySelector('#sources').after(uncertainty);}
   const limits={photograph:'The photographer is not named.',letter:'The writer is not identified.',radio:'These recollections do not establish who owned the radio.',clock:'The archive does not establish when or why it stopped.',frame:'No source identifies who began the room.'};
-  uncertainty.textContent='What the evidence cannot tell us: '+(personal ? (archive.openQuestions.join(' · ') || 'The saved account has not been independently verified.') : limits[id]);
+  uncertainty.textContent=personal ? 'Archive-level open questions: '+(archive.openQuestions.join(' · ') || 'None recorded. The saved account has not been independently verified.') : 'What the evidence cannot tell us: '+limits[id];
   const sourceContainer = document.querySelector('#sources');
   sourceContainer.replaceChildren();
   object.sourceIds.forEach(sourceId => {
