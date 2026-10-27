@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <meta name="description" content="Five objects. One forgotten story. Some questions still unanswered.">
+  <title>The Unfinished Room</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#room">Skip to the room</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="The Unfinished Room home"><span class="brand-mark">✳</span> THE UNFINISHED ROOM</a>
+    <span class="edition">A STORY IN FIVE OBJECTS <span aria-hidden="true">•</span> FICTIONAL DEMO</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="headline">
+      <div class="intro-copy">
+        <span class="eyebrow"><span class="spark"></span> AN INTERACTIVE MEMORY ROOM <span class="rule"></span> 01 / 05</span>
+        <h1 id="headline">Some stories<br>don't <em>leave us.</em></h1>
+        <p>They wait in photographs, folded letters, and the things we almost threw away. Enter the room and piece together what remains.</p>
+        <a class="enter" href="#room">Enter the room <span aria-hidden="true">↗</span></a>
+        <span class="quiet">No account needed. Sound is off. The public story is fictional.</span>
+      </div>
+      <div class="portal" aria-hidden="true">
+        <div class="portal-arch"><div class="glow"></div><div class="portal-door"><span class="knob"></span></div></div>
+        <span class="portal-caption">THE READING ROOM · EST. 1998</span>
+      </div>
+    </section>
+    <section class="experience" id="room" aria-labelledby="room-title">
+      <div class="section-heading"><div><span class="eyebrow">THE ARCHIVE / A FICTIONAL STORY</span><h2 id="room-title">The room that stayed open.</h2><p>Choose an object. Follow its sources. Notice what the evidence cannot tell us.</p></div><div class="counter"><strong id="count">0 / 5</strong><span>OBJECTS EXPLORED</span></div></div>
+      <div class="scene" id="scene">
+        <div class="window" aria-hidden="true"><div class="moon"></div></div>
+        <div class="scene-floor" aria-hidden="true"></div>
+        <div class="shelf" aria-hidden="true"></div>
+        <div class="lamp" aria-hidden="true"><span class="shade"></span><span class="stem"></span><span class="base"></span></div>
+        <button class="object photograph" data-id="photograph"><span class="object-icon" aria-hidden="true">▧</span><span>01 · Photograph</span></button>
+        <button class="object letter" data-id="letter"><span class="object-icon" aria-hidden="true">✉</span><span>02 · Letter</span></button>
+        <button class="object radio" data-id="radio"><span class="object-icon" aria-hidden="true">▣</span><span>03 · Radio</span></button>
+        <button class="object clock" data-id="clock"><span class="object-icon" aria-hidden="true">◷</span><span>04 · Clock</span></button>
+        <button class="object frame" data-id="frame"><span class="object-icon" aria-hidden="true">◇</span><span>05 · Empty frame</span></button>
+      </div>
+      <div class="room-bottom"><span>SELECT AN OBJECT TO BEGIN</span><button id="reset" type="button">Reset discoveries ↺</button></div>
+    </section>
+    <section class="journal" aria-labelledby="journal-title"><div><span class="eyebrow">THE DISCOVERY JOURNAL</span><h2 id="journal-title">What we've found.</h2><p>These are fragments of a story, grounded in what the archive actually contains.</p></div><ol id="discovery-list" aria-live="polite"><li class="empty">The pages are still blank. Explore an object to begin.</li></ol></section>
+    <section class="outro"><span class="eyebrow">THE STORY CONTINUES</span><h2>Every memory deserves<br><em>a place to live.</em></h2><p>This is the first foundation of The Unfinished Room. Personal archives and source-backed open-weight AI are coming in the next build. This demo does not use AI yet.</p><a href="#room">Explore the room ↑</a></section>
+  </main>
+  <footer>THE UNFINISHED ROOM <span>BUILT BY PAUL AYOADE DAVID · 2026</span><a href="https://github.com/PHONIEXz/the-unfinished-room">SOURCE ↗</a></footer>
+  <dialog id="evidence"><div class="dialog-inner"><button id="close" class="close" aria-label="Close object details">×</button><span class="eyebrow" id="object-number"></span><h2 id="object-title"></h2><p class="dialog-lede" id="object-lede"></p><div id="sources"></div><div class="dialog-actions"><button id="next-object">Explore another object →</button></div></div></dialog>
+</body>
+</html>
