@@ -8,7 +8,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)** for the Hacktoberfest 2026
 
 ## Status
 
-Foundation in progress: roadmap, fictional demonstration archive, structural validator, and tests. No deployed website or connected AI provider yet.
+Foundation deployed at [unfinishedroom.phoenixreborn.tech](https://unfinishedroom.phoenixreborn.tech): responsive five-object room, source panels, discovery journal, fictional demonstration archive, and structural checks. Personal archive creation and connected AI are not built yet.
 
 ## Run
 
@@ -16,11 +16,14 @@ Requires Node.js 24 or later. These foundation checks need no dependencies or AP
 
 ```sh
 npm test
+npm run build
 ```
 
 ## Experience
 
 Explore a photograph, letter, radio, clock, and empty frame. The room warms as discoveries accumulate. Ask questions, inspect evidence, and preserve a keepsake including unanswered questions.
+
+The current foundation supports the five-object demo and discovery journal. Question answering and keepsake export are planned later chunks.
 
 See [the complete roadmap](docs/ROADMAP.md) for chunks, acceptance criteria, architecture, and release gates.
 

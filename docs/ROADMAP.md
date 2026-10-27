@@ -12,7 +12,7 @@ Deadline: 31 October 2026 at 11:59 PM PDT, or 1 November at 07:59 WAT. Internal 
 
 ## Chunk 1: story and foundation | October 27
 
-Status: started. Repository, plan, fictional archive, validator, and tests are present. App shell and visual assets remain.
+Status: foundation shipped. Repository, plan, fictional archive, validator, checks, responsive illustrated shell, five source panels, and discovery journal are live on Vercel at https://unfinishedroom.phoenixreborn.tech. Room interaction is a first pass; the richer journal, progression, and accessibility audit remain in Chunk 2.
 
 - Fictional story: a neighborhood reading room remembered through five objects.
 - Stable source IDs, source text, object-source links, explicit fictional status, unresolved questions.
