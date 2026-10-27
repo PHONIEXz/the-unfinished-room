@@ -9,24 +9,30 @@ const cards=$('memory-cards');
 function markDirty(){dirty=true;status.textContent='Unsaved changes. Save your room or download a backup.';preview();}
 function addObject(o={id:'object-'+crypto.randomUUID(),title:'',kind:'keepsake',x:35,y:35},text=''){
  if(cards.children.length>=12){status.textContent='This room supports up to 12 objects.';return;}
- const card=document.createElement('fieldset');card.className='memory-card';card.dataset.id=o.id;
- const legend=document.createElement('legend');legend.textContent='Your object';card.append(legend);
+ const card=document.createElement('details');card.open=!o.title;card.className='memory-card';card.dataset.id=o.id;
+ const legend=document.createElement('summary');legend.textContent=o.title||'New object';card.append(legend);
  function field(label,tag,name,value){const l=document.createElement('label');l.textContent=label;const input=document.createElement(tag);input.dataset.field=name;input.value=value;l.append(input);card.append(l);return input;}
  const title=field('Object name','input','title',o.title);title.maxLength=120;title.placeholder='Your chair, a festival outfit, a favourite book…';
+ title.addEventListener('input',()=>legend.textContent=title.value.trim()||'New object');
  const kind=field('Appearance','select','kind','');for(const [key,icon]of Object.entries(kinds)){const option=document.createElement('option');option.value=key;option.textContent=icon+' '+key;kind.append(option);}kind.value=o.kind;
  const note=field('Memory or source description','textarea','text',text);note.maxLength=8000;note.rows=4;note.placeholder='What does this object mean to you? Include uncertain details as uncertain.';
  for(const [axis,label,min,max]of [['x','Horizontal position',0,100],['y','Vertical position',0,100]]){const input=field(label,'input',axis,o[axis]);input.type='range';input.min=min;input.max=max;}
+ for(const [name,label,min,max,value]of [['rotation','Rotation (degrees)',-180,180,o.rotation??0],['size','Artwork size (%)',60,140,o.size??100]]){
+  const input=field(label,'input',name,value);input.type='range';input.min=min;input.max=max;input.step=name==='rotation'?5:10;
+  const output=document.createElement('output');output.textContent=String(value)+(name==='rotation'?'°':'%');input.after(output);input.addEventListener('input',()=>output.textContent=input.value+(name==='rotation'?'°':'%'));
+ }
+ const reset=document.createElement('button');reset.type='button';reset.textContent='Reset appearance';reset.className='reset-appearance';reset.onclick=()=>{for(const [name,value]of [['rotation',0],['size',100]]){const input=card.querySelector(`[data-field="${name}"]`);input.value=value;input.nextElementSibling.textContent=value+(name==='rotation'?'°':'%');}markDirty();};card.append(reset);
  const remove=document.createElement('button');remove.type='button';remove.className='remove-object';remove.textContent='Remove object';remove.onclick=()=>{if((title.value||note.value)&&!confirm('Remove this object from the draft? Your saved room stays unchanged until you save.'))return;card.remove();markDirty();$('add-object').focus();};card.append(remove);cards.append(card);
  preview();return title;
 }
-function fields(){return [...cards.children].map(card=>{const value=name=>card.querySelector(`[data-field="${name}"]`).value;return {id:card.dataset.id,title:value('title').trim(),text:value('text').trim(),kind:value('kind'),x:Number(value('x')),y:Number(value('y'))};});}
+function fields(){return [...cards.children].map(card=>{const value=name=>card.querySelector(`[data-field="${name}"]`).value;return {id:card.dataset.id,title:value('title').trim(),text:value('text').trim(),kind:value('kind'),x:Number(value('x')),y:Number(value('y')),rotation:Number(value('rotation')),size:Number(value('size'))};});}
 function decor(){return {palette:$('palette').value,floor:$('floor').value,window:$('decor-window').checked,shelf:$('decor-shelf').checked,lamp:$('decor-lamp').checked,size:$('room-size').value,windowPosition:$('window-position').value,doorPosition:$('door-position').value,timeOfDay:$('time-of-day').value,alcove:$('decor-alcove').checked,fireplace:$('decor-fireplace').checked};}
 function preview(){decorateScene($('room-preview'),{decor:decor(),objects:fields()},true);$('object-count').textContent=cards.children.length+' / 12 objects';$('add-object').disabled=cards.children.length>=12;}
 function fill(a){$('room-name').value=a.title;$('fictional').checked=a.fictional;$('questions').value=a.openQuestions.join('\n');cards.replaceChildren();const d=a.decor||{palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true};$('palette').value=d.palette;$('floor').value=d.floor;$('room-size').value=d.size||'medium';$('window-position').value=d.windowPosition||'left';$('door-position').value=d.doorPosition||'left';$('time-of-day').value=d.timeOfDay||'dusk';$('decor-alcove').checked=d.alcove!==false;$('decor-fireplace').checked=d.fireplace!==false;for(const k of ['window','shelf','lamp'])$('decor-'+k).checked=d[k];for(const o of decoratedObjects(a))addObject(o,a.sources.find(s=>s.id===o.id)?.text||'');preview();}
 function collect(){
  const sources=[],objects=[];
  for(const o of fields()){if(!o.title&&!o.text)continue;if(!o.title||!o.text)throw Error('Each included object needs a name and a memory or source description.');sources.push({id:o.id,type:'text',title:o.title,text:o.text});const {text,...object}=o;objects.push({...object,sourceIds:[o.id]});}
- return readPersonal({schemaVersion:3,decor:decor(),title:$('room-name').value,fictional:$('fictional').checked,sources,objects,openQuestions:$('questions').value.split('\n').map(q=>q.trim()).filter(Boolean)});
+ return readPersonal({schemaVersion:4,decor:decor(),title:$('room-name').value,fictional:$('fictional').checked,sources,objects,openQuestions:$('questions').value.split('\n').map(q=>q.trim()).filter(Boolean)});
 }
 enablePlacement($('room-preview'),(id,position,cancelled)=>{
  const card=[...cards.children].find(c=>c.dataset.id===id);if(!card)return;
@@ -35,6 +41,8 @@ enablePlacement($('room-preview'),(id,position,cancelled)=>{
  [...$('room-preview').querySelectorAll('.personal-object')].find(b=>b.dataset.id===id)?.focus();
 });
 $('clean-preview').onclick=()=>{const panel=$('room-preview').closest('.room-meta');const clean=panel.classList.toggle('clean-preview');$('creator').classList.toggle('preview-only',clean);$('clean-preview').textContent=clean?'Show editing controls':'Hide editing controls';$('clean-preview').setAttribute('aria-pressed',String(clean));};
+$('expand-objects').onclick=()=>{for(const c of cards.children)c.open=true;};
+$('collapse-objects').onclick=()=>{for(const c of cards.children)c.open=false;};
 $('add-object').onclick=()=>{const input=addObject();markDirty();input?.focus();};
 try{const saved=localStorage.getItem(storageKey);if(saved){fill(readPersonal(saved));status.textContent='Your saved room is loaded. Changes need saving.';}}catch{status.textContent='Saved data could not be loaded. You can restore a backup; saving a new room will replace the saved data.';}
 if(!cards.children.length)addObject();

@@ -4,7 +4,7 @@ export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8'
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
- if(!a||![1,2,3].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
+ if(!a||![1,2,3,4].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
  if(!Array.isArray(a.sources)||!a.sources.length||a.sources.length>12||!Array.isArray(a.objects)||a.objects.length!==a.sources.length) throw Error('A room needs one to twelve memories.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
@@ -18,7 +18,12 @@ export function readPersonal(value){
   const base={id:o.id,title:o.title.trim(),sourceIds:[o.id]};
   if(a.schemaVersion===1)return base;
   if(!Object.hasOwn(kinds,o.kind)||!Number.isFinite(o.x)||o.x<0||o.x>100||!Number.isFinite(o.y)||o.y<0||o.y>100)throw Error('An object has an invalid appearance or position.');
-  return {...base,kind:o.kind,x:o.x,y:o.y};
+  const appearance={...base,kind:o.kind,x:o.x,y:o.y};
+  if(a.schemaVersion===4){
+   if(!Number.isFinite(o.rotation)||o.rotation < -180||o.rotation>180||!Number.isFinite(o.size)||o.size<60||o.size>140)throw Error('Object size or rotation is invalid.');
+   return {...appearance,rotation:o.rotation,size:o.size};
+  }
+  return appearance;
  });
  if(!Array.isArray(a.openQuestions)||a.openQuestions.length>20||a.openQuestions.some(q=>typeof q!=='string'||!q.trim()||q.length>300)) throw Error('Use up to 20 open questions, each under 300 characters.');
  let decor;
@@ -26,7 +31,7 @@ export function readPersonal(value){
   const d=a.decor;
   if(!d||!Object.hasOwn(palettes,d.palette)||!['wood','tile'].includes(d.floor)||['window','shelf','lamp'].some(k=>typeof d[k]!=='boolean'))throw Error('Room decoration is invalid.');
   decor={palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
-  if(a.schemaVersion===3){
+  if(a.schemaVersion>=3){
    if(!['compact','medium','wide'].includes(d.size)||!['left','center','right'].includes(d.windowPosition)||!['left','right','none'].includes(d.doorPosition)||!['dawn','day','dusk','night'].includes(d.timeOfDay)||typeof d.alcove!=='boolean'||typeof d.fireplace!=='boolean')throw Error('Room shell or lighting is invalid.');
    Object.assign(decor,{size:d.size,windowPosition:d.windowPosition,doorPosition:d.doorPosition,timeOfDay:d.timeOfDay,alcove:d.alcove,fireplace:d.fireplace});
   }

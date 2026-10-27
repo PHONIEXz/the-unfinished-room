@@ -33,3 +33,9 @@ test('v3 shell and mood survive browser save and JSON restore without changing m
   const invalid=structuredClone(f);invalid.decor[key]=value;assert.throws(()=>readPersonal(invalid));
  }
 });
+
+test('v4 artwork transforms survive backup and reject unsafe values',()=>{
+ const f=fixture();f.schemaVersion=4;f.decor={palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true,size:'medium',windowPosition:'left',doorPosition:'left',timeOfDay:'dusk',alcove:true,fireplace:true};f.objects[0]={...f.objects[0],kind:'letter',x:40,y:50,rotation:-30,size:140};
+ assert.deepEqual(readPersonal(JSON.stringify(f)),f);
+ for(const [key,value]of [['rotation',181],['rotation',NaN],['size',59],['size',141],['size','100']]){const bad=structuredClone(f);bad.objects[0][key]=value;assert.throws(()=>readPersonal(bad));}
+});
