@@ -16,7 +16,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 - Optional original 3D diorama in the fictional demo, with orbit/zoom, five source-linked memory markers, day/lamp controls and an illustrated fallback. Personal rooms also open in 3D, and the creator supports surface placement, object transforms and saving inside the 3D dock. The 3D shell is a fixed-size diorama; richer wallpaper/doorway/alcove choices remain in the illustrated editor.
 - Original layered SVG cutaway interior, five source-backed demo objects, journal, discovery progress, quick-access list, next/previous panels and reset.
 - Daylight and lamp controls, optional synthesized radio static, reduced-motion support, zoom/pan/expanded view and a responsive controls dock.
-- Personal creator: 25 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.
+- Personal creator: 32 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.
 - Drag or use keyboard/sliders to place objects; rotate/resize artwork; duplicate, remove and change front/back order.
 - Room palettes, wallpaper, floor types, window position/count, optional doorway/fixtures/background furniture and reversible style presets.
 - Custom object colours and box/round/diamond shapes. Uploaded photos take precedence over generated artwork.
