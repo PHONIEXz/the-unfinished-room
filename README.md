@@ -1,68 +1,70 @@
 # The Unfinished Room
 
-**Five objects. One forgotten story. Some questions still unanswered.**
+**A room made from what someone left behind.**
 
-An interactive memory room where letters, photographs, and recollections reveal a story through surviving evidence. Planned open-weight AI connects sources and answers questions while preserving uncertainty.
+Explore a fictional reading room through five objects, inspect the surviving sources, and notice what they do not establish. Or build a personal memory room, saved in your browser.
 
-Created by **Paul Ayoade David (Phoenix / PHONIEXz)** for the Hacktoberfest 2026 Ghost in the Machine challenge.
+Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 
-## Status
+- [Live app](https://unfinishedroom.phoenixreborn.tech/)
+- [Fictional demo](https://unfinishedroom.phoenixreborn.tech/room/)
+- [Create a room](https://unfinishedroom.phoenixreborn.tech/create/)
+- [Demo keepsake](https://unfinishedroom.phoenixreborn.tech/keepsake/)
 
-Foundation deployed at [unfinishedroom.phoenixreborn.tech](https://unfinishedroom.phoenixreborn.tech): home introduction and a separate [interactive room](https://unfinishedroom.phoenixreborn.tech/room/) with five source panels, session discovery journal, fictional demonstration archive, and structural checks. Personal archive creation and connected AI are not built yet.
+## What works
+
+- Original layered SVG cutaway interior, five source-backed demo objects, journal, discovery progress, quick-access list, next/previous panels and reset.
+- Daylight and lamp controls, optional synthesized radio static, reduced-motion support, zoom/pan/expanded view and a responsive controls dock.
+- Personal creator: 25 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.
+- Drag or use keyboard/sliders to place objects; rotate/resize artwork; duplicate, remove and change front/back order.
+- Room palettes, wallpaper, floor types, window position/count, optional doorway/fixtures/background furniture and reversible style presets.
+- Custom object colours and box/round/diamond shapes. Uploaded photos take precedence over generated artwork.
+- Local save, versioned JSON export/restore, validation before replacing a saved room, and navigation warnings for unsaved changes.
+- Printable keepsake with all saved memories, original source text, photos, date notes, decorations and unanswered questions. Use the browser's Print / Save as PDF option.
+- Optional 99 KB Meshy radio in the demo detail panel: 8,206 triangles, rotatable, no auto-animation, hardware or software rendering. It is untextured and separate from the illustrated room.
 
 ## Run
 
-Requires Node.js 24 or later. These foundation checks need no dependencies or API key.
+Node.js 24 or later:
 
 ```sh
+npm ci
 npm test
 npm run build
 ```
 
-## Experience
+Serve `dist` with any static server for the creator/explorer. Vercel also serves `api/ask.mjs`. Build uses esbuild to bundle Three.js only for the optional lazy-loaded radio preview. No runtime CDN dependencies.
 
-Explore a photograph, letter, radio, clock, and empty frame. The room warms as discoveries accumulate. Ask questions, inspect evidence, and preserve a keepsake including unanswered questions.
+## AI and evidence
 
-The current foundation supports the five-object demo and discovery journal. Question answering and keepsake export are planned later chunks.
+The fictional demo offers opt-in questions using Google's open-weight `gemma-4-26b-a4b-it` model. Set `GEMMA_API_KEY` server-side on Vercel to enable it. Never commit keys or put them in browser code.
 
-See [the complete roadmap](docs/ROADMAP.md) for chunks, acceptance criteria, architecture, and release gates.
+Gemma selects exact excerpts; answers are expanded to complete source sentences. Unknowns use a fixed response, invented citations are rejected, and transient provider errors have bounded retries. This establishes textual provenance, not that a passage is relevant or that an account is true. The UI asks readers to check relevance.
 
-## Principles
+A fixed 12-question live evaluation passed on 27 October 2026. [Raw checks and limits](docs/ai-reliability.md) are available. That is a small recorded evaluation, not a general reliability percentage. Quota and availability still depend on Google. Basic request limiting is per serverless instance.
 
-- Public demo material is explicitly fictional.
-- User archives are local by default. Sending source content to an AI provider requires a clear choice.
-- Sources are data, never instructions. No invented quotes or identities.
-- Exact quote matching alone does not prove an interpretation is correct.
-- Exploration remains available when AI is unavailable. Cached results are labeled.
-- Touch, keyboard, readable list view, reduced motion, and opt-in sound are essential.
-- No impersonation of deceased people.
+**Personal rooms, photos and source text are never sent to AI.** The AI form is removed from the personal viewer. There is no impersonation of deceased people.
 
-## Live AI configuration
+## Local storage and privacy
 
-The room includes an opt-in Gemma question form. To activate it, set `GEMMA_API_KEY` in this Vercel project's server environment and redeploy. It uses `gemma-4-26b-a4b-it` via Google's generateContent endpoint. No user archive is sent in this version: only the user's question and the three explicitly fictional fixture texts. Without a key, the API returns a clear unavailable message. Do not put keys in browser code, GitHub, or screenshots.
+One room is saved in this browser's localStorage. Save replaces the previously saved room; unsaved edits exist only in the open page. This is not encrypted storage, a cloud backup or a private sharing service. Other people using this browser profile can access it. Clearing site data or changing browser/device can remove access.
 
-Known answers use complete source sentences around Gemma's selected exact excerpt, rather than displaying unchecked model prose. The UI asks readers to check passage relevance. This ensures source provenance, not that the passage answers the question or that the archive is true. Narrow factual and unknown live checks are recorded in [AI reliability checks](docs/ai-reliability.md); a fixed 12-question production evaluation passed on 27 October 2026. See the linked raw responses and scope limits; this is not a general reliability percentage. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
+PNG/JPEG/WebP uploads under 5 MB are resized to at most 800px on the long edge and re-encoded locally as JPEG. Original file metadata is not retained. SVG uploads and remote image URLs are rejected. Embedded photo data and dimensions are bounded; a room has a 2.4M-character photo budget. JSON imports are limited to 3 MB. Older room backups (v1–v6) remain readable; new exports use v7. Each memory is limited to 8,000 characters. Validation failure does not replace the saved room.
+
+**Backups and printed keepsakes include personal content and photos. Keep those files private.** Download a backup before clearing browser data. A keepsake uses the saved room, so save editor changes first. Printing is not an editable backup.
+
+## Verification and limits
+
+Automated tests cover evidence validation, AI parsing/retries, camera bounds, placement maths, storage failures, legacy backups, image validation, decoration-only/mixed rooms, layer ordering and finishing settings. Production desktop checks include create/save/reload/explore, photos/metadata, backup download/restore, catalogue search/duplication, camera controls and the software 3D preview.
+
+Real-phone checks remain pending. The software 3D route was visually verified because the cloud browser has WebGL disabled; hardware rendering is implemented but not visually verified here. There is no pinch-camera gesture, automatic collision avoidance, fully movable room-shell furniture, cloud sync, private share links or personal-memory AI. Background set dressing may be hidden; catalogue objects can be freely arranged.
+
+See [current release checks](docs/RELEASE-CHECKS.md), [submission draft](docs/SUBMISSION.md) and [roadmap](docs/ROADMAP.md). Historical roadmap milestones describe earlier builds; this README and release checks describe the current release.
+
+## Tools and credits
+
+Vanilla HTML/CSS/JavaScript, original inline SVG artwork, Node.js tests, Three.js/OrbitControls/SVGRenderer, esbuild, glTF Transform/meshoptimizer, Google AI Studio/Gemma, GitHub, Vercel and the .tech domain. Meshy generated the optional radio mesh, simplified from 102,622 to 8,206 triangles. Its [CC BY 4.0 notice](web/assets/radio-license.txt) is separate from the code license. Radio static is generated in-browser with Web Audio; no external audio track is used by the app.
 
 ## License
 
-MIT for code and original fictional text fixtures. Models, fonts, artwork, audio, and other third-party materials retain their own licenses and require attribution before release.
-
-## Personal room editor
-
-Open `/create/` to write a room title, up to twelve titled memories, and unanswered questions. Save stores one room in this browser's localStorage, replacing its previous saved room. Save & explore opens those sources in the illustrated room, with separate discovery progress. No personal source text is sent to the server or AI. The AI form remains exclusive to the fictional demo. Browser storage is not an encrypted vault or cloud backup; clearing site data can erase it.
-
-Download backup exports the current valid editor contents as portable JSON. Restore validates version, size, text bounds, IDs and source links before populating the editor; saving is a separate step. Invalid imports leave the saved room unchanged. This first creator supports written photo descriptions, not image uploads or AI fact extraction. Unsaved drafts remain in the open editor only, with a navigation warning. Use a backup for portability.
-
-Creator verification (27 October 2026): on production, created a fictional two-object room, saved, reloaded, explored both source panels, downloaded its JSON backup, changed and saved its title, restored the downloaded backup, saved and reloaded it. An unsupported-version backup was rejected without replacing the visible editor contents. Automated tests additionally cover broken links, oversized text, duplicate IDs, storage failure and markup-like source text. Real phone testing is still pending.
-
-### Decorating a personal room
-
-The editor supports up to 12 named memory objects, with selectable appearances (including books, plants, chairs and custom keepsakes), horizontal/vertical position controls and a live preview. Choose midnight, cream, burgundy or lagoon walls; wood or tiled flooring; and show/hide the window, shelf and lamp. Personal rooms use those settings during exploration. Version 2 backups include decoration and positions; version 1 text-room backups remain readable and acquire default positions when edited. The editor exports version 2. Backups are limited to 600 KB; each memory remains limited to 8,000 characters. This is an illustrated room builder, not a game or a full 3D furniture simulator. Image uploads and personal AI are still pending.
-
-Decorator live verification (27 October): an existing version 1 room loaded into the new editor. Added a reading chair, set its position to 12/60, selected lagoon walls and tiles, hid the shelf, saved and explored. All three objects appeared, the chair opened its exact memory, and reload retained the room and exploration progress. Automated tests cover version 2 backup round-trips, twelve-object bounds, invalid palettes and coordinates; full phone/decorated-file restore testing remains pending.
-
-Room placement now supports pointer dragging in the creator preview, plus arrow-key movement (Shift for larger steps) and sliders. Drag positions are bounded to keep objects inside the scene and are saved/exported with the room. Save is explicit; pointer cancellation rolls back the move. Hide editing controls gives a larger preview while keeping save/export actions available. Wall edges and floor perspective add illustrated depth, without requiring WebGL. Actual touch-device checks remain pending.
-
-Room navigation provides zoom (100–240%), bounded background panning, Reset view and an expanded viewport closed with Escape. The creator separates Move objects from Move view; zoom-aware placement prevents scaled drags from corrupting coordinates. Exploration keeps object clicks for memory panels, with Previous/Next controls. Camera position is temporary and never changes the saved archive. Keyboard view controls are available on the focused viewport (+/−, arrows, Home), and reduced-motion preferences remove animation. Real-device touch and pinch gestures are not verified; on-screen zoom controls remain available.
-
-Navigation live verification (27 October): zoomed the creator to 140%, expanded it, panned the view while object coordinates stayed unchanged, switched back to object placement, dragged the chair to 53/47 while zoomed, closed with Escape, reset and saved. The personal room displayed that saved placement, and Previous/Next opened the expected source panels. Thirty-six automated tests pass, including camera edge bounds, anchor-preserving zoom and resize clamps.
+MIT for original code, original SVG artwork and fictional text fixtures. The Meshy radio is separately CC BY 4.0 with attribution. Dependencies retain their own licenses. Personal archive content remains the user's content. Do not claim private ownership of the free-plan Meshy asset.

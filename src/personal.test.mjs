@@ -55,3 +55,9 @@ test('v6 decoration-only rooms and mixed memories preserve order and source inte
  const mixed=structuredClone(room);mixed.sources=[{id:'book',title:'School book',text:'A memory.',type:'text'}];mixed.objects.push({...object,id:'book',kind:'book',title:'School book',decoration:false,sourceIds:['book']});assert.deepEqual(readPersonal(mixed),mixed);
  for(const mutate of [r=>r.objects[0].sourceIds.push('book'),r=>r.objects[1].sourceIds=[],r=>r.objects[1].decoration=true,r=>r.objects.reverse().push(r.objects[0])]){const bad=structuredClone(mixed);mutate(bad);assert.throws(()=>readPersonal(bad));}
 });
+
+test('v7 finishes and custom shapes round-trip and reject unsafe styles',()=>{
+ const f={schemaVersion:7,title:'A quiet corner',fictional:true,decor:{palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true,size:'medium',windowPosition:'left',doorPosition:'left',timeOfDay:'dusk',alcove:true,fireplace:true,wallpaper:'paper',windows:2,furnishings:false},sources:[],objects:[{id:'box',title:'Keepsake box',sourceIds:[],decoration:true,kind:'custom',x:45,y:60,rotation:15,size:100,date:'',sourceNote:'',image:null,color:'#abc123',shape:'round'}],openQuestions:[]};
+ assert.deepEqual(readPersonal(JSON.stringify(f)),f);
+ for(const mutate of [a=>a.objects[0].color='url(x)',a=>a.objects[0].shape='script',a=>a.decor.windows=3,a=>a.decor.wallpaper='url(x)',a=>a.decor.furnishings='false']){const bad=structuredClone(f);mutate(bad);assert.throws(()=>readPersonal(bad));}
+});

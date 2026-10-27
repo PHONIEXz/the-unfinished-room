@@ -5,7 +5,7 @@ export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8'
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
- if(!a||![1,2,3,4,5,6].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
+ if(!a||![1,2,3,4,5,6,7].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
  if(!Array.isArray(a.sources)||a.sources.length>12||!Array.isArray(a.objects)||!a.objects.length||a.objects.length>12||(a.schemaVersion<6&&(!a.sources.length||a.objects.length!==a.sources.length))) throw Error('A room needs one to twelve memories.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
@@ -14,11 +14,11 @@ export function readPersonal(value){
  });
  const used=new Set();
  const objects=a.objects.map(o=>{
-  if(a.schemaVersion===6&&typeof o?.decoration!=='boolean')throw Error('Choose whether each object holds a memory.');
-  const decoration=a.schemaVersion===6&&o?.decoration===true;
+  if(a.schemaVersion>=6&&typeof o?.decoration!=='boolean')throw Error('Choose whether each object holds a memory.');
+  const decoration=a.schemaVersion>=6&&o?.decoration===true;
   if(!o||typeof o.id!=='string'||!/^([a-z][a-z0-9-]{0,59})$/.test(o.id)||(!decoration&&!ids.has(o.id))||used.has(o.id)||typeof o.title!=='string'||!o.title.trim()||o.title.length>120||!Array.isArray(o.sourceIds)||(decoration?(o.sourceIds.length!==0||ids.has(o.id)):(o.sourceIds.length!==1||o.sourceIds[0]!==o.id))) throw Error('A room object has an invalid source link.');
   used.add(o.id);
-  const base={id:o.id,title:o.title.trim(),sourceIds:decoration?[]:[o.id],...(a.schemaVersion===6?{decoration}: {})};
+  const base={id:o.id,title:o.title.trim(),sourceIds:decoration?[]:[o.id],...(a.schemaVersion>=6?{decoration}: {})};
   if(a.schemaVersion===1)return base;
   if(!Object.hasOwn(kinds,o.kind)||!Number.isFinite(o.x)||o.x<0||o.x>100||!Number.isFinite(o.y)||o.y<0||o.y>100)throw Error('An object has an invalid appearance or position.');
   const appearance={...base,kind:o.kind,x:o.x,y:o.y};
@@ -27,7 +27,8 @@ export function readPersonal(value){
    const transformed={...appearance,rotation:o.rotation,size:o.size};
    if(a.schemaVersion>=5){
     if(typeof o.date!=='string'||o.date.length>100||typeof o.sourceNote!=='string'||o.sourceNote.length>500)throw Error('Memory date or source note is too long.');
-    return {...transformed,date:o.date.trim(),sourceNote:o.sourceNote.trim(),image:validateImage(o.image)};
+    const memory={...transformed,date:o.date.trim(),sourceNote:o.sourceNote.trim(),image:validateImage(o.image)};
+    if(a.schemaVersion===7){if(!/^#[0-9a-f]{6}$/i.test(o.color)||!['box','round','diamond'].includes(o.shape))throw Error('Object colour or shape is invalid.');Object.assign(memory,{color:o.color,shape:o.shape});}return memory;
    }
    return transformed;
   }
@@ -43,6 +44,7 @@ export function readPersonal(value){
   decor={palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
   if(a.schemaVersion>=3){
    if(!['compact','medium','wide'].includes(d.size)||!['left','center','right'].includes(d.windowPosition)||!['left','right','none'].includes(d.doorPosition)||!['dawn','day','dusk','night'].includes(d.timeOfDay)||typeof d.alcove!=='boolean'||typeof d.fireplace!=='boolean')throw Error('Room shell or lighting is invalid.');
+   if(a.schemaVersion===7){if(!['plain','stripe','paper'].includes(d.wallpaper)||![0,1,2].includes(d.windows)||typeof d.furnishings!=='boolean')throw Error('Room finishing options are invalid.');Object.assign(decor,{wallpaper:d.wallpaper,windows:d.windows,furnishings:d.furnishings});}
    Object.assign(decor,{size:d.size,windowPosition:d.windowPosition,doorPosition:d.doorPosition,timeOfDay:d.timeOfDay,alcove:d.alcove,fireplace:d.fireplace});
   }
  }

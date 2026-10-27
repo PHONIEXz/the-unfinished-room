@@ -16,6 +16,7 @@ const archive = personal ? (()=>{try{return readPersonal(localStorage.getItem(st
   return response.json();
 }).catch(() => null);
 if(personal){
+ document.querySelector('#print-keepsake').href='/keepsake/?personal=1';
  document.querySelector('#ask-title').closest('section').remove();
  document.querySelector('#room-title').textContent=archive?.title || 'Your room is not available';
  document.title=(archive?.title || 'Your room')+' | The Unfinished Room';

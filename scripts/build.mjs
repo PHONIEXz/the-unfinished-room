@@ -6,6 +6,9 @@ const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json',
 const result = validateArchive(archive);
 if (!result.valid) throw new Error(result.errors.join('; '));
 await mkdir('dist/room', { recursive: true });
+await mkdir('dist/keepsake',{recursive:true});
+await copyFile('web/keepsake.html','dist/keepsake/index.html');
+await copyFile('web/keepsake.js','dist/keepsake.js');
 await mkdir('dist/create', { recursive: true });
 await copyFile('web/create.html', 'dist/create/index.html');
 for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs', 'images.mjs', 'decor.mjs', 'placement.mjs', 'camera.mjs', 'interior.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
