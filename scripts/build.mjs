@@ -18,3 +18,5 @@ await copyFile('fixtures/reading-room.json', 'dist/reading-room.json');
 await mkdir('dist/assets',{recursive:true});
 for(const name of ['vintage-radio.glb','radio-license.txt'])await copyFile('web/assets/'+name,'dist/assets/'+name);
 await build({entryPoints:['web/radio-preview.js'],bundle:true,minify:true,format:'esm',outfile:'dist/radio-preview.js',target:'es2022'});
+
+await build({entryPoints:['web/room-three.js'],bundle:true,minify:true,format:'esm',outfile:'dist/room-three.js',target:'es2022'});
