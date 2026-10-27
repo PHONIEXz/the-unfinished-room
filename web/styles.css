@@ -60,3 +60,5 @@ dialog{border:0;padding:0;width:min(610px,calc(100vw - 30px));max-height:90vh;ba
 
 .interior[data-window-position=center] .window-plant{transform:translateX(315px)}.interior[data-window-position=right] .window-plant{transform:translateX(600px)}.interior[data-door-position=right] .interior-wardrobe{display:none}
 .radio-3d{margin:20px 0;padding:12px;background:#172530;color:#f2e3cd;border-radius:6px;overflow:hidden}.radio-3d canvas{display:block;width:100%;max-width:100%;touch-action:none}.radio-3d p{font:13px/1.6 sans-serif}.radio-3d button{min-height:44px;padding:10px 12px;background:#e5b477;color:#172530;border:1px solid #ba9565;border-radius:4px}.preview-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.model-credit a{text-decoration:underline;color:#f2d2a0}
+
+.radio-3d>svg{display:block;width:100%;max-width:100%;touch-action:none}
