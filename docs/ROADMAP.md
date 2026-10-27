@@ -17,7 +17,7 @@ Status: foundation shipped. Repository, plan, fictional archive, validator, chec
 - Fictional story: a neighborhood reading room remembered through five objects.
 - Stable source IDs, source text, object-source links, explicit fictional status, unresolved questions.
 - Visual direction: midnight blue, charcoal, warm amber, aged-paper cream, restrained burgundy. Readable type and generous spacing.
-- Planned stack: React/TypeScript frontend, layered HTML/SVG/CSS room, small Node API with server-only provider keys. No full 3D engine.
+- Shipped stack: vanilla JavaScript modules, layered HTML/CSS room, and a small Node API with server-only provider keys. No full 3D engine.
 - Keep archive logic independent of UI and model.
 - Exit: valid coherent archive, working app shell, build check, initial visual direction.
 
@@ -36,7 +36,7 @@ Status: dedicated /room/ page shipped with five object panels, evidence journal,
 
 ## Chunk 3: evidence-based AI | October 28-29
 
-Status: the five AI reliability chunks are implemented: final response parsing, canonical unknowns, bounded retries, extractive source answers, and a recorded 12-question production evaluation. All 12 checks passed on 27 October; 22 local tests and the build pass. See [AI reliability checks](ai-reliability.md) for raw evidence and limits. This does not complete the whole product roadmap: personal archive creation, candidate fact extraction, timeline suggestions, broader conflict/injection testing, and full UI review remain.
+Status: the five AI reliability chunks are implemented: final response parsing, canonical unknowns, bounded retries, extractive source answers, and a recorded 12-question production evaluation. All 12 checks passed on 27 October; 22 local tests and the build pass. See [AI reliability checks](ai-reliability.md) for raw evidence and limits. This does not complete the whole product roadmap: personal-archive AI, candidate fact extraction, timeline suggestions, broader conflict/injection testing, and full UI review remain.
 
 - Verify available open-weight model access and output quality early, using fictional inputs.
 - Target Gemma if reliability checks succeed; provider adapter permits another verified open-weight model. Do not silently forward private material to a second provider.
@@ -52,7 +52,7 @@ Status: the five AI reliability chunks are implemented: final response parsing, 
 
 ## Chunk 4: create and preserve memories | October 29-30
 
-Status: text-only creator and first room decorator implemented at /create/, with browser save, personal room exploration, JSON export/validated restore, and unsaved-change warnings. Automated storage/validation tests pass. Custom objects (up to 12), room palettes, floor style, optional fixtures, and position sliders are implemented with versioned backups. Photo uploads and AI-assisted extraction remain later work; production create/save/reload/explore/download/restore/save/reload flow has been verified with a fictional two-object room. Unsupported backups are rejected. Real phone review remains pending.
+Status: text-only creator and first room decorator implemented at /create/, with browser save, personal room exploration, JSON export/validated restore, and unsaved-change warnings. Automated storage/validation tests pass. Custom objects (up to 12), room palettes, floor style, optional fixtures, position sliders, pointer dragging, arrow-key placement, and a clean preview are implemented with versioned backups. A desktop drag/save/reload check passed; touch-device checks remain pending. Photo uploads and AI-assisted extraction remain later work; production create/save/reload/explore/download/restore/save/reload flow has been verified with a fictional two-object room. Unsupported backups are rejected. Real phone review remains pending.
 
 - Paste letters and memories; attach photographs with user-written descriptions.
 - Review and edit sources, uncertain dates, suggested facts, and object assignments.
@@ -63,10 +63,59 @@ Status: text-only creator and first room decorator implemented at /create/, with
 - Unique safe filenames; no account, public sharing, or collection of private source text in analytics.
 - Exit: create -> edit -> save -> reload -> explore -> export -> restore works with no missing evidence.
 
+## Room-builder upgrade sequence | added October 27
+
+These are additions within Chunk 4, not replacements for memory preservation or source-backed AI. Inspired by direct inspection of Lagos Life's signed-in catalogue, Design, Styles, and clean-screen menus. Its 3D view failed in this browser, so actual 3D placement and camera behavior were not verified. Build original visuals and interaction code; do not reuse its assets, branding, descriptions, or game economy.
+
+### 4A: catalogue and focused editor | next
+
+Status: planned. Highest priority visual/usability upgrade.
+
+- Replace the long wall of object forms with a collapsible side catalogue and a selected-object inspector.
+- Search by object name; group appearances into Furniture, Personal items, Plants, and Wall memories.
+- Add an object, then edit only its name, source text, appearance, and position in the inspector.
+- Keep room preview visible on desktop. Use a collapsible sheet on narrow screens, with an obvious return to the room.
+- Preserve dragging, arrow keys, sliders, explicit save, and clean preview. Selection must not accidentally drag or open the memory.
+- Exit: add -> select -> edit -> move -> save -> reload works without lost source text or inaccessible controls.
+
+### 4B: object sizes and orientation | after 4A
+
+Status: planned. Highest priority room-realism upgrade.
+
+- Give chairs, tables, books, plants, and wall memories different footprints and original drawn appearances.
+- Offer small/medium/large size and limited orientation choices before attempting arbitrary 3D rotation.
+- Keep objects fully within the room at each supported size. Give overlapping items a way to be selected from the object list.
+- Include appearance, size, orientation, and placement in versioned backups. Older backups load safe defaults.
+- Exit: differently sized objects remain selectable and readable after resize, save/reload, and export/restore; source links remain unchanged.
+
+### 4C: starter room styles | only after the core flows pass
+
+Status: planned, time permitting before submission.
+
+- Offer a few original starter looks: Family sitting room, Student reading corner, and Memory gallery.
+- A style changes decoration and placement only. It never invents personal memories, names, dates, or source text.
+- Preview before applying, with Cancel restoring the previous appearance. Preserve existing objects and sources.
+- If adding templates with empty objects, clearly label them as blank prompts, not recovered memories.
+- Exit: applying/cancelling a style cannot erase or silently replace archive content.
+
+### Later: custom colours, saved looks, and camera choices
+
+Status: deferred until essential contest work is secure.
+
+- Custom wall colours and brightness, plus more original floor textures.
+- Named saved looks that store decoration separately from the source archive.
+- A simple alternative room view and zoom/reset, only if placement coordinates and keyboard use stay reliable.
+- More furniture drawings and photo-backed memory frames after the first release checks.
+- Full 3D rooms, avatars, currencies, shopping, daily rewards, multiplayer, and a simulated city are outside this contest build.
+
+### Release gate for this sequence
+
+Do 4A and 4B first. Stop optional decoration work if it threatens personal-memory functionality, data preservation, accessible use, the recorded AI evaluation, or submission preparation. Browser save/restore, photo storage decisions, consented personal AI, and the printable keepsake remain core product work in Chunk 4. Decoration alone does not complete the product.
+
 ## Chunk 5: polish and release | October 30
 
-- Deploy an early preview before final polish; planned hosting is Render.
-- Connect an available subdomain of phoenixreborn.tech after DNS verification.
+- Already deployed on Vercel. Verify production after each release; do not migrate hosting solely for a sponsor mention.
+- Custom domain is live at unfinishedroom.phoenixreborn.tech; verify domain/TLS and all public links before submission.
 - Keep secrets server-side, exclude source text from logs, set request limits and abuse controls, document actual retention behavior.
 - Add original or licensed ambient audio, opt-in playback, and restrained motion.
 - Optional clearly labeled synthetic narration; no real-person voice cloning.
@@ -79,7 +128,7 @@ Status: text-only creator and first room decorator implemented at /create/, with
 - Write around the moment the room lights up and the real problem of losing the context behind memories.
 - Explain meaningful open innovation: replaceable models, inspectable source grounding, portable archives, reproducible setup.
 - Do not claim local/offline inference unless implemented and tested.
-- Candidate partner fits: Render, Gemma, .tech, optional ElevenLabs. Claim Copilot or any other tool only if actually used and evidenced.
+- Actual current tools include Vercel, Google-hosted Gemma, GitHub, and the .tech domain. Verify prize eligibility against the rules before claiming any partner category. Claim Render, ElevenLabs, Copilot, or any other tool only if actually used and evidenced in this project.
 - Current screenshots: initial room, source panel, cited answer, honest unknown, final reveal, creator.
 - One polished 45-60 second demo; optional separate short technical walkthrough.
 - README: setup, model/provider configuration, architecture, asset attribution, tests, evaluation, limitations.
