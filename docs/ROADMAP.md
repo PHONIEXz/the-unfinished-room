@@ -36,9 +36,7 @@ Status: dedicated /room/ page shipped with five object panels, evidence journal,
 
 ## Chunk 3: evidence-based AI | October 28-29
 
-Status: server-side Gemma question route, source/excerpt validation, consent, bounded requests, transparent unavailable state, and tests are in place. The key is configured and a factual question works live; unknown-answer evaluation, fact extraction, timeline suggestions, and semantic grounding review remain.
-
-Update 27 October: key configured and live factual inference works. Response-contract Chunk 1 is verified on a three-run factual sample; see [AI reliability checks](ai-reliability.md). Unknown-answer reliability, retries, broader evaluation, semantic support, and fact extraction remain pending.
+Status: the five AI reliability chunks are implemented: final response parsing, canonical unknowns, bounded retries, extractive source answers, and a recorded 12-question production evaluation. All 12 checks passed on 27 October; 22 local tests and the build pass. See [AI reliability checks](ai-reliability.md) for raw evidence and limits. This does not complete the whole product roadmap: personal archive creation, candidate fact extraction, timeline suggestions, broader conflict/injection testing, and full UI review remain.
 
 - Verify available open-weight model access and output quality early, using fictional inputs.
 - Target Gemma if reliability checks succeed; provider adapter permits another verified open-weight model. Do not silently forward private material to a second provider.

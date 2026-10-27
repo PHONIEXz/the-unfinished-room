@@ -41,7 +41,7 @@ See [the complete roadmap](docs/ROADMAP.md) for chunks, acceptance criteria, arc
 
 The room includes an opt-in Gemma question form. To activate it, set `GEMMA_API_KEY` in this Vercel project's server environment and redeploy. It uses `gemma-4-26b-a4b-it` via Google's generateContent endpoint. No user archive is sent in this version: only the user's question and the three explicitly fictional fixture texts. Without a key, the API returns a clear unavailable message. Do not put keys in browser code, GitHub, or screenshots.
 
-Known answers use complete source sentences around Gemma's selected exact excerpt, rather than displaying unchecked model prose. The UI asks readers to check passage relevance. This ensures source provenance, not that the passage answers the question or that the archive is true. Narrow factual and unknown live checks are recorded in [AI reliability checks](docs/ai-reliability.md); a wider evaluation remains pending. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
+Known answers use complete source sentences around Gemma's selected exact excerpt, rather than displaying unchecked model prose. The UI asks readers to check passage relevance. This ensures source provenance, not that the passage answers the question or that the archive is true. Narrow factual and unknown live checks are recorded in [AI reliability checks](docs/ai-reliability.md); a fixed 12-question production evaluation passed on 27 October 2026. See the linked raw responses and scope limits; this is not a general reliability percentage. The short in-memory request limit is a basic abuse guard, not a durable quota across serverless instances.
 
 ## License
 

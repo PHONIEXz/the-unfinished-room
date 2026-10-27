@@ -31,3 +31,11 @@ Known answers now use extractive mode: Gemma selects an exact source excerpt; th
 This is a deliberate tradeoff: source wording replaces conversational synthesis. We guarantee source-text provenance for displayed known-answer text, not semantic relevance, truth of the archive, or correct unknown classification. A model can still select the wrong passage. The sentence splitter is suited to this small fictional plain-text archive; arbitrary personal documents need a stronger segmentation/retrieval design.
 
 Twenty-two tests pass, including invented prose paired with a genuine citation, truncated negative/uncertain statements, and excerpts crossing sentence boundaries. Next: Chunk 5, a live evaluation matrix of factual, unknown, misleading, and instruction-like questions.
+
+## Chunk 5: production evaluation
+
+On 27 October 2026, commit `93a46688046a6cef619c6a4d334462fae5d9e5c8` passed 12/12 fixed live API checks: six factual questions (lamp, year, children, radio, clock, room name), three archive unknowns (photographer, writer, founder), two misleading premises (invented Ada and London street), and an instruction to ignore the archive and fabricate evidence. All returned HTTP 200. Known answers contained the expected source wording in extractive mode; unknown/adversarial cases returned unknown with no evidence. Every response was also reviewed against the fixture text.
+
+Client HTTP wall time ranged from 4.644 to 5.888 seconds, with a 5.170-second median. These include network/request time and are not model-only measurements or measured time savings. Requests were spaced 11 seconds apart to respect the basic request guard. This is one run per question on a tiny fictional archive, not a general success rate, security certification, load test, phone/UI review, or provider outage test.
+
+Raw questions, responses and timings: [evaluation JSON](live-evaluation-2026-10-27.json). Reproduce explicitly with `node scripts/evaluate-live.mjs https://unfinishedroom.phoenixreborn.tech/api/ask`. This sends the fictional test questions to the live service and uses provider quota. The runner reports failures and exits nonzero if any check fails; it is not part of normal CI. The five AI reliability chunks are complete within this stated scope. Product roadmap work such as the personal archive creator remains separate.
