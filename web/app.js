@@ -1,3 +1,4 @@
+import {enableCamera} from './camera.mjs';
 import {decorateScene} from './decor.mjs';
 import {storageKey,readPersonal} from './personal.mjs';
 const personal = new URLSearchParams(location.search).get('personal')==='1';
@@ -27,6 +28,7 @@ if(personal){
  if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';}}
  else document.querySelectorAll('.object').forEach(b=>b.remove());
 }
+enableCamera(document.querySelector('#scene'));
 const buttons = [...document.querySelectorAll('.object')];
 const dialog = document.querySelector('#evidence');
 const progressKey = personal ? 'unfinished-room-personal-progress-'+JSON.stringify(archive) : 'unfinished-room-demo-v1';
@@ -98,6 +100,9 @@ function openObject(id, trigger = null) {
 buttons.forEach(button => button.addEventListener('click', () => openObject(button.dataset.id, button)));
 document.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', () => openObject(button.dataset.open, button)));
 document.querySelector('#close').addEventListener('click', () => dialog.close());
+document.querySelector('#previous-object').addEventListener('click', () => {
+ const index=buttons.findIndex(button=>button.dataset.id===current);dialog.close();openObject(buttons[(index-1+buttons.length)%buttons.length].dataset.id);
+});
 document.querySelector('#next-object').addEventListener('click', () => {
   const index = buttons.findIndex(button => button.dataset.id === current);
   dialog.close();

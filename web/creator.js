@@ -1,3 +1,4 @@
+import {enableCamera} from './camera.mjs';
 import {enablePlacement} from './placement.mjs';
 import {decorateScene,decoratedObjects} from './decor.mjs';
 import {slots,kinds,storageKey,readPersonal,savePersonal} from './personal.mjs';
@@ -37,6 +38,7 @@ $('clean-preview').onclick=()=>{const panel=$('room-preview').closest('.room-met
 $('add-object').onclick=()=>{const input=addObject();markDirty();input?.focus();};
 try{const saved=localStorage.getItem(storageKey);if(saved){fill(readPersonal(saved));status.textContent='Your saved room is loaded. Changes need saving.';}}catch{status.textContent='Saved data could not be loaded. You can restore a backup; saving a new room will replace the saved data.';}
 if(!cards.children.length)addObject();
+enableCamera($('room-preview'),{editing:true});
 $('creator-form').addEventListener('input',markDirty);
 function save(){const a=collect();try{savePersonal(localStorage,a);}catch{throw Error('Browser saving failed. Your draft is still here; download a backup to keep it.');}dirty=false;status.textContent='Saved on this browser. Download a backup for safekeeping.';return a;}
 $('creator-form').addEventListener('submit',e=>{e.preventDefault();try{save();}catch(error){status.textContent=error.message;}});
