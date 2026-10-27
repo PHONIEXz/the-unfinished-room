@@ -18,7 +18,7 @@ function addObject(o={id:'object-'+crypto.randomUUID(),title:'',kind:'keepsake',
  const note=field('Memory or source description','textarea','text',text);note.maxLength=8000;note.rows=4;note.placeholder='What does this object mean to you? Include uncertain details as uncertain.';
  for(const [axis,label,min,max]of [['x','Horizontal position',0,100],['y','Vertical position',0,100]]){const input=field(label,'input',axis,o[axis]);input.type='range';input.min=min;input.max=max;}
  for(const [name,label,min,max,value]of [['rotation','Rotation (degrees)',-180,180,o.rotation??0],['size','Artwork size (%)',60,140,o.size??100]]){
-  const input=field(label,'input',name,value);input.type='range';input.min=min;input.max=max;input.step=name==='rotation'?5:10;
+  const input=field(label,'input',name,value);input.type='range';input.min=min;input.max=max;input.step=name==='rotation'?5:10;input.value=value;
   const output=document.createElement('output');output.textContent=String(value)+(name==='rotation'?'°':'%');input.after(output);input.addEventListener('input',()=>output.textContent=input.value+(name==='rotation'?'°':'%'));
  }
  const reset=document.createElement('button');reset.type='button';reset.textContent='Reset appearance';reset.className='reset-appearance';reset.onclick=()=>{for(const [name,value]of [['rotation',0],['size',100]]){const input=card.querySelector(`[data-field="${name}"]`);input.value=value;input.nextElementSibling.textContent=value+(name==='rotation'?'°':'%');}markDirty();};card.append(reset);
