@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validateAnswer, buildPrompt, parseModelJson } from './evidence.mjs';
+import { validateAnswer, buildPrompt, parseModelJson, finalResponseText } from './evidence.mjs';
 const sources = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json', import.meta.url))).sources;
 test('validates exact source excerpt and source ID', () => {
   const answer = validateAnswer({answer:'The first circle is dated 1998.',unknown:false,evidence:[{sourceId:'photo-note',quote:'Our first Saturday reading circle, 1998.'}]},sources);
@@ -22,4 +22,9 @@ test('extracts complete JSON surrounded by prose or a code fence',()=>{
   assert.equal(parseModelJson(raw).answer,'A { room }');
   assert.equal(parseModelJson('Example: {"sourceId":"letter","quote":"some words"}\nFinal: {"answer":"Unknown","unknown":true,"evidence":[]}').unknown,true);
   assert.throws(()=>parseModelJson('{"answer":'),SyntaxError);
+});
+test('keeps final answer text separate from thought parts',()=>{
+  const parts=[{thought:true,text:'A long private analysis with {bad json}.'},{text:'{"answer":"The room was open.","unknown":false,"evidence":[]}'}];
+  assert.equal(finalResponseText(parts),'{"answer":"The room was open.","unknown":false,"evidence":[]}');
+  assert.equal(finalResponseText([{thought:true,text:'No final part'}]),'');
 });

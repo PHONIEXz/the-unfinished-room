@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { buildPrompt, validateAnswer, parseModelJson } from '../src/evidence.mjs';
+import { buildPrompt, validateAnswer, parseModelJson, finalResponseText } from '../src/evidence.mjs';
 const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json', import.meta.url), 'utf8'));
 const model = 'gemma-4-26b-a4b-it';
 const buckets = new Map();
@@ -26,7 +26,7 @@ export default async function handler(request, response) {
     const upstream = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method:'POST',
       headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:1400,responseMimeType:'application/json'}}),
+      body:JSON.stringify({contents:[{parts:[{text:buildPrompt(question.trim(),archive.sources)}]}],generationConfig:{maxOutputTokens:700,responseMimeType:'application/json',thinkingConfig:{thinkingLevel:'minimal'}}}),
       signal:AbortSignal.timeout(28000)
     });
     if (!upstream.ok) {
@@ -34,7 +34,8 @@ export default async function handler(request, response) {
       return response.status(503).json({error:'The model is unavailable. Your discoveries are safe; please try later.'});
     }
     const payload = await upstream.json();
-    const text = payload.candidates?.[0]?.content?.parts?.map(part=>part.text || '').join('') || '';
+    const parts = payload.candidates?.[0]?.content?.parts;
+    const text = finalResponseText(parts);
     let answer;
     let parsed;
     try { parsed = parseModelJson(text); answer = validateAnswer(parsed,archive.sources); }
@@ -49,7 +50,9 @@ export default async function handler(request, response) {
         keys:parsed && typeof parsed === 'object' ? Object.keys(parsed).slice(0,8) : [],
         answerType:typeof parsed?.answer,
         answerLength:typeof parsed?.answer === 'string' ? parsed.answer.length : null,
-        evidenceType:Array.isArray(parsed?.evidence) ? 'array' : typeof parsed?.evidence
+        evidenceType:Array.isArray(parsed?.evidence) ? 'array' : typeof parsed?.evidence,
+        partCount:Array.isArray(parts) ? parts.length : 0,
+        thoughtPartCount:Array.isArray(parts) ? parts.filter(part=>part?.thought===true).length : 0
       }));
       return response.status(502).json({error:'The model did not return a verifiable answer. Try another question.'});
     }
