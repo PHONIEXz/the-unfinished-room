@@ -23,6 +23,8 @@ Status: foundation shipped. Repository, plan, fictional archive, validator, chec
 
 ## Chunk 2: explore the room | October 27-28
 
+Status: dedicated /room/ page shipped with five object panels, evidence journal, session progress on refresh, an object quick-access list, and focus restoration. Richer story sequencing, final reveal presentation, and a fuller phone accessibility review remain.
+
 - Landing page: Enter the demo and Create a room.
 - Five objects: photograph, letter, radio, clock, empty frame.
 - Object panels display original evidence and related discoveries.

@@ -11,9 +11,15 @@ const archive = await fetch('/reading-room.json').then(response => {
 }).catch(() => null);
 const buttons = [...document.querySelectorAll('.object')];
 const dialog = document.querySelector('#evidence');
-const discovered = new Set();
+const progressKey = 'unfinished-room-demo-v1';
+let saved = [];
+try { saved = JSON.parse(sessionStorage.getItem(progressKey) || '[]'); } catch { /* Corrupt session data is ignored. */ }
+const knownIds = new Set(buttons.map(button => button.dataset.id));
+const discovered = new Set(Array.isArray(saved) ? saved.filter(id => knownIds.has(id)) : []);
 let current = '';
+let restoreFocus = null;
 function render() {
+  try { sessionStorage.setItem(progressKey, JSON.stringify([...discovered])); } catch { /* The room still works if storage is unavailable. */ }
   document.querySelector('#count').textContent = `${discovered.size} / ${buttons.length}`;
   document.querySelector('#scene').style.setProperty('--warmth', discovered.size / buttons.length);
   buttons.forEach(button => button.classList.toggle('found', discovered.has(button.dataset.id)));
@@ -39,14 +45,16 @@ function render() {
       item.className = 'ending';
       item.textContent = 'The room was a place where children gathered to read. Its lamp signaled that it was open. Who began it remains unknown.';
       list.append(item);
+      document.querySelector('.room-bottom span').textContent = 'THE STORY IS RECOVERED · SOME QUESTIONS REMAIN OPEN';
     }
   }
 }
-function openObject(id) {
+function openObject(id, trigger = null) {
   if (!archive) return;
   const object = archive.objects.find(value => value.id === id);
   if (!object) return;
   current = id;
+  restoreFocus = trigger || buttons.find(button => button.dataset.id === id);
   discovered.add(id);
   render();
   document.querySelector('#object-number').textContent = `OBJECT ${String(buttons.findIndex(button => button.dataset.id === id) + 1).padStart(2, '0')} / 05`;
@@ -68,7 +76,8 @@ function openObject(id) {
   });
   dialog.showModal();
 }
-buttons.forEach(button => button.addEventListener('click', () => openObject(button.dataset.id)));
+buttons.forEach(button => button.addEventListener('click', () => openObject(button.dataset.id, button)));
+document.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', () => openObject(button.dataset.open, button)));
 document.querySelector('#close').addEventListener('click', () => dialog.close());
 document.querySelector('#next-object').addEventListener('click', () => {
   const index = buttons.findIndex(button => button.dataset.id === current);
@@ -77,6 +86,7 @@ document.querySelector('#next-object').addEventListener('click', () => {
 });
 document.querySelector('#reset').addEventListener('click', () => { discovered.clear(); render(); buttons[0].focus(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+dialog.addEventListener('close', () => restoreFocus?.focus());
 if (!archive) {
   document.querySelector('.room-bottom span').textContent = 'ARCHIVE UNAVAILABLE · PLEASE RELOAD';
   buttons.forEach(button => button.disabled = true);

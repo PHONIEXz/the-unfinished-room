@@ -8,7 +8,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)** for the Hacktoberfest 2026
 
 ## Status
 
-Foundation deployed at [unfinishedroom.phoenixreborn.tech](https://unfinishedroom.phoenixreborn.tech): responsive five-object room, source panels, discovery journal, fictional demonstration archive, and structural checks. Personal archive creation and connected AI are not built yet.
+Foundation deployed at [unfinishedroom.phoenixreborn.tech](https://unfinishedroom.phoenixreborn.tech): home introduction and a separate [interactive room](https://unfinishedroom.phoenixreborn.tech/room/) with five source panels, session discovery journal, fictional demonstration archive, and structural checks. Personal archive creation and connected AI are not built yet.
 
 ## Run
 
