@@ -19,6 +19,14 @@ test('without a key, a question fails transparently without model call',async()=
   assert.match(out.body.error,/not configured/);
   if(before) process.env.GEMMA_API_KEY=before;
 });
+test('availability endpoint reveals only configuration status',async()=>{
+  const before=process.env.GEMMA_API_KEY;
+  delete process.env.GEMMA_API_KEY;
+  const out=response();
+  await handler({method:'GET',headers:{}},out);
+  assert.deepEqual(out.body,{available:false,model:'gemma-4-26b-a4b-it'});
+  if(before) process.env.GEMMA_API_KEY=before;
+});
 test('valid model answer is returned with checked excerpt',async()=>{
   const before=process.env.GEMMA_API_KEY;
   const originalFetch=globalThis.fetch;

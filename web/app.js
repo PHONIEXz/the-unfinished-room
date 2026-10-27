@@ -94,6 +94,18 @@ if (!archive) {
 }
 render();
 const askForm = document.querySelector('#ask-form');
+if (askForm) {
+  fetch('/api/ask').then(response => response.json()).then(status => {
+    if (!status.available) {
+      const submit = document.querySelector('#ask-submit');
+      submit.disabled = true;
+      submit.textContent = 'Gemma is not connected yet';
+      document.querySelector('#answer').textContent = 'The live model has not been configured for this project. Explore the sources while the connection is prepared.';
+    }
+  }).catch(() => {
+    document.querySelector('#answer').textContent = 'Model availability could not be checked. Your archive discoveries remain available.';
+  });
+}
 askForm?.addEventListener('submit',async event => {
   event.preventDefault();
   if (!askForm.reportValidity()) return;

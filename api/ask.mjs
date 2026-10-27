@@ -6,6 +6,7 @@ const buckets = new Map();
 export default async function handler(request, response) {
   response.setHeader('Cache-Control','no-store');
   response.setHeader('Content-Type','application/json; charset=utf-8');
+  if (request.method === 'GET') return response.status(200).json({available:Boolean(process.env.GEMMA_API_KEY),model});
   if (request.method !== 'POST') return response.status(405).json({error:'Use POST.'});
   const key = process.env.GEMMA_API_KEY;
   if (!key) return response.status(503).json({error:'Live AI is not configured yet. The archive remains available.'});
