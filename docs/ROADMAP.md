@@ -52,7 +52,7 @@ Status: the five AI reliability chunks are implemented: final response parsing, 
 
 ## Chunk 4: create and preserve memories | October 29-30
 
-Status: first text-only creator implemented at /create/, with browser save, personal room exploration, JSON export/validated restore, and unsaved-change warnings. Automated storage/validation tests pass. Photo uploads and AI-assisted extraction remain later work; production create/save/reload/explore/download/restore/save/reload flow has been verified with a fictional two-object room. Unsupported backups are rejected. Real phone review remains pending.
+Status: text-only creator and first room decorator implemented at /create/, with browser save, personal room exploration, JSON export/validated restore, and unsaved-change warnings. Automated storage/validation tests pass. Custom objects (up to 12), room palettes, floor style, optional fixtures, and position sliders are implemented with versioned backups. Photo uploads and AI-assisted extraction remain later work; production create/save/reload/explore/download/restore/save/reload flow has been verified with a fictional two-object room. Unsupported backups are rejected. Real phone review remains pending.
 
 - Paste letters and memories; attach photographs with user-written descriptions.
 - Review and edit sources, uncertain dates, suggested facts, and object assignments.

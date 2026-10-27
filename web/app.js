@@ -1,3 +1,4 @@
+import {decorateScene} from './decor.mjs';
 import {storageKey,readPersonal} from './personal.mjs';
 const personal = new URLSearchParams(location.search).get('personal')==='1';
 const descriptions = {
@@ -22,13 +23,9 @@ if(personal){
  document.querySelector('.room-nav').replaceChildren(Object.assign(document.createElement('a'),{href:'/create/',textContent:'Edit your room →'}),Object.assign(document.createElement('a'),{href:'/room/',textContent:'Fictional demo'}));
  document.querySelector('.outro p').textContent='This room is saved on this browser. Return to the editor to update it or download a backup. Your source text has not been sent to AI.';
  document.querySelector('.outro a').href='/create/';document.querySelector('.outro a').textContent='Edit and back up your room →';
- for(const b of document.querySelectorAll('.object')){
-  const object=archive?.objects.find(o=>o.id===b.dataset.id);
-  if(!object){b.remove();document.querySelector(`[data-open="${b.dataset.id}"]`)?.remove();continue;}
-  b.querySelector('span:last-child').textContent=object.title;
-  document.querySelector(`[data-open="${object.id}"]`).textContent=object.title;
-  descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';
- }
+ const quick=document.querySelector('.object-list');quick.querySelectorAll('button').forEach(b=>b.remove());
+ if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';}}
+ else document.querySelectorAll('.object').forEach(b=>b.remove());
 }
 const buttons = [...document.querySelectorAll('.object')];
 const dialog = document.querySelector('#evidence');
