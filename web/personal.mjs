@@ -17,7 +17,7 @@ export function readPersonal(value){
   used.add(o.id);
   const base={id:o.id,title:o.title.trim(),sourceIds:[o.id]};
   if(a.schemaVersion===1)return base;
-  if(!Object.hasOwn(kinds,o.kind)||!Number.isFinite(o.x)||o.x<2||o.x>75||!Number.isFinite(o.y)||o.y<5||o.y>78)throw Error('An object has an invalid appearance or position.');
+  if(!Object.hasOwn(kinds,o.kind)||!Number.isFinite(o.x)||o.x<0||o.x>100||!Number.isFinite(o.y)||o.y<0||o.y>100)throw Error('An object has an invalid appearance or position.');
   return {...base,kind:o.kind,x:o.x,y:o.y};
  });
  if(!Array.isArray(a.openQuestions)||a.openQuestions.length>20||a.openQuestions.some(q=>typeof q!=='string'||!q.trim()||q.length>300)) throw Error('Use up to 20 open questions, each under 300 characters.');

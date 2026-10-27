@@ -14,7 +14,7 @@ test('custom objects and room decoration round-trip through backup',()=>{
 });
 test('unsafe style values and off-canvas coordinates are rejected',()=>{
  const f=fixture();f.schemaVersion=2;f.decor={palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true};f.objects[0]={...f.objects[0],kind:'book',x:20,y:30};
- for(const bad of [NaN,Infinity,-1,100]){const copy=structuredClone(f);copy.objects[0].x=bad;assert.throws(()=>readPersonal(copy));}
+ for(const bad of [NaN,Infinity,-1,101]){const copy=structuredClone(f);copy.objects[0].x=bad;assert.throws(()=>readPersonal(copy));}
  f.decor.palette='url(https://example.com)';assert.throws(()=>readPersonal(f));
 });
 test('room supports twelve unique objects but rejects a thirteenth',()=>{

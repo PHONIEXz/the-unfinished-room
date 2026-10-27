@@ -1,3 +1,4 @@
+import {enablePlacement} from './placement.mjs';
 import {decorateScene,decoratedObjects} from './decor.mjs';
 import {slots,kinds,storageKey,readPersonal,savePersonal} from './personal.mjs';
 const $=id=>document.getElementById(id);
@@ -13,7 +14,7 @@ function addObject(o={id:'object-'+crypto.randomUUID(),title:'',kind:'keepsake',
  const title=field('Object name','input','title',o.title);title.maxLength=120;title.placeholder='Your chair, a festival outfit, a favourite book…';
  const kind=field('Appearance','select','kind','');for(const [key,icon]of Object.entries(kinds)){const option=document.createElement('option');option.value=key;option.textContent=icon+' '+key;kind.append(option);}kind.value=o.kind;
  const note=field('Memory or source description','textarea','text',text);note.maxLength=8000;note.rows=4;note.placeholder='What does this object mean to you? Include uncertain details as uncertain.';
- for(const [axis,label,min,max]of [['x','Horizontal position',2,75],['y','Vertical position',5,78]]){const input=field(label,'input',axis,o[axis]);input.type='range';input.min=min;input.max=max;}
+ for(const [axis,label,min,max]of [['x','Horizontal position',0,100],['y','Vertical position',0,100]]){const input=field(label,'input',axis,o[axis]);input.type='range';input.min=min;input.max=max;}
  const remove=document.createElement('button');remove.type='button';remove.className='remove-object';remove.textContent='Remove object';remove.onclick=()=>{if((title.value||note.value)&&!confirm('Remove this object from the draft? Your saved room stays unchanged until you save.'))return;card.remove();markDirty();$('add-object').focus();};card.append(remove);cards.append(card);
  preview();return title;
 }
@@ -26,6 +27,13 @@ function collect(){
  for(const o of fields()){if(!o.title&&!o.text)continue;if(!o.title||!o.text)throw Error('Each included object needs a name and a memory or source description.');sources.push({id:o.id,type:'text',title:o.title,text:o.text});const {text,...object}=o;objects.push({...object,sourceIds:[o.id]});}
  return readPersonal({schemaVersion:2,decor:decor(),title:$('room-name').value,fictional:$('fictional').checked,sources,objects,openQuestions:$('questions').value.split('\n').map(q=>q.trim()).filter(Boolean)});
 }
+enablePlacement($('room-preview'),(id,position,cancelled)=>{
+ const card=[...cards.children].find(c=>c.dataset.id===id);if(!card)return;
+ for(const axis of ['x','y'])card.querySelector(`[data-field="${axis}"]`).value=String(Math.round(position[axis]));
+ if(!cancelled)markDirty();else preview();
+ [...$('room-preview').querySelectorAll('.personal-object')].find(b=>b.dataset.id===id)?.focus();
+});
+$('clean-preview').onclick=()=>{const panel=$('room-preview').closest('.room-meta');const clean=panel.classList.toggle('clean-preview');$('creator').classList.toggle('preview-only',clean);$('clean-preview').textContent=clean?'Show editing controls':'Hide editing controls';$('clean-preview').setAttribute('aria-pressed',String(clean));};
 $('add-object').onclick=()=>{const input=addObject();markDirty();input?.focus();};
 try{const saved=localStorage.getItem(storageKey);if(saved){fill(readPersonal(saved));status.textContent='Your saved room is loaded. Changes need saving.';}}catch{status.textContent='Saved data could not be loaded. You can restore a backup; saving a new room will replace the saved data.';}
 if(!cards.children.length)addObject();

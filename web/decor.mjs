@@ -9,7 +9,7 @@ export function decorateScene(scene,archive,preview=false){
  for(const kind of ['window','shelf','lamp'])scene.querySelector('.'+kind)?.toggleAttribute('hidden',!decor[kind]);
  scene.querySelectorAll('.object').forEach(b=>b.remove());
  for(const o of decoratedObjects(archive)){
-  const b=document.createElement(preview?'div':'button');b.className='object personal-object';b.dataset.id=o.id;b.style.left=o.x+'%';b.style.top=o.y+'%';
+  const b=document.createElement('button');b.className='object personal-object';b.dataset.id=o.id;b.type='button';b.style.setProperty('--object-x',o.x+'%');b.style.setProperty('--object-y',o.y+'%');if(preview){b.setAttribute('aria-label','Move '+(o.title||'untitled object')+'. Drag or use arrow keys.');}
   const icon=document.createElement('span');icon.className='object-icon decor-icon icon-'+o.kind;icon.textContent=kinds[o.kind];icon.setAttribute('aria-hidden','true');
   const label=document.createElement('span');label.textContent=o.title||'Untitled object';b.append(icon,label);scene.append(b);
  }
