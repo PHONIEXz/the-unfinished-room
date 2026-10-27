@@ -15,6 +15,8 @@ const archive = personal ? (()=>{try{return readPersonal(localStorage.getItem(st
 if(personal){
  document.querySelector('#ask-title').closest('section').remove();
  document.querySelector('#room-title').textContent=archive?.title || 'Your room is not available';
+ document.title=(archive?.title || 'Your room')+' | The Unfinished Room';
+ document.querySelector('.section-heading .eyebrow').textContent=archive?.fictional ? 'YOUR ARCHIVE / A FICTIONAL STORY' : 'YOUR PERSONAL ARCHIVE';
  document.querySelector('.room-intro-content .eyebrow').textContent=archive?.fictional ? 'YOUR FICTIONAL ARCHIVE' : 'YOUR PERSONAL ARCHIVE';
  document.querySelector('.room-intro-content p').textContent='Your words, your sources. Open an object to read its memory.';
  document.querySelector('.room-nav').replaceChildren(Object.assign(document.createElement('a'),{href:'/create/',textContent:'Edit your room →'}),Object.assign(document.createElement('a'),{href:'/room/',textContent:'Fictional demo'}));
@@ -65,7 +67,7 @@ function render() {
       item.className = 'ending';
       item.textContent = personal ? (archive.openQuestions.length ? 'Still open: '+archive.openQuestions.join(' · ') : 'You have explored every saved object. Add any unanswered questions in the editor.') : 'The room was a place where children gathered to read. Its lamp signaled that it was open. Who began it remains unknown.';
       list.append(item);
-      document.querySelector('.room-bottom span').textContent = 'THE STORY IS RECOVERED · SOME QUESTIONS REMAIN OPEN';
+      document.querySelector('.room-bottom span').textContent = personal ? 'ALL SAVED OBJECTS EXPLORED' : 'THE STORY IS RECOVERED · SOME QUESTIONS REMAIN OPEN';
     }
   }
 }
