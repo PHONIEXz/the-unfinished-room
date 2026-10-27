@@ -13,7 +13,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 
 ## What works
 
-- Optional original 3D diorama in the fictional demo, with orbit/zoom, five source-linked memory markers, day/lamp controls and an illustrated fallback. Personal creator conversion to 3D is not yet implemented.
+- Optional original 3D diorama in the fictional demo, with orbit/zoom, five source-linked memory markers, day/lamp controls and an illustrated fallback. Personal rooms also open in 3D, and the creator supports surface placement, object transforms and saving inside the 3D dock. The 3D shell is a fixed-size diorama; richer wallpaper/doorway/alcove choices remain in the illustrated editor.
 - Original layered SVG cutaway interior, five source-backed demo objects, journal, discovery progress, quick-access list, next/previous panels and reset.
 - Daylight and lamp controls, optional synthesized radio static, reduced-motion support, zoom/pan/expanded view and a responsive controls dock.
 - Personal creator: 25 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.
@@ -50,7 +50,7 @@ A fixed 12-question live evaluation passed on 27 October 2026. [Raw checks and l
 
 One room is saved in this browser's localStorage. Save replaces the previously saved room; unsaved edits exist only in the open page. This is not encrypted storage, a cloud backup or a private sharing service. Other people using this browser profile can access it. Clearing site data or changing browser/device can remove access.
 
-PNG/JPEG/WebP uploads under 5 MB are resized to at most 800px on the long edge and re-encoded locally as JPEG. Original file metadata is not retained. SVG uploads and remote image URLs are rejected. Embedded photo data and dimensions are bounded; a room has a 2.4M-character photo budget. JSON imports are limited to 3 MB. Older room backups (v1–v6) remain readable; new exports use v7. Each memory is limited to 8,000 characters. Validation failure does not replace the saved room.
+PNG/JPEG/WebP uploads under 5 MB are resized to at most 800px on the long edge and re-encoded locally as JPEG. Original file metadata is not retained. SVG uploads and remote image URLs are rejected. Embedded photo data and dimensions are bounded; a room has a 2.4M-character photo budget. JSON imports are limited to 3 MB. Older room backups (v1–v7) remain readable; new exports use v8. Each memory is limited to 8,000 characters. Validation failure does not replace the saved room.
 
 **Backups and printed keepsakes include personal content and photos. Keep those files private.** Download a backup before clearing browser data. A keepsake uses the saved room, so save editor changes first. Printing is not an editable backup.
 

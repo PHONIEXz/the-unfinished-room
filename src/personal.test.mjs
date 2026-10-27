@@ -61,3 +61,7 @@ test('v7 finishes and custom shapes round-trip and reject unsafe styles',()=>{
  assert.deepEqual(readPersonal(JSON.stringify(f)),f);
  for(const mutate of [a=>a.objects[0].color='url(x)',a=>a.objects[0].shape='script',a=>a.decor.windows=3,a=>a.decor.wallpaper='url(x)',a=>a.decor.furnishings='false']){const bad=structuredClone(f);mutate(bad);assert.throws(()=>readPersonal(bad));}
 });
+
+test('v8 preserves 3D placement surfaces and rejects unsupported surfaces',()=>{
+ const f={schemaVersion:8,title:'Personal 3D room',fictional:true,decor:{palette:'midnight',floor:'wood',window:true,shelf:true,lamp:true,size:'medium',windowPosition:'left',doorPosition:'left',timeOfDay:'dusk',alcove:true,fireplace:true,wallpaper:'plain',windows:1,furnishings:true},sources:[],objects:[{id:'chair',title:'Reading chair',sourceIds:[],decoration:true,kind:'chair',x:10,y:80,rotation:15,size:100,date:'',sourceNote:'',image:null,color:'#806345',shape:'box',surface:'floor'}],openQuestions:[]};assert.deepEqual(readPersonal(JSON.stringify(f)),f);f.objects[0].surface='outside';assert.throws(()=>readPersonal(f));
+});

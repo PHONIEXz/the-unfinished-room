@@ -1,3 +1,4 @@
+import {surfaces} from './room-layout.mjs';
 import {validateImage} from './images.mjs';
 export const storageKey='unfinished-room-personal-v1';
 export const kinds={photograph:'▧',letter:'✉',radio:'▣',clock:'◷',frame:'◇',book:'▤',plant:'♧',chair:'▱',table:'▰',keepsake:'✧',custom:'○',lamp:'☼',sofa:'▱',rug:'▧',shelf:'▤',cup:'∪',vase:'♧',camera:'▣',suitcase:'▣',record:'◎',guitar:'♬',notebook:'▤',trophy:'♜',key:'⚿',ball:'◉'};
@@ -5,7 +6,7 @@ export const palettes={midnight:['#24323c','#17252d','#705039'],cream:['#c7bda8'
 export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
- if(!a||![1,2,3,4,5,6,7].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
+ if(!a||![1,2,3,4,5,6,7,8].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
  if(!Array.isArray(a.sources)||a.sources.length>12||!Array.isArray(a.objects)||!a.objects.length||a.objects.length>12||(a.schemaVersion<6&&(!a.sources.length||a.objects.length!==a.sources.length))) throw Error('A room needs one to twelve memories.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
@@ -28,7 +29,8 @@ export function readPersonal(value){
    if(a.schemaVersion>=5){
     if(typeof o.date!=='string'||o.date.length>100||typeof o.sourceNote!=='string'||o.sourceNote.length>500)throw Error('Memory date or source note is too long.');
     const memory={...transformed,date:o.date.trim(),sourceNote:o.sourceNote.trim(),image:validateImage(o.image)};
-    if(a.schemaVersion===7){if(!/^#[0-9a-f]{6}$/i.test(o.color)||!['box','round','diamond'].includes(o.shape))throw Error('Object colour or shape is invalid.');Object.assign(memory,{color:o.color,shape:o.shape});}return memory;
+    if(a.schemaVersion===8){if(!surfaces.includes(o.surface))throw Error('Object surface is invalid.');memory.surface=o.surface;}
+    if(a.schemaVersion>=7){if(!/^#[0-9a-f]{6}$/i.test(o.color)||!['box','round','diamond'].includes(o.shape))throw Error('Object colour or shape is invalid.');Object.assign(memory,{color:o.color,shape:o.shape});}return memory;
    }
    return transformed;
   }
@@ -44,7 +46,7 @@ export function readPersonal(value){
   decor={palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
   if(a.schemaVersion>=3){
    if(!['compact','medium','wide'].includes(d.size)||!['left','center','right'].includes(d.windowPosition)||!['left','right','none'].includes(d.doorPosition)||!['dawn','day','dusk','night'].includes(d.timeOfDay)||typeof d.alcove!=='boolean'||typeof d.fireplace!=='boolean')throw Error('Room shell or lighting is invalid.');
-   if(a.schemaVersion===7){if(!['plain','stripe','paper'].includes(d.wallpaper)||![0,1,2].includes(d.windows)||typeof d.furnishings!=='boolean')throw Error('Room finishing options are invalid.');Object.assign(decor,{wallpaper:d.wallpaper,windows:d.windows,furnishings:d.furnishings});}
+   if(a.schemaVersion>=7){if(!['plain','stripe','paper'].includes(d.wallpaper)||![0,1,2].includes(d.windows)||typeof d.furnishings!=='boolean')throw Error('Room finishing options are invalid.');Object.assign(decor,{wallpaper:d.wallpaper,windows:d.windows,furnishings:d.furnishings});}
    Object.assign(decor,{size:d.size,windowPosition:d.windowPosition,doorPosition:d.doorPosition,timeOfDay:d.timeOfDay,alcove:d.alcove,fireplace:d.fireplace});
   }
  }
