@@ -1,3 +1,4 @@
+import {arrangementReport} from '../web/finishes.mjs';
 import {requestModel} from './provider.mjs';
 import {parseModelJson,finalResponseText} from './evidence.mjs';
 import {arrangementPrompt,validateArrangement} from '../web/arrangement.mjs';
@@ -13,7 +14,7 @@ export async function generateArrangement(input,{url,key,request=requestModel,no
   const groq=provider==='groq';
   const options={method:'POST',headers:groq?{'Content-Type':'application/json',Authorization:'Bearer '+key}:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify(groq?{model,messages:[{role:'user',content:prompt}],max_completion_tokens:5000,reasoning_effort:'low',response_format:{type:'json_object'}}:{contents:[{parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:3200,responseMimeType:'application/json',thinkingConfig:{thinkingLevel:'minimal'}}})};
   const payload=await request(url,options,{budgetMs:Math.min(remaining,pass?remaining:Math.min(40000,budgetMs*.75)),attemptTimeoutMs:Math.min(30000,remaining),maxAttempts:pass?1:2});
-  let raw;try{raw=parseArrangementJson(groq?payload.choices?.[0]?.message?.content:finalResponseText(payload.candidates?.[0]?.content?.parts));return {plan:validateArrangement(raw,input),repaired:pass===1};}
+  let raw;try{raw=parseArrangementJson(groq?payload.choices?.[0]?.message?.content:finalResponseText(payload.candidates?.[0]?.content?.parts));const plan=validateArrangement(raw,input);const report=arrangementReport(input.description,{decor:plan.decor,objects:[...plan.objects,...plan.additions]});const missing=report.unavailable?.filter(note=>/requested but not included|requested; \d+ included/.test(note))||[];if(missing.length&&plan.objects.length+plan.additions.length<12)throw Error('Include the explicitly requested available furniture and quantities within the twelve-object limit.');return {plan,repaired:pass===1};}
   catch(error){reason=error instanceof SyntaxError?'invalid_json':error.message;onInvalid({reason,shape:safeShape(raw),finishReason:payload.candidates?.[0]?.finishReason||'missing',pass:pass+1});if(pass===1)throw Object.assign(Error('The model returned an unusable layout. Your room is unchanged. Please retry.'),{status:502});}
  }
 }
