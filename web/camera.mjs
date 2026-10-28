@@ -42,6 +42,7 @@ export function enableCamera(scene,{editing=false}={}){
    if(e.key==='+'||e.key==='=')zoom(state.scale+.2);else if(e.key==='-')zoom(state.scale-.2);else if(e.key==='Home'){state={scale:1,x:0,y:0};paint(true);}else{state.x+=e.key==='ArrowLeft'?step:e.key==='ArrowRight'?-step:0;state.y+=e.key==='ArrowUp'?step:e.key==='ArrowDown'?-step:0;paint(true);}
   }
  },true);
+ stage.addEventListener('keydown',e=>{if(e.key==='Tab'&&expanded){const items=[...stage.querySelectorAll('button:not([disabled]),input,select,textarea,[tabindex="0"]')].filter(el=>el.getClientRects().length&&!el.hidden);if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items.at(-1)?.focus();}else if(!e.shiftKey&&document.activeElement===items.at(-1)){e.preventDefault();items[0]?.focus();}}});
  stage.addEventListener('keydown',e=>{if(e.key==='Escape'&&expanded){expanded=false;stage.classList.remove('expanded');expand.textContent='Expand room';expand.setAttribute('aria-pressed','false');expand.focus();paint();}});
  new ResizeObserver(()=>paint()).observe(viewport);
  paint();return {reset:()=>{state={scale:1,x:0,y:0};paint(true);}};

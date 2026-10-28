@@ -82,3 +82,15 @@ dialog{border:0;padding:0;width:min(610px,calc(100vw - 30px));max-height:90vh;ba
 .shell-controls{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px;border:1px solid #80755e;border-radius:8px}.shell-controls legend{font-weight:700}.shell-controls label{display:grid;gap:6px}.shell-controls p{grid-column:1/-1;line-height:1.5}.three-shell{display:grid;gap:12px;border-top:1px solid #6c6657;margin-top:16px;padding-top:16px}.three-shell input{width:100%;min-width:0;box-sizing:border-box}@media(max-width:500px){.shell-controls{grid-template-columns:1fr}}
 
 .room3d-markers button[hidden]{display:none!important}.object-list button.reviewed:after{content:' ✓';color:#f2cc94}
+
+/* Keep navigation readable and reachable in compact and expanded rooms. */
+body:has(.room3d.expanded,.room-camera.expanded){overflow:hidden}
+.room3d-dock{overscroll-behavior:contain;scrollbar-gutter:stable;min-width:0}
+.room3d-dock>*{flex-shrink:0;min-width:0}
+.room3d-dock button{height:auto;white-space:normal;line-height:1.45;overflow-wrap:anywhere}
+.room3d-dock label,.room3d-dock p{overflow-wrap:anywhere}
+.room3d-dock>.three-expand{position:sticky;top:0;z-index:3;background:#e5b477;color:#17252d;font-weight:700;box-shadow:0 4px 10px #10192366}
+.room3d-view:focus-visible{outline:3px solid #f2c88c;outline-offset:-4px}
+.room3d-markers button{min-width:44px;min-height:44px}
+@media(max-width:700px){.room3d-dock>.three-expand{grid-column:1/-1}.room3d-dock{gap:12px;padding:12px;grid-auto-rows:min-content}.room3d.expanded{grid-template-rows:minmax(180px,1fr) minmax(150px,32dvh)}.room3d.expanded .room3d-dock{max-height:none}.room3d-view{height:clamp(300px,68dvh,430px)}.room3d-markers button{min-width:44px;min-height:44px}}
+@media(prefers-reduced-motion:reduce){.camera-viewport .scene.camera-smooth{transition:none}}
