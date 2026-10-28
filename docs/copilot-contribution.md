@@ -12,7 +12,7 @@ Issue: https://github.com/PHONIEXz/the-unfinished-room/issues/1
 - Use the existing showcase type instead of guessing it from furniture.
 - Preserve manual selection and empty-room behavior. Do not change consent, providers, saving or credentials.
 
-The recommendation was inspected and implemented by Codex, then checked with the repository test suite and build. A focused mapping regression test was added; 104 tests pass locally. Live selector checks are recorded in the release notes when complete.
+The recommendation was inspected and implemented by Codex, then checked with the repository test suite and build. A focused mapping regression test was added; 104 tests pass locally. Live production checks passed: a music-room gallery copy selected music room; manually selecting study and then starting empty preserved study; choosing a dining starter selected dining room.
 
 ## Automation
 
@@ -21,3 +21,5 @@ The existing GitHub Actions workflow has also been corrected to install locked d
 ## Evidence and limits
 
 The Copilot conversation remains private. No public chat-share link was created. The repository contains the applied source changes, the issue and this factual contribution record. No Copilot coding-agent assignment or formal Copilot PR approval is claimed. GitHub issue assignment was unavailable, so Copilot Chat was used instead.
+
+GitHub-hosted verification: [Test and build run #90](https://github.com/PHONIEXz/the-unfinished-room/actions/runs/40674177854) completed successfully for commit de20650, including dependency installation, tests and build.

@@ -94,3 +94,5 @@ Phoenix reported the phone test passed. This is user-reported evidence, not an i
 
 ## Copilot-assisted purpose synchronization
 Copilot Chat inspected the public repository for issue #1 and recommended a furnished-starter purpose map, guarded selector helper and exact showcase-type lookup. Applied with manual validation; empty-room and manual selections remain supported, without AI calls or automatic saving. 104 local tests and build pass. The existing GitHub Actions workflow now installs dependencies and builds as well as testing. No coding-agent PR or public chat link is claimed.
+
+Live Copilot-fix checks passed: copied music example selected music room, empty starter preserved manual study selection, dining starter selected dining room. No AI request or save was needed. GitHub Actions Test and build run #90 completed successfully for de20650 (https://github.com/PHONIEXz/the-unfinished-room/actions/runs/40674177854).
