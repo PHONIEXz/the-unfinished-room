@@ -13,7 +13,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 
 ## What works
 
-- Optional original 3D diorama in the fictional demo, with orbit/zoom, five source-linked memory markers, day/lamp controls and an illustrated fallback. Personal rooms also open in 3D, and the creator supports surface placement, object transforms and saving inside the 3D dock. The 3D shell is a fixed-size diorama; richer wallpaper/doorway/alcove choices remain in the illustrated editor.
+- Original 3D demo and personal rooms, with orbit/zoom, source-linked memories and lighting controls. The creator has adjustable rectangular dimensions, real window/door openings, materials and a side-by-side object editor. Devices without WebGL use simplified 3D rendering.
 - Original layered SVG cutaway interior, five source-backed demo objects, journal, discovery progress, quick-access list, next/previous panels and reset.
 - Daylight and lamp controls, optional synthesized radio static, reduced-motion support, zoom/pan/expanded view and a responsive controls dock.
 - Personal creator: 32 object types across six categories, up to 12 placed objects, decoration-only objects, source memories, optional dates, source notes and photos.
@@ -22,7 +22,7 @@ Created by **Paul Ayoade David (Phoenix / PHONIEXz)**.
 - Custom object colours and box/round/diamond shapes. Uploaded photos take precedence over generated artwork.
 - Local save, versioned JSON export/restore, validation before replacing a saved room, and navigation warnings for unsaved changes.
 - Printable keepsake with all saved memories, original source text, photos, date notes, decorations and unanswered questions. Use the browser's Print / Save as PDF option.
-- Optional 99 KB Meshy radio in the demo detail panel: 8,206 triangles, rotatable, no auto-animation, hardware or software rendering. It is untextured and separate from the illustrated room.
+- Optional 99 KB Meshy radio in the demo detail panel: 8,206 triangles, rotatable, no auto-animation, hardware or software rendering. It is untextured and separate from the 3D room.
 
 ## Run
 
@@ -88,7 +88,7 @@ AI proposals now show app-derived Created, Substituted and Not available / not i
 ## Adjustable room shell
 Personal 3D rooms support approximate width 6–12 m, depth 5–10 m and height 3–5 m. Choose zero, one or two back-wall windows; adjust window width/height and left/centre/right position. Move the doorway to the left or right wall, slide it along the wall, or remove it. Window and door holes are actual gaps in the generated wall panels. The right-wall doorway changes the camera side so the interior stays visible. View bounds adapt to room size and viewport.
 
-Shell controls are available in the normal editor and 3D dock. They persist in schema v10 and portable JSON. Existing object identities, text and normalized coordinates are preserved; editable furniture is not stretched. Position margins account for furniture footprint, rotation and size. This prevents floor-edge clipping, not collisions with other objects or openings. Review wall-mounted items and walking space after edits. Background set dressing fits uniformly; desk/shelf slots refer to it. The illustrated view remains schematic, and alcove/fireplace options are still illustrated-only. AI may select only the same validated shell controls; personal source text/photos are never sent.
+Shell controls are available in the normal editor and 3D dock. They persist in schema v10 and portable JSON. Existing object identities, text and normalized coordinates are preserved; editable furniture is not stretched. Position margins account for furniture footprint, rotation and size. This prevents floor-edge clipping, not collisions with other objects or openings. Review wall-mounted items and walking space after edits. Background set dressing fits uniformly; desk/shelf slots refer to it. Alcove/fireplace geometry is not currently supported in 3D. AI may select only the same validated shell controls; personal source text/photos are never sent.
 
 Use **Preview spacing fix** for a local, reversible draft proposal without an AI request. Rugs may sit under furniture; ceiling and tabletop objects are excluded from floor checks. Conservative rotated bounding boxes reserve a small gap and doorway approach. This is not complete pathfinding or collision simulation, and the checker does not account for fixed background furnishings. Apply hides those background furnishings; Save remains explicit.
 
@@ -96,3 +96,5 @@ Use **Preview spacing fix** for a local, reversible draft proposal without an AI
 Set server-only `GEMMA_API_KEY` and/or `GROQ_API_KEY` in Vercel production, then redeploy. The room creator offers Automatic, Google Gemma only, and Groq only. Groq uses `openai/gpt-oss-20b` through its Chat Completions API. It was introduced to provide an alternative when Google has temporary capacity or quota failures.
 
 Automatic permits the same explicitly consented brief and anonymous room geometry to reach either service. It tries Google first when configured, then Groq on transient errors, timeouts or unusable output. Explicit selections never switch. Each result identifies its provider and model. Changing providers clears consent. Object names, memories, images and source notes are excluded. Both services use the same local schema validation, preview and apply safeguards. Provider failure never applies a layout. The discovery-question feature remains Google-only; this choice controls room arrangement.
+
+New rooms open empty in warm daylight. Editable living, dining, bedroom and reading starters are available. Replacing a populated or unsaved draft requires confirmation and does not overwrite the saved room until Save. Schema v10 supports empty-room backups.

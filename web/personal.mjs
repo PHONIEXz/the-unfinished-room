@@ -9,7 +9,7 @@ export const slots=['photograph','letter','radio','clock','frame'];
 export function readPersonal(value){
  const a=typeof value==='string'?JSON.parse(value):value;
  if(!a||![1,2,3,4,5,6,7,8,9,10].includes(a.schemaVersion)||typeof a.title!=='string'||!a.title.trim()||a.title.length>120||typeof a.fictional!=='boolean') throw Error('This is not a supported room backup.');
- if(!Array.isArray(a.sources)||a.sources.length>12||!Array.isArray(a.objects)||!a.objects.length||a.objects.length>12||(a.schemaVersion<6&&(!a.sources.length||a.objects.length!==a.sources.length))) throw Error('A room needs one to twelve memories.');
+ if(!Array.isArray(a.sources)||a.sources.length>12||!Array.isArray(a.objects)||(a.schemaVersion<10&&!a.objects.length)||a.objects.length>12||(a.schemaVersion<6&&(!a.sources.length||a.objects.length!==a.sources.length))) throw Error('A room supports up to twelve objects.');
  const ids=new Set();
  const sources=a.sources.map(s=>{
   if(!s||(typeof s.id!=='string'||!/^([a-z][a-z0-9-]{0,59})$/.test(s.id))||ids.has(s.id)||s.type!=='text'||typeof s.title!=='string'||!s.title.trim()||s.title.length>120||typeof s.text!=='string'||!s.text.trim()||s.text.length>8000) throw Error('A memory has an invalid title, text, or object.');

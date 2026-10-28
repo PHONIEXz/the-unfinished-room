@@ -38,7 +38,7 @@ The room itself is original layered SVG, HTML, CSS and vanilla JavaScript. Walls
 
 The creator and viewer share one data model. Versioned validation protects source links, coordinates, images, room settings and decoration-only objects. Imports populate a draft; saving is separate, so a bad backup cannot replace the saved room.
 
-I also tried Meshy for an optional radio model. Its first untextured mesh was 1.85 MB and 102,622 triangles. After welding and simplification it became 99 KB and 8,206 triangles. The preview loads only on request and uses Three.js with a software-rendering compatibility route. The mesh retains its separate CC BY 4.0 attribution. The illustrated room remains usable without it.
+I also tried Meshy for an optional radio model. Its first untextured mesh was 1.85 MB and 102,622 triangles. After welding and simplification it became 99 KB and 8,206 triangles. The preview loads only on request and uses Three.js with a software-rendering compatibility route. The mesh retains its separate CC BY 4.0 attribution. The room also works without downloading that optional model.
 
 ![The searchable object catalogue](media/object-catalogue.jpg)
 
@@ -46,7 +46,7 @@ I also tried Meshy for an optional radio model. Its first untextured mesh was 1.
 
 ## What I tested, and what I cannot claim
 
-The repository includes 82 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
+The repository includes 85 passing automated checks. A fixed 12-question live Gemma evaluation passed on October 27, covering known facts, unknowns and misleading/injection-style prompts. That small set is not proof of general accuracy. Provider failures show an error; they do not display a fabricated successful answer.
 
 Desktop production checks cover room creation, saving, reloading, exploring sources, photos, JSON backup/restore, catalogue duplication and layer ordering. Real-phone testing remains pending. Browser storage is not encrypted or a cloud backup. Users should keep exported JSON copies safe.
 
@@ -62,7 +62,7 @@ https://github.com/PHONIEXz/the-unfinished-room
 
 ## Why Does Open Innovation Matter?
 
-The model weights are open and the source-selection and evidence-validation code is public. A reader can inspect what is accepted as evidence, change the checks or build a self-hosted variant. Hosted inference in this release still depends on Google; source portability and inspectability are the benefits demonstrated today, not offline AI or freedom from provider quotas.
+The model weights are open and the source-selection and evidence-validation code is public. A reader can inspect what is accepted as evidence, change the checks or build a self-hosted variant. Memory questions use Google; room arrangement also offers Groq and explicit, consented automatic fallback. Hosted inference still depends on these services; source portability and inspectability are the benefits demonstrated today, not offline AI or freedom from provider quotas.
 
 ## Prize Categories
 
