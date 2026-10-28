@@ -1,3 +1,4 @@
+import {openRoomKeepsake} from './room-export.mjs';
 import {showcaseRoom} from './showcases.mjs';
 import {mountInterior,objectIllustration} from './interior.mjs';
 import {enableCamera} from './camera.mjs';
@@ -208,3 +209,6 @@ if(archive){
  open3D();
 }
 if(exampleId&&archive){document.querySelector('#print-keepsake').href='/keepsake/?example='+encodeURIComponent(exampleId);document.querySelector('.outro p').textContent='This furnished room and its memories are fictional examples. Exploring does not change your saved room. Make a copy to edit it with your own stories.';document.querySelector('.outro a').href='/gallery/';document.querySelector('.outro a').textContent='Explore another room →';document.querySelector('.room-intro-content p').textContent='A furnished example with three fictional memories. Open an object or use Quick access.';}
+
+const roomPdf=document.querySelector('#print-keepsake');roomPdf.textContent='Room image & PDF keepsake ↗';
+roomPdf.onclick=async event=>{event.preventDefault();try{await openRoomKeepsake({archive:personal?archive:null,capture:()=>room3D?.captureImage?.(),returnUrl:location.pathname+location.search,mode:exampleId?'Fictional example':personal?'Saved room':'Original fictional story'});}catch(error){const note=document.createElement('p');note.setAttribute('role','status');note.textContent=error.message;roomPdf.after(note);}};

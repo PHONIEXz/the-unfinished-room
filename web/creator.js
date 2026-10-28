@@ -1,3 +1,4 @@
+import {openRoomKeepsake} from './room-export.mjs';
 import {showcaseRoom,showcases} from './showcases.mjs';
 import {planRoom,prepareDiningPlan} from './room-planning.mjs';
 import {starterRoom,starterNames,starterPurpose} from './starters.mjs';
@@ -182,3 +183,7 @@ for(const [type,name]of Object.entries(starterNames)){const b=document.createEle
 const exampleToCopy=new URLSearchParams(location.search).get('example');if(exampleToCopy){try{fill(showcaseRoom(exampleToCopy));syncArrangeType(showcases.find(example=>example.id===exampleToCopy)?.type);dirty=true;showPayload();status.textContent='Fictional example copied into your draft. Your previous saved room is unchanged until you Save. Download a backup of that room first if you want to keep both.';}catch(error){status.textContent=error.message;}}
 
 if(location.hash==='#arrange-title')aiSection.open=true;
+
+const draftPdf=document.createElement('button');draftPdf.type='button';draftPdf.textContent='Export current room PDF';
+draftPdf.onclick=async()=>{draftPdf.disabled=true;try{const archive=collect();await openRoomKeepsake({archive,capture:()=>threePreview?.captureImage?.(),returnUrl:'/create/',mode:'Current editor draft'});status.textContent='PDF keepsake opened. This export does not save or replace your room. Choose Print / Save as PDF there.';}catch(error){status.textContent=error.message;}finally{draftPdf.disabled=false;}};
+$('save-room-actions').append(draftPdf);

@@ -221,5 +221,18 @@ export function mountRoom3D(host,onOpen,{archive=null,editing=false,onChange=()=
  function update(next){if(closed)return;archive=next;const old=model.root;world.remove(old);release(old);model=buildMemoryRoom(archive);if(software)for(const light of model.lampLights)light.intensity=.18;refineMaterials();world.add(model.root);model.root.userData.onTexture=render;if(archive?.decor){select.value=(archive.decor.timeOfDay||'dusk').replace(/^./,c=>c.toUpperCase());for(const light of model.lampLights)light.visible=archive.decor.lamp!==false;lamp.textContent='Lamp '+(archive.decor.lamp!==false?'on':'off');lamp.setAttribute('aria-pressed',String(archive.decor.lamp!==false));}adaptRoomView();makeMarkers();paintInspector();syncFinishes();syncShell();applyMood();}
  if(archive){const time=archive.decor?.timeOfDay||'dusk';select.value=time[0].toUpperCase()+time.slice(1);for(const light of model.lampLights)light.visible=archive.decor?.lamp!==false;lamp.textContent='Lamp '+(archive.decor?.lamp!==false?'on':'off');lamp.setAttribute('aria-pressed',String(archive.decor?.lamp!==false));applyMood();}
  const help=document.createElement('p');help.textContent='Original procedural geometry. No people or downloaded room artwork. The same archive sources remain connected below.';dock.append(help);
- const dispose=()=>{closed=true;host.classList.remove('expanded');host.removeEventListener('keydown',escape);observer.disconnect();controls.removeEventListener('change',cameraChanged);controls.dispose();release(model.root);selectionBox.geometry.dispose();selectionBox.material.dispose();renderer.dispose?.();host.replaceChildren();};dispose.selectObject=id=>{selected=id;paintInspector();};dispose.update=update;dispose.syncDiscoveries=render;return dispose;
+ const dispose=()=>{closed=true;host.classList.remove('expanded');host.removeEventListener('keydown',escape);observer.disconnect();controls.removeEventListener('change',cameraChanged);controls.dispose();release(model.root);selectionBox.geometry.dispose();selectionBox.material.dispose();renderer.dispose?.();host.replaceChildren();};dispose.selectObject=id=>{selected=id;paintInspector();};dispose.update=update;dispose.syncDiscoveries=render;
+ dispose.captureImage=async()=>{
+  if(closed)throw Error('Reopen the room before exporting.');
+  const wasSelected=selectionBox.visible;selectionBox.visible=false;
+  let svg=null,canvas=document.createElement('canvas');
+  try{
+   renderer.render(world,camera);
+   if(!software)return renderer.domElement.toDataURL('image/png');
+   svg=renderer.domElement.cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+   const bounds=renderer.domElement.getBoundingClientRect();canvas.width=Math.min(1800,Math.max(900,Math.round(bounds.width*1.5)));canvas.height=Math.round(canvas.width*bounds.height/bounds.width);
+   const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
+   try{const image=new Image();await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Room image took too long. Please retry.')),10000);image.onload=()=>{clearTimeout(timeout);resolve();};image.onerror=()=>{clearTimeout(timeout);reject(Error('Could not capture this room view.'));};image.src=url;});const ctx=canvas.getContext('2d');ctx.fillStyle='#171f29';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/png');}finally{URL.revokeObjectURL(url);}
+  }finally{selectionBox.visible=wasSelected;render();}
+ };return dispose;
 }
