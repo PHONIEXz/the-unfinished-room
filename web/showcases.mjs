@@ -13,8 +13,9 @@ export const showcases=[
 ];
 export function showcaseRoom(id){
  const info=showcases.find(s=>s.id===id);if(!info)throw Error('This example room is not available.');
- const room=starterRoom('empty');room.title=info.title;room.fictional=true;Object.assign(room.decor,{width:10,depth:8,palette:info.palette,wallColor:info.color,timeOfDay:info.time,tableSettings:true});
+ const room=starterRoom('empty');room.title=info.title;room.fictional=true;Object.assign(room.decor,{width:8,depth:6,palette:info.palette,wallColor:info.color,timeOfDay:info.time,tableSettings:true});
  room.objects=info.kinds.map((kind,i)=>({id:`example-${id}-${i+1}`,title:kind.replaceAll('-',' ').replace(/^./,v=>v.toUpperCase()),kind,surface:'floor',x:kind==='plant'?90:kind==='vase'?12:kind==='rug'?50:20+i*8,y:kind==='plant'?82:kind==='vase'?85:kind==='rug'?55:82,rotation:0,size:100,color:kind==='plant'?'#50736d':kind==='sofa'||kind==='chair'||kind==='bed'?'#72525e':'#8c624c',finish:['chair','sofa','bed'].includes(kind)?'fabric':'wood',shape:'box',date:'',sourceNote:'',image:null,decoration:true,sourceIds:[]}));
+ room.objects.push({id:'example-'+id+'-art',title:'A quiet wall frame',kind:'frame',surface:'wall',x:85,y:18,rotation:0,size:110,color:'#b48665',finish:'wood',shape:'box',date:'',sourceNote:'',image:null,decoration:true,sourceIds:[]});
  const planned=planRoom(room.objects,room.decor,info.type);room.objects=spaceFurniture(planned.objects,room.decor,planned.groups).objects;
  info.memories.forEach(([title,text],i)=>{const o=room.objects[i];Object.assign(o,{title,decoration:false,date:'Fictional scene; exact date not specified',sourceNote:'Original fictional example written for The Unfinished Room.',sourceIds:[o.id]});room.sources.push({id:o.id,type:'text',title,text});});
  room.openQuestions=['These people, events and memories are fictional examples. They are not historical evidence.'];return readPersonal(room);
