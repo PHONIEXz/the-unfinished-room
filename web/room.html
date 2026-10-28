@@ -9,13 +9,10 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
-</head>
+<script type="module" src="/navigation.js"></script></head>
 <body class="room-page">
   <a class="skip" href="#room">Skip to the room</a>
-  <header class="topbar">
-    <a class="brand" href="/" aria-label="The Unfinished Room home"><span class="brand-mark">✳</span> THE UNFINISHED ROOM</a>
-    <nav class="room-nav" aria-label="Main"><a href="/">← Home</a><a href="/create/">Create a room</a><a href="#journal-title">Journal</a></nav>
-  </header>
+  <header class="site-header"><a class="site-brand" href="/" aria-label="The Unfinished Room home"><span aria-hidden="true">✳</span> THE UNFINISHED ROOM</a><nav class="site-nav" aria-label="Main navigation"><a href="/" data-nav="home">Home</a><a href="/gallery/" data-nav="examples">Example rooms</a><a href="/create/" data-nav="editor">Room editor</a><a href="/room/?personal=1" data-nav="saved">My saved room</a></nav></header><section id="page-context" class="page-context" aria-label="Current page and shortcuts"></section>
   <main>
     <details class="room-intro"><summary><span class="intro-show">Show introduction</span><span class="intro-hide">Hide introduction</span><span class="intro-chevron" aria-hidden="true">⌄</span></summary><div class="room-intro-content"><span class="eyebrow">A FICTIONAL DEMONSTRATION</span><p>You found the reading room. The objects are still here. Open them one by one.</p></div></details>
     <section class="experience" id="room" aria-labelledby="room-title">

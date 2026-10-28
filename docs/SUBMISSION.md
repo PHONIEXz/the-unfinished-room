@@ -159,7 +159,7 @@ At this draft, **103 automated tests pass**, together with the production build.
 
 Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
 
-The latest real-phone and hardware-WebGL checks remain pending. The room visuals shown during cloud-browser verification use simplified rendering.
+I completed a phone test and reported it passed on October 28. The subsequent navigation update still needs a phone follow-up. Hardware-WebGL rendering remains unverified; the cloud-browser checks use simplified rendering.
 
 Practical limits are visible: one room, up to 12 placed objects, a rectangular shell and stylized materials. There is no cloud sync, encrypted memory vault, photorealistic rendering or full walking-route simulation. Browser storage can be cleared, so users should export a JSON backup. The printable keepsake offers another way to carry the words out of the app.
 
