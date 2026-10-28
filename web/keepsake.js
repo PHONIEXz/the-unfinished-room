@@ -11,16 +11,16 @@ try{
  document.title=archive.title+' - Room keepsake';
  const cover=el('section','');cover.className='keepsake-cover';
  cover.append(el('p','THE UNFINISHED ROOM · ROOM KEEPSAKE'),el('h1',archive.title),el('p',archive.fictional?'Fictional archive':'Personal archive · accounts recorded as supplied, not independently verified'));
- cover.append(el('p',(transfer?.mode||'Saved room')+' · '+new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})));
+ cover.append(el('p',(transfer?.mode||(exampleId?'Fictional example':personal?'Saved room':'Original fictional story'))+' · '+new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})));
  const figure=el('figure','');figure.className='keepsake-room-image';const image=el('img','');image.alt='3D view of '+archive.title;const caption=el('figcaption','Preparing a room image locally…');caption.setAttribute('role','status');figure.append(image,caption);cover.append(figure);
  const count=archive.objects.length,memories=archive.objects.filter(o=>!o.decoration).length;
- cover.append(el('p',`${count} objects · ${memories} with memories · ${count-memories} decorations · ${archive.openQuestions.length} open questions`));
+ cover.append(el('p',`${count} objects · ${memories} with memories · ${count-memories} decorations · ${archive.openQuestions.length} open question${archive.openQuestions.length===1?'':'s'}`));
  if(archive.decor){const d=archive.decor;cover.append(el('p',`Room: ${d.width||8} × ${d.depth||6} m · ${d.wallFinish||'plaster'} walls · ${d.floor||'wood'} floor · ${d.timeOfDay||'dusk'} lighting`));}
  main.replaceChildren(cover);
  main.append(el('h2','Inside this room'),el('p','All recorded objects are listed below. Decorations have no implied story. Dates are recorded as supplied; approximate dates remain approximate.'));
  const list=el('ol','');list.className='keepsake-list';
  for(const object of archive.objects){
-  const item=el('li','');item.append(el('h2',object.title));
+  const item=el('li','');if(object.decoration)item.className='decoration-entry';item.append(el('h2',object.title));
   if(object.kind)item.append(el('p',[object.kind.replaceAll('-',' '),object.surface?object.surface+' placement':null,object.finish&&object.finish!=='auto'?object.finish+' finish':null].filter(Boolean).join(' · ')));
   if(object.image){const photo=el('img','');photo.src=object.image;photo.alt=object.title;item.append(photo);}
   if(object.date)item.append(el('p','Memory date: '+object.date));if(object.sourceNote)item.append(el('p','Source note: '+object.sourceNote));
