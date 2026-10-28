@@ -1,8 +1,10 @@
+import {showcaseRoom} from './showcases.mjs';
 import {mountInterior,objectIllustration} from './interior.mjs';
 import {enableCamera} from './camera.mjs';
 import {decorateScene} from './decor.mjs';
 import {storageKey,readPersonal} from './personal.mjs';
-const personal = new URLSearchParams(location.search).get('personal')==='1';
+const exampleId=new URLSearchParams(location.search).get('example');
+const personal = Boolean(exampleId)||new URLSearchParams(location.search).get('personal')==='1';
 const descriptions = {
   photograph: 'A small note is written on the back. It names the year and the children, but not the photographer.',
   letter: 'The writer cared about a lamp by the window. They never signed their name.',
@@ -11,7 +13,7 @@ const descriptions = {
   frame: 'The empty place in the story: who started this room, and who recorded its first day?'
 };
 let personalError=false;
-const archive = personal ? (()=>{try{return readPersonal(localStorage.getItem(storageKey));}catch{personalError=true;return null;}})() : await fetch('/reading-room.json').then(response => {
+const archive = personal ? (()=>{try{return exampleId?showcaseRoom(exampleId):readPersonal(localStorage.getItem(storageKey));}catch{personalError=true;return null;}})() : await fetch('/reading-room.json').then(response => {
   if (!response.ok) throw new Error('Could not load the archive.');
   return response.json();
 }).catch(() => null);
@@ -205,3 +207,4 @@ if(archive){
  async function open3D(){loading.textContent='Opening your 3D room…';host.replaceChildren();try{const {mountRoom3D}=await import('/room-three.js');room3D=mountRoom3D(host,openObject,{archive:personal?archive:null,getExplored:()=>discovered});loading.hidden=true;}catch{loading.replaceChildren(document.createTextNode('The 3D room could not load. Your memories are available through Quick access. '));const retry=document.createElement('button');retry.type='button';retry.textContent='Retry 3D room';retry.onclick=open3D;loading.append(retry);}}
  open3D();
 }
+if(exampleId&&archive){document.querySelector('#print-keepsake').href='/keepsake/?example='+encodeURIComponent(exampleId);document.querySelector('.room-nav').replaceChildren(Object.assign(document.createElement('a'),{href:'/gallery/',textContent:'← All example rooms'}),Object.assign(document.createElement('a'),{href:'/create/?example='+encodeURIComponent(exampleId),textContent:'Make a copy to edit →'}));document.querySelector('.outro p').textContent='This furnished room and its memories are fictional examples. Exploring does not change your saved room. Make a copy to edit it with your own stories.';document.querySelector('.outro a').href='/gallery/';document.querySelector('.outro a').textContent='Explore another room →';document.querySelector('.room-intro-content p').textContent='A furnished example with three fictional memories. Open an object or use Quick access.';}

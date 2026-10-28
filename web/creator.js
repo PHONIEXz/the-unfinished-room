@@ -1,3 +1,4 @@
+import {showcaseRoom} from './showcases.mjs';
 import {planRoom,prepareDiningPlan} from './room-planning.mjs';
 import {starterRoom,starterNames} from './starters.mjs';
 import {spaceFurniture,spacingIssues,spacingMessages} from './spacing.mjs';
@@ -171,3 +172,5 @@ const starting=document.createElement('section');starting.className='room-meta r
 starting.innerHTML='<span class="eyebrow">YOUR SPACE / YOUR STORIES</span><h2 id="start-title">Start where you feel at home.</h2><p>Build a room. Place meaningful objects. Keep their stories.</p><p>Start empty or choose editable furniture. Then add objects, attach memories if you wish, and save. Everything stays in this browser until you download a backup.</p><div class="starter-choices"></div><p role="status" id="starter-status">A starter replaces the current draft only. Your saved room stays safe until you save again.</p>';
 aiSection.before(starting);
 for(const [type,name]of Object.entries(starterNames)){const b=document.createElement('button');b.type='button';b.textContent=type==='empty'?'Start empty':name;b.onclick=()=>{if(arrangeBusy){$('starter-status').textContent='Wait for the current AI preview to finish.';return;}if((dirty||cards.children.length)&&!confirm('Replace this draft with '+name.toLowerCase()+'? Your saved room stays unchanged until you save.'))return;discardProposal();arrangeUndo=null;$('arrange-undo').hidden=true;selectedId=null;fill(starterRoom(type));dirty=true;showPayload();status.textContent='New draft ready. Save to keep it.';$('starter-status').textContent=name+' ready. All furniture is editable. Add a memory to any object when it has a story.';};starting.querySelector('.starter-choices').append(b);}
+
+const exampleToCopy=new URLSearchParams(location.search).get('example');if(exampleToCopy){try{fill(showcaseRoom(exampleToCopy));dirty=true;showPayload();status.textContent='Fictional example copied into your draft. Your previous saved room is unchanged until you Save. Download a backup of that room first if you want to keep both.';}catch(error){status.textContent=error.message;}}

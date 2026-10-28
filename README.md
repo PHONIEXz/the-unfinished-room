@@ -102,3 +102,6 @@ New rooms open empty in warm daylight. Editable living, dining, bedroom and read
 AI previews use local furniture relationship patterns for dining, living/parlour, bedroom and reading/study/listening corners. Chairs face their table, seating stays grouped, and spacing moves these groups as units where possible. Groups that cannot fit remain blocked for review. These patterns do not guarantee arbitrary design instructions or full walking-route accessibility. Manual spacing-only preview does not change room-type relationships.
 
 Dining tables come set by default: one plate/cup per assigned chair, plus an apple bowl and flowers. Table settings are attached procedural geometry rather than separate memory objects. They follow table transforms and can be turned off with the saved dining-table-settings control.
+
+### Room gallery
+`/gallery/` offers seven curated furnished examples across all supported room purposes. Every example has three original fictional memories, clear fiction labelling and a live 3D preview. Explore without AI or account access; example pages and keepsakes use URL-selected public fixture data, never the visitor’s private storage. Make a copy opens an unsaved editor draft without overwriting the saved room. Saving that draft replaces the single saved room, so keep a backup before doing so.

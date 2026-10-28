@@ -5,13 +5,15 @@ import { readFileSync } from 'node:fs';
 const archive = JSON.parse(readFileSync(new URL('../fixtures/reading-room.json', import.meta.url)));
 const result = validateArchive(archive);
 if (!result.valid) throw new Error(result.errors.join('; '));
+await mkdir('dist/gallery',{recursive:true});
+await copyFile('web/gallery.html','dist/gallery/index.html');
 await mkdir('dist/room', { recursive: true });
 await mkdir('dist/keepsake',{recursive:true});
 await copyFile('web/keepsake.html','dist/keepsake/index.html');
 await copyFile('web/keepsake.js','dist/keepsake.js');
 await mkdir('dist/create', { recursive: true });
 await copyFile('web/create.html', 'dist/create/index.html');
-for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs', 'room-layout.mjs', 'arrangement.mjs', 'finishes.mjs', 'shell.mjs', 'spacing.mjs', 'starters.mjs', 'room-planning.mjs', 'images.mjs', 'decor.mjs', 'placement.mjs', 'camera.mjs', 'interior.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
+for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs', 'room-layout.mjs', 'arrangement.mjs', 'finishes.mjs', 'shell.mjs', 'spacing.mjs', 'starters.mjs', 'showcases.mjs', 'gallery.js', 'room-planning.mjs', 'images.mjs', 'decor.mjs', 'placement.mjs', 'camera.mjs', 'interior.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
 await copyFile('web/room.html', 'dist/room/index.html');
 await copyFile('fixtures/reading-room.json', 'dist/reading-room.json');
 
