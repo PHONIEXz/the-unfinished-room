@@ -43,12 +43,15 @@ let previewCleanup=null;
 let previewVersion=0;
 let current = '';
 let restoreFocus = null;
+let room3D=null;
 function render() {
   try { sessionStorage.setItem(progressKey, JSON.stringify([...discovered])); } catch { /* The room still works if storage is unavailable. */ }
   document.querySelector('.room-bottom span').textContent = 'SELECT AN OBJECT TO BEGIN';
   document.querySelector('#count').textContent = `${discovered.size} / ${buttons.length}`;
   document.querySelector('#scene').style.setProperty('--warmth', discovered.size / (buttons.length || 1));
   buttons.forEach(button => button.classList.toggle('found', discovered.has(button.dataset.id)));
+  document.querySelectorAll('[data-open]').forEach(button=>{const found=discovered.has(button.dataset.open);button.classList.toggle('reviewed',found);button.setAttribute('aria-label',button.textContent.trim()+(found?', explored':''));});
+  room3D?.syncDiscoveries();
   const list = document.querySelector('#discovery-list');
   list.replaceChildren();
   if(personal&&buttons.length===0){document.querySelector('.room-bottom span').textContent='A DECORATED ROOM · ADD A MEMORY IN THE EDITOR TO BEGIN DISCOVERIES';}
@@ -133,7 +136,7 @@ document.querySelector('#next-object').addEventListener('click', () => {
 });
 document.querySelector('#reset').addEventListener('click', () => { discovered.clear(); render(); buttons[0]?.focus(); });
 dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-dialog.addEventListener('close', () => {if(dialog.open)return;++previewVersion;previewCleanup?.();previewCleanup=null;restoreFocus?.focus();});
+dialog.addEventListener('close', () => {if(dialog.open)return;++previewVersion;previewCleanup?.();previewCleanup=null;const quick=[...document.querySelectorAll('[data-open]')].find(button=>button.dataset.open===current);if(restoreFocus?.isConnected&&!restoreFocus.hidden&&!restoreFocus.closest('[hidden]'))restoreFocus.focus();else quick?.focus();});
 render();
 if (!archive) {
   document.querySelector('.room-bottom span').textContent = personalError ? 'NO VALID SAVED ROOM · OPEN THE EDITOR TO CREATE OR RESTORE ONE' : 'ARCHIVE UNAVAILABLE · PLEASE RELOAD';
@@ -199,5 +202,5 @@ if(archive){
  const camera=document.querySelector('.room-camera');const choice=document.createElement('div');choice.className='room-view-choice';
  const start=document.createElement('button');start.type='button';start.textContent='Enter the 3D room';start.setAttribute('aria-pressed','false');choice.append(start);camera.before(choice);
  const host=document.createElement('section');host.className='room3d';host.hidden=true;host.setAttribute('aria-label','Three dimensional memory room');camera.before(host);let dispose3D=null,loading=false;
- start.onclick=async()=>{if(loading)return;if(dispose3D){dispose3D();dispose3D=null;host.hidden=true;camera.hidden=false;start.textContent='Enter the 3D room';start.setAttribute('aria-pressed','false');return;}loading=true;start.disabled=true;start.textContent='Opening 3D room…';try{const {mountRoom3D}=await import('/room-three.js');host.hidden=false;camera.hidden=true;dispose3D=mountRoom3D(host,openObject,{archive:personal?archive:null});start.textContent='Return to illustrated room';start.setAttribute('aria-pressed','true');}catch{host.hidden=true;camera.hidden=false;start.textContent='3D could not load. Try again';}finally{loading=false;start.disabled=false;}};
+ start.onclick=async()=>{if(loading)return;if(dispose3D){dispose3D();dispose3D=null;room3D=null;host.hidden=true;camera.hidden=false;start.textContent='Enter the 3D room';start.setAttribute('aria-pressed','false');return;}loading=true;start.disabled=true;start.textContent='Opening 3D room…';try{const {mountRoom3D}=await import('/room-three.js');host.hidden=false;camera.hidden=true;dispose3D=mountRoom3D(host,openObject,{archive:personal?archive:null,getExplored:()=>discovered});room3D=dispose3D;start.textContent='Return to illustrated room';start.setAttribute('aria-pressed','true');}catch{host.hidden=true;camera.hidden=false;start.textContent='3D could not load. Try again';}finally{loading=false;start.disabled=false;}};
 }
