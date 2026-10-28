@@ -11,3 +11,15 @@ test('arrangement returns validated provider result and rejects invented memory 
  globalThis.fetch=async(url,options)=>{sent=JSON.parse(options.body);return {ok:true,json:async()=>({candidates:[{content:{parts:[{text:JSON.stringify(plan)}]}}]})};};
  try{let res=response();await handler({method:'POST',body,headers:{'x-forwarded-for':'test-valid'}},res);assert.equal(res.statusCode,200);assert.deepEqual(res.body.plan,plan);assert.ok(!JSON.stringify(sent).includes('test-key'));plan.additions[0].text='Invented family history';res=response();await handler({method:'POST',body,headers:{'x-forwarded-for':'test-invalid'}},res);assert.equal(res.statusCode,502);assert.match(res.body.error,/unchanged/);}finally{globalThis.fetch=originalFetch;if(key)process.env.GEMMA_API_KEY=key;else delete process.env.GEMMA_API_KEY;}
 });
+test('Groq selection uses server credentials and returns a validated provider-labelled plan',async()=>{
+ const before=globalThis.fetch,key=process.env.GROQ_API_KEY;process.env.GROQ_API_KEY='private-test-key';let sent;
+ const plan={summary:'A bright room.',decor:{palette:'cream',floor:'wood',lamp:true,timeOfDay:'day'},objects:[],additions:[]};
+ globalThis.fetch=async(url,options)=>{sent={url,...options};return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify(plan)}}]})};};
+ try{const res=response();await handler({method:'POST',headers:{'x-forwarded-for':'groq-success'},body:{...body,provider:'groq'}},res);assert.equal(res.statusCode,200);assert.equal(res.body.provider,'groq');assert.equal(res.body.model,'openai/gpt-oss-20b');assert.equal(sent.headers.Authorization,'Bearer private-test-key');assert.match(sent.url,/api.groq.com/);assert.ok(!sent.body.includes('private-test-key'));assert.deepEqual(res.body.plan,plan);}finally{globalThis.fetch=before;if(key)process.env.GROQ_API_KEY=key;else delete process.env.GROQ_API_KEY;}
+});
+test('Automatic falls back after transient failure but explicit Google never switches',async()=>{
+ const before=globalThis.fetch,g=process.env.GROQ_API_KEY,k=process.env.GEMMA_API_KEY;process.env.GROQ_API_KEY='groq';process.env.GEMMA_API_KEY='google';let groqCalls=0;
+ const plan={summary:'A bright room.',decor:{palette:'cream',floor:'wood',lamp:true,timeOfDay:'day'},objects:[],additions:[]};
+ globalThis.fetch=async(url)=>{if(url.includes('googleapis'))throw Object.assign(Error('timeout'),{name:'TimeoutError'});groqCalls++;return {ok:true,json:async()=>({choices:[{message:{content:JSON.stringify(plan)}}]})};};
+ try{let res=response();await handler({method:'POST',headers:{'x-forwarded-for':'auto-test'},body:{...body,provider:'auto'}},res);assert.equal(res.statusCode,200);assert.equal(res.body.fallback,true);assert.equal(groqCalls,1);res=response();await handler({method:'POST',headers:{'x-forwarded-for':'explicit-test'},body:{...body,provider:'google'}},res);assert.equal(res.statusCode,503);assert.equal(groqCalls,1);}finally{globalThis.fetch=before;for(const [name,value]of [['GROQ_API_KEY',g],['GEMMA_API_KEY',k]])if(value)process.env[name]=value;else delete process.env[name];}
+});
