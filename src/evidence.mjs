@@ -30,7 +30,7 @@ export function validateAnswer(raw, sources) {
   return { answer: [...new Set(evidence.map(item => item.quote))].join(' '), unknown:false, evidence, mode:'extractive' };
 }
 
-export function parseModelJson(text) {
+export function parseModelJson(text, isCandidate = parsed => parsed && typeof parsed === 'object' && 'answer' in parsed && 'unknown' in parsed) {
   if (typeof text !== 'string' || text.length > 12000) throw new Error('Model output is too large.');
   const trimmed = text.trim();
   try { return JSON.parse(trimmed); } catch { /* Model may wrap its JSON in prose or a fence. */ }
@@ -45,7 +45,7 @@ export function parseModelJson(text) {
       if (!quoted && char === '}' && --depth === 0) {
         try {
           const parsed = JSON.parse(trimmed.slice(start, i + 1));
-          if (parsed && typeof parsed === 'object' && 'answer' in parsed && 'unknown' in parsed) return parsed;
+          if (isCandidate(parsed)) return parsed;
         } catch { /* This candidate was not a complete valid answer. */ }
         break;
       }

@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {generateArrangement} from './arrange-model.mjs';
+import {generateArrangement,parseArrangementJson} from './arrange-model.mjs';
 import {arrangementPrompt} from '../web/arrangement.mjs';
 import {shellSettings} from '../web/shell.mjs';
 const input={roomType:'study',description:'Keep a clear quiet reading room.',shell:shellSettings(),objects:[]};
@@ -10,3 +10,5 @@ test('one schema repair uses only consented input and controlled reason, then va
 test('two invalid responses fail closed and provider failures do not trigger a format repair',async()=>{let calls=0;await assert.rejects(generateArrangement(input,{request:async()=>{calls++;return payload('broken JSON');}}),e=>e.status===502);assert.equal(calls,2);calls=0;await assert.rejects(generateArrangement(input,{request:async()=>{calls++;throw Object.assign(Error('quota'),{status:429});}}),e=>e.status===429);assert.equal(calls,1);});
 test('format repair shares one deadline and does not start after the budget expires',async()=>{let time=0,calls=0;await assert.rejects(generateArrangement(input,{now:()=>time,request:async()=>{calls++;time=55000;return payload('broken');}}),{name:'TimeoutError'});assert.equal(calls,1);});
 test('prompt spells out supported shell keys in the example JSON',()=>{const prompt=arrangementPrompt(input);assert.match(prompt,/"width":8/);assert.match(prompt,/"doorOffset":55/);assert.match(prompt,/Exactly four top-level keys/);assert.ok(!prompt.includes('near x=0,y=55'));});
+
+test('arrangement parser accepts fenced JSON and one known wrapper but retains unsupported fields for validation',()=>{assert.deepEqual(parseArrangementJson('```json\n'+JSON.stringify(good)+'\n```'),good);assert.deepEqual(parseArrangementJson(JSON.stringify({plan:good})),good);assert.deepEqual(parseArrangementJson(JSON.stringify({...good,secret:'rejected'})),{...good,secret:'rejected'});});
