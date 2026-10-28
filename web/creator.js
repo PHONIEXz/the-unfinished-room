@@ -68,8 +68,9 @@ $('clean-preview').onclick=()=>{const panel=$('room-preview').closest('.room-met
 $('expand-objects').onclick=()=>{for(const c of cards.children)c.open=true;};
 $('collapse-objects').onclick=()=>{for(const c of cards.children)c.open=false;};
 $('add-object').onclick=()=>{const input=addObject();selectedId=cards.lastElementChild?.dataset.id;markDirty();input?.focus();};
-try{const saved=localStorage.getItem(storageKey);if(saved){fill(readPersonal(saved));status.textContent='Your saved room is loaded. Changes need saving.';}}catch{status.textContent='Saved data could not be loaded. You can restore a backup; saving a new room will replace the saved data.';}
-if(!cards.children.length){fill(starterRoom('empty'));status.textContent='Your empty room is ready. Add furniture or choose a starter. Save when ready.';}
+let loadedSaved=false;
+try{const saved=localStorage.getItem(storageKey);if(saved){fill(readPersonal(saved));loadedSaved=true;status.textContent='Your saved room is loaded. Changes need saving.';}}catch{status.textContent='Saved data could not be loaded. You can restore a backup; saving a new room will replace the saved data.';}
+if(!cards.children.length&&!loadedSaved){fill(starterRoom('empty'));status.textContent='Your empty room is ready. Add furniture or choose a starter. Save when ready.';}
 enableCamera($('room-preview'),{editing:true});
 $('creator-form').addEventListener('input',markDirty);
 function save(){const a=collect();try{savePersonal(localStorage,a);}catch{throw Error('Browser saving failed. Your draft is still here; download a backup to keep it.');}dirty=false;status.textContent='Saved on this browser. Download a backup for safekeeping.';return a;}
