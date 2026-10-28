@@ -8,6 +8,7 @@ export function finishProperties(finish){return finish==='metal'?{roughness:.28,
 const label=s=>s==='tv'?'TV':s.replaceAll('-',' ');
 export function arrangementReport(description,room){
  const d=room.decor,shell=shellSettings(d),objects=room.objects,created=[],substituted=[],unavailable=[];
+ if(objects.some(o=>o.kind==='dining-table')&&d.tableSettings!==false)created.push('Dining tables include place settings matched to nearby chairs, an apple bowl and flowers. Turn off dining table settings for a bare table.');
  const counts=new Map();for(const o of objects)counts.set(o.kind,(counts.get(o.kind)||0)+1);
  for(const [kind,count]of counts)created.push(`${count} × ${label(kind)}`);
  created.push(`${shell.width} × ${shell.depth} × ${shell.height} m room`,`${shell.windows} back-wall window${shell.windows===1?'':'s'}; ${shell.windowPosition} position`,shell.doorPosition==='none'?'No doorway':`${shell.doorPosition} doorway at ${shell.doorOffset}% along the side wall`);

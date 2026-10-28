@@ -100,3 +100,5 @@ Automatic permits the same explicitly consented brief and anonymous room geometr
 New rooms open empty in warm daylight. Editable living, dining, bedroom and reading starters are available. Replacing a populated or unsaved draft requires confirmation and does not overwrite the saved room until Save. Schema v10 supports empty-room backups.
 
 AI previews use local furniture relationship patterns for dining, living/parlour, bedroom and reading/study/listening corners. Chairs face their table, seating stays grouped, and spacing moves these groups as units where possible. Groups that cannot fit remain blocked for review. These patterns do not guarantee arbitrary design instructions or full walking-route accessibility. Manual spacing-only preview does not change room-type relationships.
+
+Dining tables come set by default: one plate/cup per assigned chair, plus an apple bowl and flowers. Table settings are attached procedural geometry rather than separate memory objects. They follow table transforms and can be turned off with the saved dining-table-settings control.

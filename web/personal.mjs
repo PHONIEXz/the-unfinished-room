@@ -45,7 +45,8 @@ export function readPersonal(value){
  if(a.schemaVersion>=2){
   const d=a.decor;
   if(!d||!Object.hasOwn(palettes,d.palette)||!(a.schemaVersion>=9?floorFinishes:['wood','tile']).includes(d.floor)||['window','shelf','lamp'].some(k=>typeof d[k]!=='boolean'))throw Error('Room decoration is invalid.');
-  decor={palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
+  if(d.tableSettings!==undefined&&typeof d.tableSettings!=='boolean')throw Error('Dining table settings must be on or off.');
+  decor={...(d.tableSettings!==undefined?{tableSettings:d.tableSettings}:{}),palette:d.palette,floor:d.floor,window:d.window,shelf:d.shelf,lamp:d.lamp};
   if(a.schemaVersion>=10){const shell=validateShell(Object.fromEntries(shellKeys.map(key=>[key,d[key]])));Object.assign(decor,shell);}
   if(a.schemaVersion>=9){if(!wallFinishes.includes(d.wallFinish)||!/^#[0-9a-f]{6}$/i.test(d.wallColor))throw Error('Wall finish or colour is invalid.');Object.assign(decor,{wallFinish:d.wallFinish,wallColor:d.wallColor});}
   if(a.schemaVersion>=3){
