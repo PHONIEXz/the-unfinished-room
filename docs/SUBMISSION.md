@@ -1,6 +1,9 @@
 ---
 title: "I Built a 3D Home for Memories, and Gave the AI Boundaries"
-published: false
+published: true
+dev_url: "https://dev.to/phoniexcryptz001/i-built-a-3d-home-for-memories-and-gave-the-ai-boundaries-41ma"
+cover_image: "https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/ts4jfuzfcxcfz37mzcln.jpg"
+ai_disclosure: fully_autonomous
 tags: devchallenge, hf26challenge, ai, javascript
 ---
 
@@ -22,7 +25,9 @@ For **Ghost in the Machine**, I chose the presence that familiar objects can hol
 
 The room is called *unfinished* because a memory does not need every detail filled in to deserve keeping.
 
-<!-- MEDIA 1: Insert a current, sharp gallery/room screenshot here. Suggested asset: the furnished living-room gallery preview. -->
+![Home at Six, a furnished living-room example with three memory hotspots and room navigation controls](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/0jmkhyr1wgn5kv9onya0.jpg)
+
+*The current gallery, shown in the browser’s simplified rendering mode.*
 
 ## Demo
 
@@ -53,8 +58,7 @@ That is the kind of detail I wanted the room to hold.
 - [Build your own room](https://unfinishedroom.phoenixreborn.tech/create/).
 - [Explore the original five-object archive](https://unfinishedroom.phoenixreborn.tech/room/), including opt-in Gemma questions.
 
-<!-- VIDEO 1: Embed the refreshed gallery-to-memory walkthrough here. Use the real uploaded URL; no placeholder embed has been published. -->
-<!-- MEDIA 2: Insert a current memory-detail screenshot showing its fiction/source label. -->
+![The evening sofa memory opens with its story and an explicit fictional-example label](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/7z67zz3kida2n1cq4849.jpg)
 
 ## Code
 
@@ -106,8 +110,6 @@ Dining tables come set by default: **plates and cups matched to chair count, app
 
 These are finite layout rules. They improve common arrangements without claiming to understand every possible design instruction.
 
-<!-- MEDIA 3: Insert the current six-chair dining screenshot with table settings. -->
-<!-- VIDEO 2: Embed a refreshed brief-to-preview walkthrough, including the provider label and Apply step. -->
 
 ### The model does not get to rewrite your memories
 
@@ -138,6 +140,18 @@ If the archive does not establish an answer, the response should say so. Text ma
 
 The personal-room viewer has no archive-question form, keeping its memories out of this hosted question flow.
 
+### A room you can carry out of the browser
+
+I wanted the memories to survive beyond a tab. **The PDF keepsake includes a clean image of the room, its object inventory, photos, memory dates, source notes and unanswered questions.** Markers and editing controls are left out of the image.
+
+In the editor, **Export current room PDF** captures the current draft and viewing angle without replacing the saved room. In the viewer, the keepsake captures the room you are looking at. The browser's **Print / Save as PDF** action finishes the export.
+
+The distinction matters: **PDF is the readable, shareable copy. JSON is the backup you can restore and keep editing.** Both are prepared locally; no AI request is needed to export.
+
+[Open an example room keepsake](https://unfinishedroom.phoenixreborn.tech/keepsake/?example=sunday-table).
+
+![Room-image PDF keepsake showing the dining scene, inventory totals and the beginning of its written details](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/f5d4x6ru7ops264ojgwz.jpg)
+
 ### The tools behind the room
 
 | Tool | Its actual job |
@@ -151,17 +165,17 @@ The personal-room viewer has no archive-question form, keeping its memories out 
 | `.tech` domain | The public home at `unfinishedroom.phoenixreborn.tech` |
 | Meshy | An optional radio-model experiment in the original demo, with separate attribution |
 
-I used Codex during development for implementation, debugging and test work. I also used GitHub Copilot Chat to inspect a real editor bug: selecting a starter or copying a gallery room left the AI purpose selector on its default. Copilot recommended a guarded mapping/helper fix, which I implemented and tested. [Contribution record](https://github.com/PHONIEXz/the-unfinished-room/blob/main/docs/copilot-contribution.md). GitHub Actions installs locked dependencies, runs the tests and builds the app on pushes and pull requests. The gallery stories are original fictional examples prepared for this project.
+I used Codex during development for implementation, debugging and test work. I also used GitHub Copilot Chat to inspect a real editor bug: selecting a starter or copying a gallery room left the AI purpose selector on its default. Copilot recommended a guarded mapping/helper fix, which I implemented and tested. [Contribution record](https://github.com/PHONIEXz/the-unfinished-room/blob/main/docs/copilot-contribution.md). GitHub Actions installs locked dependencies, runs the tests and builds the app on pushes and pull requests. The gallery stories are original fictional examples prepared for this project. This article was prepared with AI assistance and checked against the repository and recorded test results.
 
 ### What I checked, and what is still pending
 
-At this draft, **104 automated tests pass**, together with the production build. The tests cover source links, layout validation, retries, recovery, spacing, table settings and all seven gallery rooms.
+At publication, **108 automated tests pass**, together with the production build. The tests cover source links, layout validation, retries, recovery, spacing, table settings and all seven gallery rooms.
 
-Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
+Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked room-image export from the viewer and an unsaved draft, and rendered a print-layout sample with its image and source text. Browser-native PDF download and phone printing still need a manual check. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
 
-I completed a phone test and reported it passed on October 28. The subsequent navigation update still needs a phone follow-up. Hardware-WebGL rendering remains unverified; the cloud-browser checks use simplified rendering.
+I completed a phone test and reported it passed on October 28. The latest navigation, visual polish and PDF-printing changes still need a phone follow-up. Hardware-WebGL rendering remains unverified; the cloud-browser checks use simplified rendering.
 
-Practical limits are visible: one room, up to 12 placed objects, a rectangular shell and stylized materials. There is no cloud sync, encrypted memory vault, photorealistic rendering or full walking-route simulation. Browser storage can be cleared, so users should export a JSON backup. The printable keepsake offers another way to carry the words out of the app.
+Practical limits are visible: one room, up to 12 placed objects, a rectangular shell and stylized materials. There is no cloud sync, encrypted memory vault, photorealistic rendering or full walking-route simulation. Browser storage can be cleared, so users should export a JSON backup. The room-image PDF keepsake offers another way to carry the scene and its words out of the app.
 
 ## Why Does Open Innovation Matter?
 
@@ -175,7 +189,6 @@ A developer could adapt the provider layer for self-hosted inference. That is a 
 
 Keeping personal memories local is an application-design decision. Open weights alone do not provide privacy. The useful combination here is **portable room data, inspectable safeguards, and a model layer that can be changed**.
 
-<!-- OPTIONAL AGENT SESSION: Add a genuine DevRelay link only if a session is exported. Otherwise omit the section. -->
 
 ## The Spirit of It
 
