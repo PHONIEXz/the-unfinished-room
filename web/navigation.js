@@ -10,3 +10,6 @@ const context=document.querySelector('#page-context');if(context){const label=do
  else if(path.startsWith('/keepsake'))label.textContent=info?'Printable keepsake / '+info.title:'Printable keepsake';
  if(label.textContent){context.append(label,actions);}else context.hidden=true;
 }
+
+// Open an optional panel before native anchor navigation targets its contents.
+document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link)return;const target=document.getElementById(link.hash.slice(1));for(let panel=target?.closest('details');panel;panel=panel.parentElement?.closest('details'))panel.open=true;});
