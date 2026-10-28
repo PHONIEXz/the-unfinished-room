@@ -105,3 +105,5 @@ Dining tables come set by default: one plate/cup per assigned chair, plus an app
 
 ### Room gallery
 `/gallery/` offers seven curated furnished examples across all supported room purposes. Every example has three original fictional memories, clear fiction labelling and a live 3D preview. Explore without AI or account access; example pages and keepsakes use URL-selected public fixture data, never the visitor’s private storage. Make a copy opens an unsaved editor draft without overwriting the saved room. Saving that draft replaces the single saved room, so keep a backup before doing so.
+
+GitHub Copilot Chat assisted a focused room-purpose selector fix. [Contribution record](docs/copilot-contribution.md). GitHub Actions installs dependencies, runs tests and builds on pushes and pull requests.

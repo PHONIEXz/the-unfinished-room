@@ -91,3 +91,6 @@ Live gallery verification: dining memory opened in the gallery dialog; bedroom o
 
 ## Navigation and phone status, October 28
 Phoenix reported the phone test passed. This is user-reported evidence, not an independent hardware-WebGL verification. The subsequent navigation update adds consistent Home / Example rooms / Room editor / My saved room links on all five page types, active-page highlighting, context-aware return links, and section shortcuts. Standard page links preserve native unsaved-change prompts. Print keepsakes omit navigation. Latest navigation changes still need a real-phone follow-up.
+
+## Copilot-assisted purpose synchronization
+Copilot Chat inspected the public repository for issue #1 and recommended a furnished-starter purpose map, guarded selector helper and exact showcase-type lookup. Applied with manual validation; empty-room and manual selections remain supported, without AI calls or automatic saving. 104 local tests and build pass. The existing GitHub Actions workflow now installs dependencies and builds as well as testing. No coding-agent PR or public chat link is claimed.

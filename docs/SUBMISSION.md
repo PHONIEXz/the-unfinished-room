@@ -151,11 +151,11 @@ The personal-room viewer has no archive-question form, keeping its memories out 
 | `.tech` domain | The public home at `unfinishedroom.phoenixreborn.tech` |
 | Meshy | An optional radio-model experiment in the original demo, with separate attribution |
 
-I used Codex during development for implementation, debugging and test work. The gallery stories are original fictional examples prepared for this project.
+I used Codex during development for implementation, debugging and test work. I also used GitHub Copilot Chat to inspect a real editor bug: selecting a starter or copying a gallery room left the AI purpose selector on its default. Copilot recommended a guarded mapping/helper fix, which I implemented and tested. [Contribution record](https://github.com/PHONIEXz/the-unfinished-room/blob/main/docs/copilot-contribution.md). GitHub Actions installs locked dependencies, runs the tests and builds the app on pushes and pull requests. The gallery stories are original fictional examples prepared for this project.
 
 ### What I checked, and what is still pending
 
-At this draft, **103 automated tests pass**, together with the production build. The tests cover source links, layout validation, retries, recovery, spacing, table settings and all seven gallery rooms.
+At this draft, **104 automated tests pass**, together with the production build. The tests cover source links, layout validation, retries, recovery, spacing, table settings and all seven gallery rooms.
 
 Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
 
@@ -188,6 +188,8 @@ That is where I hope this project lands: **“I know what I would put in this ro
 The Unfinished Room gives that thought somewhere to begin. And when a detail is missing, it leaves space for the person who remembers it.
 
 ## Prize Categories
+
+- **Best Use of GitHub Copilot:** Copilot Chat assisted the room-purpose synchronization fix, and GitHub Actions automates repository tests and builds. The contribution record distinguishes chat assistance from coding-agent or PR-review automation.
 
 - **Best Use of Gemma:** Gemma powers structured room proposals and checked source selection in the fictional archive.
 - **Best Use of a .tech Domain:** the live app, gallery and creator are available at [unfinishedroom.phoenixreborn.tech](https://unfinishedroom.phoenixreborn.tech/).

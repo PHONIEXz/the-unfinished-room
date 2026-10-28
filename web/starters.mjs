@@ -1,5 +1,6 @@
 import {shellSettings} from './shell.mjs';
 export const starterNames={empty:'Empty room',living:'Living room',dining:'Dining room',bedroom:'Bedroom',reading:'Reading corner'};
+export const starterPurpose={living:'living room',dining:'dining room',bedroom:'bedroom',reading:'reading room'};
 const layouts={empty:[],living:[['sofa',28,18],['table',50,65],['chair',85,65],['rug',50,48],['plant',88,12]],dining:[['dining-table',50,45],['dining-chair',25,45],['dining-chair',75,45],['plant',88,12]],bedroom:[['bed',40,28],['cabinet',82,20],['rug',50,70],['plant',88,82]],reading:[['chair',45,42],['shelf',78,15],['floor-lamp',20,65],['rug',45,65]]};
 export function starterRoom(type,id=()=> 'object-'+crypto.randomUUID()){
  if(!Object.hasOwn(layouts,type))throw Error('Choose an available starter room.');
