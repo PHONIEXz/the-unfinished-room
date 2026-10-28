@@ -108,3 +108,5 @@ body:has(.room3d.expanded,.room-camera.expanded){overflow:hidden}
 .creator .room-controls-dock{overscroll-behavior:contain}.object-workbench #add-object{width:100%;min-height:44px;background:#6b3b43;color:#fff5e8;border:0;border-radius:4px;margin-bottom:10px}
 @media(max-width:800px){.creator .room3d,.creator .room3d.expanded,.creator .room-camera,.creator .room-camera.expanded{grid-template-columns:minmax(0,1fr) 290px}.creator .room3d-view{min-width:0}}
 @media(max-width:600px){.creator .room3d,.creator .room3d.expanded,.creator .room-camera,.creator .room-camera.expanded{grid-template-columns:minmax(0,1fr)}.object-workbench{grid-column:1/-1}.creator .room3d-dock{display:flex;max-height:45dvh}.creator .room3d.expanded{grid-template-rows:minmax(170px,1fr) minmax(180px,43dvh)}.creator .room3d.expanded .room3d-dock{max-height:none}.creator .room-controls-dock{max-height:45dvh}.object-workbench .selected-object{display:flex}}
+
+.creator .room-camera,.room-page .room-camera{display:none!important}.creator #clean-preview[hidden]{display:none!important}

@@ -199,8 +199,9 @@ askForm?.addEventListener('submit',async event => {
 });
 
 if(archive){
- const camera=document.querySelector('.room-camera');const choice=document.createElement('div');choice.className='room-view-choice';
- const start=document.createElement('button');start.type='button';start.textContent='Enter the 3D room';start.setAttribute('aria-pressed','false');choice.append(start);camera.before(choice);
- const host=document.createElement('section');host.className='room3d';host.hidden=true;host.setAttribute('aria-label','Three dimensional memory room');camera.before(host);let dispose3D=null,loading=false;
- start.onclick=async()=>{if(loading)return;if(dispose3D){dispose3D();dispose3D=null;room3D=null;host.hidden=true;camera.hidden=false;start.textContent='Enter the 3D room';start.setAttribute('aria-pressed','false');return;}loading=true;start.disabled=true;start.textContent='Opening 3D room…';try{const {mountRoom3D}=await import('/room-three.js');host.hidden=false;camera.hidden=true;dispose3D=mountRoom3D(host,openObject,{archive:personal?archive:null,getExplored:()=>discovered});room3D=dispose3D;start.textContent='Return to illustrated room';start.setAttribute('aria-pressed','true');}catch{host.hidden=true;camera.hidden=false;start.textContent='3D could not load. Try again';}finally{loading=false;start.disabled=false;}};
+ const camera=document.querySelector('.room-camera');camera.hidden=true;
+ const host=document.createElement('section');host.className='room3d';host.setAttribute('aria-label','Three dimensional memory room');camera.before(host);
+ const loading=document.createElement('p');loading.setAttribute('role','status');loading.textContent='Opening your 3D room…';host.before(loading);
+ async function open3D(){loading.textContent='Opening your 3D room…';host.replaceChildren();try{const {mountRoom3D}=await import('/room-three.js');room3D=mountRoom3D(host,openObject,{archive:personal?archive:null,getExplored:()=>discovered});loading.hidden=true;}catch{loading.replaceChildren(document.createTextNode('The 3D room could not load. Your memories are available through Quick access. '));const retry=document.createElement('button');retry.type='button';retry.textContent='Retry 3D room';retry.onclick=open3D;loading.append(retry);}}
+ open3D();
 }
