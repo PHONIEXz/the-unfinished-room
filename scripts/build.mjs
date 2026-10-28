@@ -11,7 +11,7 @@ await copyFile('web/keepsake.html','dist/keepsake/index.html');
 await copyFile('web/keepsake.js','dist/keepsake.js');
 await mkdir('dist/create', { recursive: true });
 await copyFile('web/create.html', 'dist/create/index.html');
-for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs', 'room-layout.mjs', 'arrangement.mjs', 'finishes.mjs', 'shell.mjs', 'spacing.mjs', 'starters.mjs', 'images.mjs', 'decor.mjs', 'placement.mjs', 'camera.mjs', 'interior.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
+for (const name of ['index.html', 'styles.css', 'app.js', 'favicon.svg', 'creator.js', 'personal.mjs', 'room-layout.mjs', 'arrangement.mjs', 'finishes.mjs', 'shell.mjs', 'spacing.mjs', 'starters.mjs', 'room-planning.mjs', 'images.mjs', 'decor.mjs', 'placement.mjs', 'camera.mjs', 'interior.mjs']) await copyFile(`web/${name}`, `dist/${name}`);
 await copyFile('web/room.html', 'dist/room/index.html');
 await copyFile('fixtures/reading-room.json', 'dist/reading-room.json');
 

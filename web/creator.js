@@ -1,3 +1,4 @@
+import {planRoom} from './room-planning.mjs';
 import {starterRoom,starterNames} from './starters.mjs';
 import {spaceFurniture,spacingIssues,spacingMessages} from './spacing.mjs';
 import {shellRanges,shellSettings} from './shell.mjs';
@@ -127,19 +128,20 @@ function setDecor(d){for(const [key,value]of Object.entries(shellSettings(d)))if
 function patchObject(card,o){for(const key of ['x','y','rotation','size','surface','color','finish']){const input=card.querySelector(`[data-field="${key}"]`);input.value=o[key];if(input.nextElementSibling?.tagName==='OUTPUT')input.nextElementSibling.textContent=o[key]+(key==='rotation'?'°':'%');}}
 function discardProposal(){proposalView?.();proposalView=null;proposal=null;$('arrange-proposal').hidden=true;}
 
-function showProposal(rawPlan,baseline,stamp,brief,roomType,mountRoom3D,message){
+function showProposal(rawPlan,baseline,stamp,brief,roomType,mountRoom3D,message,relationships=true){
  const merged={...baseline.decor,...rawPlan.decor};if(rawPlan.decor.windows!==undefined)merged.window=rawPlan.decor.windows>0;
- const checked=spaceFurniture([...rawPlan.objects,...rawPlan.additions],merged);
+ const arranged=relationships?planRoom([...rawPlan.objects,...rawPlan.additions],merged,roomType,brief):{objects:[...rawPlan.objects,...rawPlan.additions],groups:[],notes:[]};
+ const checked=spaceFurniture(arranged.objects,merged,arranged.groups);
  const plan={...rawPlan,objects:checked.objects.slice(0,rawPlan.objects.length),additions:checked.objects.slice(rawPlan.objects.length)};
  const room=composeArrangement(plan,baseline);proposal={plan,baseline,stamp,brief,roomType};
  const report=arrangementReport(brief,room);$('arrange-summary').textContent=report.note;paintFinishReport($('arrange-report'),report);
  $('arrange-items').replaceChildren();for(const o of room.objects){const li=document.createElement('li');li.textContent=(o.title||o.kind)+' · '+o.surface+' · '+(o.decoration?'decoration':'existing memory');$('arrange-items').append(li);}
- const issues=spacingMessages(checked.issues,room.objects);$('arrange-spacing').textContent=`${checked.moved.length} floor object${checked.moved.length===1?'':'s'} repositioned for spacing. `+(issues.length?issues.join(' ')+' Correct these in your draft and preview again.':'No floor overlaps, blocked doorway approaches or wall/window conflicts detected.');
+ const issues=spacingMessages(checked.issues,room.objects);$('arrange-spacing').textContent=`${arranged.notes.join(' ')} ${checked.moved.length} floor object${checked.moved.length===1?'':'s'} repositioned for spacing. `+(issues.length?issues.join(' ')+' Correct these in your draft and preview again.':'No floor overlaps, blocked doorway approaches or wall/window conflicts detected.');
  $('arrange-apply').disabled=issues.length>0;$('arrange-proposal').hidden=false;
  proposalView=mountRoom3D($('arrange-preview'),()=>{$('arrange-status').textContent='Apply the proposal to explore its memories in your room.';},{archive:room});
  $('arrange-status').textContent=message+` ${plan.additions.length} new decorations; ${plan.objects.length} existing objects preserved. `+(issues.length?'Apply is paused until the listed spacing conflicts are corrected.':'Review before applying.');
 }
-$('fix-spacing').onclick=async()=>{if(arrangeBusy)return;const baseline=snapshotLayout(),stamp=fingerprint(),brief=$('arrange-brief').value.trim(),roomType=$('arrange-type').value;const plan={decor:{...baseline.decor},objects:inputForAI().objects,additions:[]};try{const {mountRoom3D}=await import('/room-three.js');if(stamp!==fingerprint())throw Error('Your room changed. Preview the spacing fix again.');discardProposal();showProposal(plan,baseline,stamp,brief,roomType,mountRoom3D,'Local spacing preview ready. No AI request was sent.');}catch(error){$('arrange-status').textContent=error.message;}};
+$('fix-spacing').onclick=async()=>{if(arrangeBusy)return;const baseline=snapshotLayout(),stamp=fingerprint(),brief=$('arrange-brief').value.trim(),roomType=$('arrange-type').value;const plan={decor:{...baseline.decor},objects:inputForAI().objects,additions:[]};try{const {mountRoom3D}=await import('/room-three.js');if(stamp!==fingerprint())throw Error('Your room changed. Preview the spacing fix again.');discardProposal();showProposal(plan,baseline,stamp,brief,roomType,mountRoom3D,'Local spacing preview ready. No AI request was sent.',false);}catch(error){$('arrange-status').textContent=error.message;}};
 
 async function generateArrangement(){
  if(arrangeBusy)return;let input;try{input=arrangementInput(inputForAI());}catch(error){$('arrange-status').textContent=error.message;return;}
