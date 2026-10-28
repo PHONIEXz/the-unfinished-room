@@ -29,7 +29,7 @@ if(personal){
  document.querySelector('.outro p').textContent='This room is saved on this browser. Return to the editor to update it or download a backup. Your source text has not been sent to AI.';
  document.querySelector('.outro a').href='/create/';document.querySelector('.outro a').textContent='Edit and back up your room →';
  const quick=document.querySelector('.object-list');quick.querySelectorAll('button').forEach(b=>b.remove());
- if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects.filter(o=>!o.decoration)){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]='Source text you saved. Dates and identities are recorded as you supplied them.';}}
+ if(archive){decorateScene(document.querySelector('#scene'),archive);for(const object of archive.objects.filter(o=>!o.decoration)){const button=document.createElement('button');button.dataset.open=object.id;button.textContent=object.title;quick.append(button);descriptions[object.id]=exampleId?'Original fictional writing for this example room.':'Source text you saved. Dates and identities are recorded as you supplied them.';}}
  else document.querySelectorAll('.object').forEach(b=>b.remove());
 }
 enableCamera(document.querySelector('#scene'));
