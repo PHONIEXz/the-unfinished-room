@@ -3,10 +3,11 @@ export async function requestModel(url, options, {
   fetchImpl = (...args) => fetch(...args), now = Date.now,
   sleep = ms => new Promise(resolve => setTimeout(resolve,ms)), random = Math.random,
   timeoutSignal = ms => AbortSignal.timeout(ms), onRetry = () => {},
-  budgetMs = 28000, attemptTimeoutMs = 12000
+  budgetMs = 28000, attemptTimeoutMs = 12000, maxAttempts = 3
 } = {}) {
+  const attempts = Math.max(1,Math.min(3,Math.trunc(maxAttempts)||1));
   const deadline = now() + budgetMs;
-  for (let attempt=1; attempt<=3; attempt++) {
+  for (let attempt=1; attempt<=attempts; attempt++) {
     const remaining = deadline-now();
     if (remaining<=0) throw new DOMException('Model deadline exceeded','TimeoutError');
     let response, failure;
@@ -19,7 +20,7 @@ export async function requestModel(url, options, {
       if (error.permanent || !['TimeoutError','AbortError','TypeError'].includes(error.name)) throw error;
       failure=error;
     }
-    if (attempt===3) throw failure;
+    if (attempt===attempts) throw failure;
     const header = response?.headers?.get('retry-after');
     const seconds = header == null || header.trim()==='' ? NaN : Number(header);
     const retryAfter = Number.isFinite(seconds) ? Math.max(0,seconds*1000) : Date.parse(header)-now();

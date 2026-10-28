@@ -1,0 +1,12 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {generateArrangement} from './arrange-model.mjs';
+import {arrangementPrompt} from '../web/arrangement.mjs';
+import {shellSettings} from '../web/shell.mjs';
+const input={roomType:'study',description:'Keep a clear quiet reading room.',shell:shellSettings(),objects:[]};
+const good={summary:'A quiet room.',decor:{palette:'cream',floor:'wood',lamp:true,timeOfDay:'day'},objects:[],additions:[]};
+const payload=value=>({candidates:[{finishReason:'STOP',content:{parts:[{text:typeof value==='string'?value:JSON.stringify(value)}]}}]});
+test('a valid model plan uses a single call',async()=>{let calls=0;const result=await generateArrangement(input,{request:async()=>{calls++;return payload(good);}});assert.equal(calls,1);assert.equal(result.repaired,false);assert.deepEqual(result.plan,good);});
+test('one schema repair uses only consented input and controlled reason, then validates again',async()=>{const calls=[],diagnostics=[];const result=await generateArrangement(input,{request:async(url,options,limits)=>{calls.push({body:options.body,limits});return payload(calls.length===1?{...good,secret:'UNTRUSTED OUTPUT'}:good);},onInvalid:d=>diagnostics.push(d)});assert.equal(result.repaired,true);assert.equal(calls.length,2);assert.equal(calls[1].limits.maxAttempts,1);assert.ok(!calls[1].body.includes('UNTRUSTED OUTPUT'));assert.ok(!JSON.stringify(diagnostics).includes('UNTRUSTED OUTPUT'));assert.match(calls[1].body,/previous attempt/);});
+test('two invalid responses fail closed and provider failures do not trigger a format repair',async()=>{let calls=0;await assert.rejects(generateArrangement(input,{request:async()=>{calls++;return payload('broken JSON');}}),e=>e.status===502);assert.equal(calls,2);calls=0;await assert.rejects(generateArrangement(input,{request:async()=>{calls++;throw Object.assign(Error('quota'),{status:429});}}),e=>e.status===429);assert.equal(calls,1);});
+test('format repair shares one deadline and does not start after the budget expires',async()=>{let time=0,calls=0;await assert.rejects(generateArrangement(input,{now:()=>time,request:async()=>{calls++;time=55000;return payload('broken');}}),{name:'TimeoutError'});assert.equal(calls,1);});
+test('prompt spells out supported shell keys in the example JSON',()=>{const prompt=arrangementPrompt(input);assert.match(prompt,/"width":8/);assert.match(prompt,/"doorOffset":55/);assert.match(prompt,/Exactly four top-level keys/);assert.ok(!prompt.includes('near x=0,y=55'));});

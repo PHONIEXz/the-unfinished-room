@@ -37,3 +37,5 @@ test('larger layout requests can use a separate deadline without changing questi
  await requestModel('https://example.test',{}, {budgetMs:55000,attemptTimeoutMs:45000,now:()=>0,timeoutSignal:ms=>{allotted=ms;return undefined;},fetchImpl:async()=>({ok:true,json:async()=>({ok:true})})});
  assert.equal(allotted,45000);
 });
+
+test('a caller can cap retries to reserve time for a validated format repair',async()=>{let calls=0;await assert.rejects(requestModel('https://provider.test',{}, {maxAttempts:1,fetchImpl:async()=>{calls++;return {ok:false,status:503,headers:new Headers()};}}));assert.equal(calls,1);});
