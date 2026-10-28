@@ -16,8 +16,8 @@ export default async function handler(req,res){
   for(let i=0;i<providers.length;i++){
    const provider=providers[i],selectedModel=provider==='google'?model:groqModel;
    try{
-    const {plan,repaired}=await generateArrangement(input,{provider,model:selectedModel,budgetMs:providers.length>1?26000:55000,url:provider==='google'?`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`:'https://api.groq.com/openai/v1/chat/completions',key:provider==='google'?process.env.GEMMA_API_KEY:process.env.GROQ_API_KEY,onInvalid:detail=>console.warn('room_arrangement_invalid',JSON.stringify({provider,...detail}))});
-    return res.status(200).json({plan,model:selectedModel,provider,repaired,fallback:i>0});
+    const {plan,repaired,recovery}=await generateArrangement(input,{provider,model:selectedModel,budgetMs:providers.length>1?26000:55000,url:provider==='google'?`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`:'https://api.groq.com/openai/v1/chat/completions',key:provider==='google'?process.env.GEMMA_API_KEY:process.env.GROQ_API_KEY,onInvalid:detail=>console.warn('room_arrangement_invalid',JSON.stringify({provider,...detail}))});
+    return res.status(200).json({plan,model:selectedModel,provider,repaired,recovery,fallback:i>0});
    }catch(error){
     const retryable=[429,500,502,503,504].includes(error.status)||['TimeoutError','AbortError','TypeError'].includes(error.name);
     if(choice!=='auto'||!retryable||i===providers.length-1)throw error;
