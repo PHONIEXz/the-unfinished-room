@@ -1,4 +1,4 @@
-import {planRoom} from './room-planning.mjs';
+import {planRoom,prepareDiningPlan} from './room-planning.mjs';
 import {starterRoom,starterNames} from './starters.mjs';
 import {spaceFurniture,spacingIssues,spacingMessages} from './spacing.mjs';
 import {shellRanges,shellSettings} from './shell.mjs';
@@ -131,13 +131,14 @@ function discardProposal(){proposalView?.();proposalView=null;proposal=null;$('a
 
 function showProposal(rawPlan,baseline,stamp,brief,roomType,mountRoom3D,message,relationships=true){
  const merged={...baseline.decor,...rawPlan.decor};if(rawPlan.decor.windows!==undefined)merged.window=rawPlan.decor.windows>0;
+ const tableDecor=relationships?prepareDiningPlan(rawPlan,merged,brief):{plan:rawPlan,removed:0};rawPlan=tableDecor.plan;
  const arranged=relationships?planRoom([...rawPlan.objects,...rawPlan.additions],merged,roomType,brief):{objects:[...rawPlan.objects,...rawPlan.additions],groups:[],notes:[]};
  const checked=spaceFurniture(arranged.objects,merged,arranged.groups);
  const plan={...rawPlan,objects:checked.objects.slice(0,rawPlan.objects.length),additions:checked.objects.slice(rawPlan.objects.length)};
  const room=composeArrangement(plan,baseline);proposal={plan,baseline,stamp,brief,roomType};
  const report=arrangementReport(brief,room);$('arrange-summary').textContent=report.note;paintFinishReport($('arrange-report'),report);
  $('arrange-items').replaceChildren();for(const o of room.objects){const li=document.createElement('li');li.textContent=(o.title||o.kind)+' · '+o.surface+' · '+(o.decoration?'decoration':'existing memory');$('arrange-items').append(li);}
- const issues=spacingMessages(checked.issues,room.objects);$('arrange-spacing').textContent=`${arranged.notes.join(' ')} ${checked.moved.length} floor object${checked.moved.length===1?'':'s'} repositioned for spacing. `+(issues.length?issues.join(' ')+' Correct these in your draft and preview again.':'No floor overlaps, blocked doorway approaches or wall/window conflicts detected.');
+ const issues=spacingMessages(checked.issues,room.objects);$('arrange-spacing').textContent=`${arranged.notes.join(' ')} ${tableDecor.removed?'Used the table’s built-in flowers instead of '+tableDecor.removed+' duplicate new vase(s). ':''}${checked.moved.length} floor object${checked.moved.length===1?'':'s'} repositioned for spacing. `+(issues.length?issues.join(' ')+' Correct these in your draft and preview again.':'No floor overlaps, blocked doorway approaches or wall/window conflicts detected.');
  $('arrange-apply').disabled=issues.length>0;$('arrange-proposal').hidden=false;
  proposalView=mountRoom3D($('arrange-preview'),()=>{$('arrange-status').textContent='Apply the proposal to explore its memories in your room.';},{archive:room});
  $('arrange-status').textContent=message+` ${plan.additions.length} new decorations; ${plan.objects.length} existing objects preserved. `+(issues.length?'Apply is paused until the listed spacing conflicts are corrected.':'Review before applying.');
