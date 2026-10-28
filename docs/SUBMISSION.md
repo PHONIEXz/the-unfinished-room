@@ -167,13 +167,13 @@ The distinction matters: **PDF is the readable, shareable copy. JSON is the back
 
 I used Codex during development for implementation, debugging and test work. I also used GitHub Copilot Chat to inspect a real editor bug: selecting a starter or copying a gallery room left the AI purpose selector on its default. Copilot recommended a guarded mapping/helper fix, which I implemented and tested. [Contribution record](https://github.com/PHONIEXz/the-unfinished-room/blob/main/docs/copilot-contribution.md). GitHub Actions installs locked dependencies, runs the tests and builds the app on pushes and pull requests. The gallery stories are original fictional examples prepared for this project. This article was prepared with AI assistance and checked against the repository and recorded test results.
 
-### What I checked, and what is still pending
+### Verification completed and practical limits
 
 At publication, **108 automated tests pass**, together with the production build. The tests cover source links, layout validation, retries, recovery, spacing, table settings and all seven gallery rooms.
 
-Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked room-image export from the viewer and an unsaved draft, and rendered a print-layout sample with its image and source text. Browser-native PDF download and phone printing still need a manual check. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
+Live desktop checks include opening gallery memories, exploring the full room, saving and reloading, and downloading and restoring backups. I also checked room-image export from the viewer and an unsaved draft, and rendered a print-layout sample with its image and source text. Desktop browser-native PDF export is demonstrated in my recorded walkthrough, and I completed the phone PDF-printing check successfully. I also checked that copying a gallery example into the editor left the previously saved room unchanged.
 
-I completed a phone test and reported it passed on October 28. The latest navigation, visual polish and PDF-printing changes still need a phone follow-up. Hardware-WebGL rendering remains unverified; the cloud-browser checks use simplified rendering.
+I completed the current phone checks on October 28, including controls, navigation, visual layout and PDF printing, and reported that everything worked well. These are my manual device checks. The separate cloud-browser checks use simplified rendering and do not independently verify hardware-WebGL shading.
 
 Practical limits are visible: one room, up to 12 placed objects, a rectangular shell and stylized materials. There is no cloud sync, encrypted memory vault, photorealistic rendering or full walking-route simulation. Browser storage can be cleared, so users should export a JSON backup. The room-image PDF keepsake offers another way to carry the scene and its words out of the app.
 

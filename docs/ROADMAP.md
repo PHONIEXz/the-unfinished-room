@@ -1,5 +1,10 @@
 # Complete build roadmap
 
+## Current verification status, October 28, 2026
+
+Completed: Phoenix reports successful real-phone testing of the current controls, navigation, visual layout and PDF printing. Desktop native PDF export is demonstrated in the supplied screen recording. The three live-experience videos are completed and embedded in the published DEV article. Earlier pending phone, touch, navigation, visual-polish and PDF follow-ups below are historical and superseded by this status. This is user-reported device verification, not an independent hardware-WebGL audit. Audio-specific checks, provider availability and deferred features are not automatically certified by this report.
+
+
 Created 27 October 2026. Target: a polished small experience with a complete story.
 
 ## Product promise

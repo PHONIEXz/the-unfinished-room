@@ -1,5 +1,10 @@
 # Release checks: 27 October 2026
 
+## Current verification status, October 28, 2026
+
+Completed: Phoenix reports successful real-phone testing of the current controls, navigation, visual layout and PDF printing. Desktop native PDF export is demonstrated in the supplied screen recording. The three live-experience videos are completed and embedded in the published DEV article. Earlier pending phone, touch, navigation, visual-polish and PDF follow-ups below are historical and superseded by this status. This is user-reported device verification, not an independent hardware-WebGL audit. Audio-specific checks, provider availability and deferred features are not automatically certified by this report.
+
+
 ## Recorded automated checks
 - 42 tests pass; build and JavaScript syntax checks pass.
 - Includes source/citation validation, extractive answers, retries and timeouts, source links, unknowns, storage errors, legacy backups, image restrictions, decoration-only/mixed rooms, layout bounds and version 7 finishes.
